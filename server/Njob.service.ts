@@ -51,3 +51,4 @@ export function updateJobStatus(
     job.status = status;
 
 }
+

@@ -28,9 +28,11 @@
 import { DriveFile } from "@/types/drive";
 import fs from "fs/promises";
 import { downloadFile } from "../services/drive.service";
-import { extractQuestions } from "../services/gemini.service";
-import { saveJson } from "../services/storage.service";
+// import { extractQuestions } from "../services/AI/gemini.service";
+import { saveJson, saveText } from "../services/storage.service";
 import { logger } from "../lib/logger";
+import { ocrService } from "../services/AI";
+import { clean_ParseQuestions} from "../services/AI/deepseek.service";
 
 export interface FileProcessingResult {
     fileId: string;
@@ -72,9 +74,10 @@ export async function processPipeline(
 
         // --- OCR extraction --------------------------------------------
         const ocrStartedAt = performance.now();
-        const rawResult = await extractQuestions(pdfPath);
+        // const rawResult = await extractQuestions(pdfPath);
+        const rawOCR  = await ocrService.extract(pdfPath,file.name)
 
-        if (!rawResult) {
+        if (!rawOCR ) {
             throw new Error("Gemini returned an empty response");
         }
 
@@ -84,18 +87,52 @@ export async function processPipeline(
             duration: performance.now() - ocrStartedAt
         });
 
-        const json = sanitizeAndValidateJson(rawResult, file);
-
         // --- Save output -------------------------------------------------
-        const saveStartedAt = performance.now();
         const outputName = sanitizeFileName(file.name);
-        await saveJson(outputName, json);
-        logger.info("Output saved", {
+        await saveText(outputName,"01_raw.md",rawOCR);
+        // const json = sanitizeAndValidateJson(rawResult, file);
+
+        const saveStartedAt = performance.now();
+        logger.info("OCR Output saved", {
             fileId: file.id,
             fileName: file.name,
             outputName,
             duration: performance.now() - saveStartedAt
         });
+
+        const chunks = splitByLines(rawOCR, 600);
+
+        let allQuestions = '';
+
+        for (const chunk of chunks) {
+
+            const result =
+               await clean_ParseQuestions(chunk);
+
+           allQuestions +=result;
+
+        }
+        // const cleanedOCR = await cleanupOCR(rawOCR);
+        // await saveText(
+        //     outputName,
+        //     "02_clean.md",
+        //     cleanedOCR
+        // );
+        // const questions = await clean_ParseQuestions(rawOCR);
+        await saveJson(
+            outputName,
+            "03_questions.json",
+            allQuestions
+        );
+        // const report =
+        // await validateQuestions(
+        //     questions
+        // );
+        // await saveJson(
+        //     outputName,
+        //     "04_validate.json",
+        //     report
+        // );
 
         const durationMs = performance.now() - jobStartedAt;
 
@@ -172,4 +209,26 @@ function sanitizeFileName(name: string): string {
         .replace(/\.[^/.]+$/, "")      // strip existing extension, e.g. ".pdf"
         .replace(/[\\/:*?"<>|]+/g, "_") // strip path/filesystem-unsafe chars
         .trim();
+}
+
+export function splitByLines(
+    text: string,
+    maxLines: number = 600
+): string[] {
+
+    const lines = text.split(/\r?\n/);
+
+    const chunks: string[] = [];
+
+    for (let i = 0; i < lines.length; i += maxLines) {
+
+        chunks.push(
+            lines
+                .slice(i, i + maxLines)
+                .join("\n")
+        );
+
+    }
+
+    return chunks;
 }

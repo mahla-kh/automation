@@ -25,32 +25,29 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-80"
-      >
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="آدرس درایو را وارد کنید"
-          className="border p-2 rounded"
-        />
+  <main className="container">
+  <form onSubmit={handleSubmit} className="form">
+    <input
+      type="text"
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      placeholder="آدرس درایو را وارد کنید"
+      className="input"
+    />
 
-        <button
-          type="submit"
-          className="bg-black text-white p-2 rounded"
-        >
-          ارسال
-        </button>
+    <button
+      type="submit"
+      className="button"
+    >
+      ارسال
+    </button>
 
-        {result && (
-          <p>
-            پاسخ بک‌اند: {result}
-          </p>
-        )}
-      </form>
-    </main>
+    {result && (
+      <p>
+        پاسخ بک‌اند: {result}
+      </p>
+    )}
+  </form>
+</main>
   );
 }

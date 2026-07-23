@@ -1,0 +1,240 @@
+[
+  {
+    "question_number": 1,
+    "question_text": "Define Atresia",
+    "options": []
+  },
+  {
+    "question_number": 2,
+    "question_text": "Define Rooming in, Sooth",
+    "options": []
+  },
+  {
+    "question_number": 3,
+    "question_text": "Define dyspareunia",
+    "options": []
+  },
+  {
+    "question_number": 4,
+    "question_text": "Define metrorrhagia",
+    "options": []
+  },
+  {
+    "question_number": 5,
+    "question_text": "Define Menarche and menopause",
+    "options": []
+  },
+  {
+    "question_number": 6,
+    "question_text": "Define Preeclamsia",
+    "options": []
+  },
+  {
+    "question_number": 7,
+    "question_text": "Define Priapism and balanitis",
+    "options": []
+  },
+  {
+    "question_number": 8,
+    "question_text": "Define Vernix caseosa",
+    "options": []
+  },
+  {
+    "question_number": 9,
+    "question_text": "Define Kussmaul respiration",
+    "options": []
+  },
+  {
+    "question_number": 10,
+    "question_text": "عمل sterility در مردان از چه طریقی انجام میشه؟",
+    "options": [
+      "Tubal ligation",
+      "Vagotomy",
+      "Vasectomy"
+    ]
+  },
+  {
+    "question_number": 11,
+    "question_text": "به سوال جاخالی دو قسمتی داده بود که قسمت اولش Dispense میشد.",
+    "options": []
+  },
+  {
+    "question_number": 12,
+    "question_text": "به زن حامله جفت سرراهی (placenta previa) داره. کدوم عملو نمیتونه انجام بده؟",
+    "options": [
+      "NVD",
+      "SVD"
+    ]
+  },
+  {
+    "question_number": 13,
+    "question_text": "این شکل نشاندهنده چیست؟",
+    "options": [
+      "varicocele",
+      "spermatocele",
+      "hydrocele"
+    ]
+  },
+  {
+    "question_number": 14,
+    "question_text": "این شکل نشاندهنده چیست؟",
+    "options": [
+      "placenta previa",
+      "abruptio placentae"
+    ]
+  },
+  {
+    "question_number": 15,
+    "question_text": "کدوم یکی با بقیه فرق میکنه؟",
+    "options": [
+      "peptic",
+      "tocolytic",
+      "diuretic"
+    ]
+  },
+  {
+    "question_number": 16,
+    "question_text": "فردی سرطان مثانه گرفته و عمل ... و سپس ... رو انجام داده.",
+    "options": [
+      "Cystectomy - ileal conduit",
+      "ileal conduit – Cystectomy"
+    ]
+  },
+  {
+    "question_number": 17,
+    "question_text": "Upper bone of pelvis? Last part of small intestin? Their adjectives?",
+    "options": [
+      "Ilium – ileum – iliac - ileal",
+      "Ilium – ileum – ilial - ileac",
+      "Ileum – ilium – ileal - iliac",
+      "Ileum - ilium - ileac - ilial"
+    ]
+  },
+  {
+    "question_number": 18,
+    "question_text": "فردی الان حامله س و ۴ تا فرزند زنده داره(که ازونا دوتا تک قلو هستن و اون دوتای دیگه دوقلو) به فرزندشو در یک سالگی از دست داده، به بچش سقط شده. چطوری باید گزارش بدیم؟",
+    "options": []
+  },
+  {
+    "question_number": 19,
+    "question_text": "کدوم یکی در حاملگی نرمال نیست؟",
+    "options": [
+      "Linea nigra",
+      "chloasma",
+      "melasma"
+    ]
+  },
+  {
+    "question_number": 20,
+    "question_text": "در یک examination ... ماما متوجه شد که چنین در پوزیشن ... قرار گرفته است و ... چنین لمس میشد.",
+    "options": [
+      "Labor - presentation - vertex",
+      "Vaginal – breech - buttock"
+    ]
+  },
+  {
+    "question_number": 21,
+    "question_text": "وقتی پدر Rh مثبت باشه و مادر Rh منفی برای نوزاد ممکنه چه عارضه ای پیش بیاد؟",
+    "options": []
+  },
+  {
+    "question_number": 22,
+    "question_text": "برگشت دریچه میترال به درون دهلیز چپ هنگام انقباض بطن؟",
+    "options": []
+  },
+  {
+    "question_number": 23,
+    "question_text": "این سوالو داده بود ولی گزینه هاشو عوض کرده بود. دوتا از گزینه هاش TSS و DRE بود.",
+    "options": []
+  },
+  {
+    "question_number": 24,
+    "question_text": "All of the following abbreviations refer to a surgical or medical procedure except:",
+    "options": [
+      "CPD",
+      "FNA",
+      "CS",
+      "TURP"
+    ]
+  },
+  {
+    "question_number": 24,
+    "question_text": "این سوالو داده بود و به جای BPH treatment نوشته بود HRT \"Treatment methods include surgery of the prostate, radiation and inhibition of androgens, which stimulate prostate growth. Radiation is usually delivered by implantation of radioactive seeds. Another approach is watchful waiting which consists of monitoring without therapy.\" Which word is not described in the text?",
+    "options": [
+      "BPH treatment",
+      "Brachytherapy",
+      "Deferred therapy",
+      "Hormone therapy"
+    ]
+  },
+  {
+    "question_number": 25,
+    "question_text": "این سوالو داده بود و فقط به جای drugs نوشته بود medications",
+    "options": []
+  },
+  {
+    "question_number": 25,
+    "question_text": "Most gallstones are composed of cholesterol, an ingredient of bile. They form more commonly in women than in men and are promoted by common cholesterol level in bile. These predisposing conditions include pregnancy and obesity. Oddly, the rapid weight loss that follows stomach reduction suggests gallstones because of changes in bile production and cholesterol precipitation in the bile. Drugs may dissolve gallstones, but often the cure is removed from the text, which condition would not promote gallstone formation?",
+    "options": [
+      "Drugs",
+      "Increased estrogen",
+      "Rapid weight loss that follows stomach reduction surgery",
+      "Obesity"
+    ]
+  },
+  {
+    "question_number": 26,
+    "question_text": "این متنو داده بود ولی گزینه های سوالش جدید بود. 7. Simin, a gravida 3, para 2 at 39 weeks gestation, had been in active labor for several hours, fully effaced and dilated, yet unable to progress. She was transported to the OR for emergency C-section under spinal anesthesia because of CPD and fetal distress. After the child birth, she had a uterine discharge for a while.",
+    "options": []
+  },
+  {
+    "question_number": 27,
+    "question_text": "Which coagulation test measures capacity of platelets to stop bleeding after a standard skin incision?",
+    "options": [
+      "TCT",
+      "APTT",
+      "PTT",
+      "BT"
+    ]
+  },
+  {
+    "question_number": 28,
+    "question_text": "Afshin, a 65-year-old teacher, saw his urologist with complaints of decreased force of urine stream, hesitancy, and sensation of incomplete b-flank pain. He has no history of UTI, STD or urolithiasis but he clearly remembers he had had enuresis at school age. DRE revealed a 50-g prostat ultrasound showed no intravesical lesions or prostate protrusion into the bladder base. VDRL was negative but PSA was quite high. He was diag According to the above case, which of the following statements is correct?",
+    "options": [
+      "He was cleared of prostatic cancer by a negative VDRL",
+      "He had no history of urinary stones",
+      "His symptoms was due to the bulging of his prostate into the bladder",
+      "At school age he had anuresis"
+    ]
+  },
+  {
+    "question_number": 29,
+    "question_text": "Cancer of the testis represents less than 1 percent of cancer in adult males. It usually appears between the ages of 25 and 45 years and shows r originates in germ cells and spreads to abdominal lymph nodes. More than half of testicular tumors release markers that can be detected in the blood and chemotherapy. Which sentence is true?",
+    "options": [
+      "In a patient with testicular cancer there is usually another affected family member.",
+      "Testicular cancer is a common cancer in adult males.",
+      "Testicular cancer could be detected by blood examination.",
+      "Testicular cancer could be spread to neck lymph nodes."
+    ]
+  },
+  {
+    "question_number": 30,
+    "question_text": "A diuretic is a substance that promotes increased urinary output or diuresis. Diuretic drugs are used in treating hypertension and heart failure to decrease volume and reduce the heart's workload. What is not true about a diuretic drug?",
+    "options": [
+      "It lowers the urinary output",
+      "It is used in the treatment of heart failure",
+      "It reduces the blood pressure.",
+      "It lowers the heart workload."
+    ]
+  },
+  {
+    "question_number": 31,
+    "question_text": "Barrett syndrome or Barrett esophagus frequently has no early symptoms, but possible complications include esophageal spasms, formation of scar tissue, esophageal strictures, and increased risk of cancer. Based on the paragraph, which sentence is not true?",
+    "options": [
+      "Scar tissue could increase the risk of esophageal cancer",
+      "Barrett syndrome is a predisposing factor for cancer",
+      "Barrett esophagus is commonly asymptomatic in early stages of the disease.",
+      "Tightening of the esophagus is an early complication in Barrett syndrome"
+    ]
+  }
+]

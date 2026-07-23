@@ -108,7 +108,7 @@ import {
     getJob,
     updateJobStatus,
     PipelineJob
-} from "./job.service";
+} from "./Pjob.service";
 import { logger } from "../lib/logger";
 import { getFilesFromFolder } from "./drive.service";
 import { processPipeline } from "../workers/pipeline.worker";
