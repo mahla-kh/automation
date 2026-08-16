@@ -1,234 +1,294 @@
-// import { DriveFile } from "@/types/drive";
-// import { downloadFile } from "../services/drive.service";
-// import { extractQuestions } from "../services/gemini.service";
-// import { saveJson } from "../services/storage.service";
-// // import { saveJson } from "../services/storage.service";
-
-// export async function processPipeline(file: DriveFile){
-
-//     console.log("شروع پردازش", file.name);
-
-//     //--------------------------------------------------
-
-//     const pdfPath = await downloadFile(file);
-
-//     //--------------------------------------------------
-
-//     const json = await extractQuestions(pdfPath) as string
-
-//     //--------------------------------------------------
-
-//     await saveJson(file.name, json)
-
-//     //--------------------------------------------------
-
-//     console.log("پایان");
-// }
-
 import { DriveFile } from "@/types/drive";
 import fs from "fs/promises";
 import { downloadFile } from "../services/drive.service";
-// import { extractQuestions } from "../services/AI/gemini.service";
 import { saveJson, saveText } from "../services/storage.service";
 import { logger } from "../lib/logger";
 import { ocrService } from "../services/AI";
-import { clean_ParseQuestions} from "../services/AI/deepseek.service";
+import { clean_ParseQuestions } from "../services/AI/deepseek.service";
+import { updateFileStageStatus, addJobLog } from "../services/Pjob.service";
 
 export interface FileProcessingResult {
-    fileId: string;
-    fileName: string;
-    outputName: string;
-    durationMs: number;
+  fileId: string;
+  fileName: string;
+  outputName: string;
+  durationMs: number;
 }
 
 /**
  * Processes a single Drive file end-to-end:
- * download -> OCR extraction (Gemini) -> save JSON output.
- *
- * Throws on any stage failure so the caller (pipeline.service's
- * Promise.allSettled) can correctly mark the file/job as failed.
- * Always cleans up the downloaded temp file, success or failure.
+ * Download -> OCR -> Upload (Save raw text) -> Reformat (optional, if enableReformat is true).
  */
 export async function processPipeline(
-    file: DriveFile
+  file: DriveFile,
+  jobId: string,
+  enableReformat: boolean = false
 ): Promise<FileProcessingResult> {
+  const jobStartedAt = performance.now();
+  let pdfPath: string | null = null;
+  let currentStage: "download" | "upload" | "ocr" | "reformat" = "download";
 
-    const jobStartedAt = performance.now();
-    let pdfPath: string | null = null;
+  logger.info("File processing started", {
+    fileId: file.id,
+    fileName: file.name,
+    jobId,
+  });
 
-    logger.info("File processing started", {
-        fileId: file.id,
-        fileName: file.name
+  addJobLog(jobId, {
+    level: "INFO",
+    message: `Started processing file ${file.name}`,
+    fileId: file.id,
+    fileName: file.name,
+    stage: "pipeline",
+  });
+
+  try {
+    // --- Stage 1: Download -------------------------------------------------
+    currentStage = "download";
+    const downloadStartedAt = performance.now();
+    const downloadStartTimeIso = new Date().toISOString();
+
+    updateFileStageStatus(
+      jobId,
+      file.id,
+      "download",
+      { status: "in_progress", startedAt: downloadStartTimeIso },
+      "in_progress"
+    );
+
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `Downloading file from Google Drive...`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "download",
     });
 
-    try {
+    pdfPath = await downloadFile(file);
+    const downloadDuration = Math.round(performance.now() - downloadStartedAt);
 
-        // --- Download -------------------------------------------------
-        const downloadStartedAt = performance.now();
-        pdfPath = await downloadFile(file);
-        logger.info("File download completed", {
-            fileId: file.id,
-            fileName: file.name,
-            duration: performance.now() - downloadStartedAt
-        });
+    updateFileStageStatus(jobId, file.id, "download", {
+      status: "success",
+      completedAt: new Date().toISOString(),
+      durationMs: downloadDuration,
+    });
 
-        // --- OCR extraction --------------------------------------------
-        const ocrStartedAt = performance.now();
-        // const rawResult = await extractQuestions(pdfPath);
-        const rawOCR  = await ocrService.extract(pdfPath,file.name)
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `Download completed successfully in ${downloadDuration}ms`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "download",
+    });
 
-        if (!rawOCR ) {
-            throw new Error("Gemini returned an empty response");
-        }
+    // --- Stage 2: OCR ------------------------------------------------------
+    currentStage = "ocr";
+    const ocrStartedAt = performance.now();
+    const ocrStartTimeIso = new Date().toISOString();
 
-        logger.info("Gemini OCR extraction completed", {
-            fileId: file.id,
-            fileName: file.name,
-            duration: performance.now() - ocrStartedAt
-        });
+    updateFileStageStatus(jobId, file.id, "ocr", {
+      status: "in_progress",
+      startedAt: ocrStartTimeIso,
+    });
 
-        // --- Save output -------------------------------------------------
-        const outputName = sanitizeFileName(file.name);
-        await saveText(outputName,"01_raw.md",rawOCR);
-        // const json = sanitizeAndValidateJson(rawResult, file);
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `Executing OCR extraction...`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "ocr",
+    });
 
-        const saveStartedAt = performance.now();
-        logger.info("OCR Output saved", {
-            fileId: file.id,
-            fileName: file.name,
-            outputName,
-            duration: performance.now() - saveStartedAt
-        });
+    const rawOCR = await ocrService.extract(pdfPath, file.name);
 
-        const chunks = splitByLines(rawOCR, 600);
-
-        let allQuestions = '';
-
-        for (const chunk of chunks) {
-
-            const result =
-               await clean_ParseQuestions(chunk);
-
-           allQuestions +=result;
-
-        }
-        // const cleanedOCR = await cleanupOCR(rawOCR);
-        // await saveText(
-        //     outputName,
-        //     "02_clean.md",
-        //     cleanedOCR
-        // );
-        // const questions = await clean_ParseQuestions(rawOCR);
-        await saveJson(
-            outputName,
-            "03_questions.json",
-            allQuestions
-        );
-        // const report =
-        // await validateQuestions(
-        //     questions
-        // );
-        // await saveJson(
-        //     outputName,
-        //     "04_validate.json",
-        //     report
-        // );
-
-        const durationMs = performance.now() - jobStartedAt;
-
-        logger.info("File processing finished", {
-            fileId: file.id,
-            fileName: file.name,
-            duration: durationMs
-        });
-
-        return {
-            fileId: file.id,
-            fileName: file.name,
-            outputName,
-            durationMs
-        };
-
-    } catch (error) {
-        logger.error("File processing failed", {
-            error,
-            fileId: file.id,
-            fileName: file.name
-        });
-        throw error;
-
-    } finally {
-        if (pdfPath) {
-            await fs.unlink(pdfPath).catch((cleanupError) => {
-                logger.warn("Failed to remove temp file", {
-                    error: cleanupError,
-                    fileId: file.id,
-                    pdfPath
-                });
-            });
-        }
-    }
-}
-
-/**
- * Strips common LLM markdown code fences and validates that the result
- * is parseable JSON. Never blocks saving on a validation failure (the
- * raw OCR output is still valuable for manual review) — it only warns.
- */
-function sanitizeAndValidateJson(
-    raw: string,
-    file: DriveFile
-): string {
-
-    const cleaned = raw
-        .trim()
-        .replace(/^```json\s*/i, "")
-        .replace(/^```\s*/i, "")
-        .replace(/```\s*$/i, "")
-        .trim();
-
-    try {
-        JSON.parse(cleaned);
-    } catch (parseError) {
-        logger.warn("OCR output is not valid JSON, saving raw text for review", {
-            error: parseError,
-            fileId: file.id,
-            fileName: file.name
-        });
+    if (!rawOCR) {
+      throw new Error("OCR provider returned an empty response");
     }
 
-    return cleaned;
+    const ocrDuration = Math.round(performance.now() - ocrStartedAt);
+
+    updateFileStageStatus(jobId, file.id, "ocr", {
+      status: "success",
+      completedAt: new Date().toISOString(),
+      durationMs: ocrDuration,
+    });
+
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `OCR extraction completed in ${ocrDuration}ms`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "ocr",
+    });
+
+    // --- Stage 3: Upload (Saving raw output) ------------------------------
+    currentStage = "upload";
+    const saveStartedAt = performance.now();
+    const saveStartTimeIso = new Date().toISOString();
+
+    updateFileStageStatus(jobId, file.id, "upload", {
+      status: "in_progress",
+      startedAt: saveStartTimeIso,
+    });
+
+    const outputName = sanitizeFileName(file.name);
+    await saveText(outputName, "01_raw.md", rawOCR);
+
+    const saveDuration = Math.round(performance.now() - saveStartedAt);
+
+    updateFileStageStatus(jobId, file.id, "upload", {
+      status: "success",
+      completedAt: new Date().toISOString(),
+      durationMs: saveDuration,
+    });
+
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `Saved raw OCR output file 01_raw.md in ${saveDuration}ms`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "upload",
+    });
+
+    // --- Stage 4: Reformat (Optional - Controlled by Toggle) --------------
+    if (enableReformat) {
+      currentStage = "reformat";
+      const reformatStartedAt = performance.now();
+      const reformatStartTimeIso = new Date().toISOString();
+
+      updateFileStageStatus(jobId, file.id, "reformat", {
+        status: "in_progress",
+        startedAt: reformatStartTimeIso,
+      });
+
+      addJobLog(jobId, {
+        level: "INFO",
+        message: `Reformat stage started (DeepSeek parsing)`,
+        fileId: file.id,
+        fileName: file.name,
+        stage: "reformat",
+      });
+
+      const chunks = splitByLines(rawOCR, 600);
+      let allQuestions = "";
+
+      for (const chunk of chunks) {
+        const result = await clean_ParseQuestions(chunk);
+        allQuestions += result;
+      }
+
+      await saveJson(outputName, "03_questions.json", allQuestions);
+
+      const reformatDuration = Math.round(performance.now() - reformatStartedAt);
+
+      updateFileStageStatus(jobId, file.id, "reformat", {
+        status: "success",
+        completedAt: new Date().toISOString(),
+        durationMs: reformatDuration,
+      });
+
+      addJobLog(jobId, {
+        level: "INFO",
+        message: `Reformat completed and saved to 03_questions.json in ${reformatDuration}ms`,
+        fileId: file.id,
+        fileName: file.name,
+        stage: "reformat",
+      });
+    } else {
+      updateFileStageStatus(jobId, file.id, "reformat", {
+        status: "skipped",
+      });
+      addJobLog(jobId, {
+        level: "INFO",
+        message: `Reformat stage skipped as requested by toggle setting`,
+        fileId: file.id,
+        fileName: file.name,
+        stage: "reformat",
+      });
+    }
+
+    const durationMs = Math.round(performance.now() - jobStartedAt);
+
+    updateFileStageStatus(
+      jobId,
+      file.id,
+      "reformat",
+      {},
+      "success"
+    );
+
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `File processing completed successfully in ${durationMs}ms`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "pipeline",
+    });
+
+    return {
+      fileId: file.id,
+      fileName: file.name,
+      outputName,
+      durationMs,
+    };
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+
+    logger.error("File processing failed", {
+      error,
+      fileId: file.id,
+      fileName: file.name,
+      stage: currentStage,
+    });
+
+    updateFileStageStatus(
+      jobId,
+      file.id,
+      currentStage,
+      {
+        status: "error",
+        error: errorMsg,
+        completedAt: new Date().toISOString(),
+      },
+      "error"
+    );
+
+    addJobLog(jobId, {
+      level: "ERROR",
+      message: `Stage ${currentStage.toUpperCase()} failed: ${errorMsg}`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: currentStage,
+      error: errorMsg,
+    });
+
+    throw error;
+  } finally {
+    if (pdfPath) {
+      await fs.unlink(pdfPath).catch((cleanupError) => {
+        logger.warn("Failed to remove temp file", {
+          error: cleanupError,
+          fileId: file.id,
+          pdfPath,
+        });
+      });
+    }
+  }
 }
 
-/**
- * Sanitizes a Drive file name so it is safe to use as an output file
- * name (removes path separators and other filesystem-unsafe characters).
- */
 function sanitizeFileName(name: string): string {
-    return name
-        .replace(/\.[^/.]+$/, "")      // strip existing extension, e.g. ".pdf"
-        .replace(/[\\/:*?"<>|]+/g, "_") // strip path/filesystem-unsafe chars
-        .trim();
+  return name
+    .replace(/\.[^/.]+$/, "")
+    .replace(/[\\/:*?"<>|]+/g, "_")
+    .trim();
 }
 
-export function splitByLines(
-    text: string,
-    maxLines: number = 600
-): string[] {
+export function splitByLines(text: string, maxLines: number = 600): string[] {
+  const lines = text.split(/\r?\n/);
+  const chunks: string[] = [];
 
-    const lines = text.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i += maxLines) {
+    chunks.push(lines.slice(i, i + maxLines).join("\n"));
+  }
 
-    const chunks: string[] = [];
-
-    for (let i = 0; i < lines.length; i += maxLines) {
-
-        chunks.push(
-            lines
-                .slice(i, i + maxLines)
-                .join("\n")
-        );
-
-    }
-
-    return chunks;
+  return chunks;
 }

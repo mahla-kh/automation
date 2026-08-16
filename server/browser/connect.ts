@@ -94,3 +94,29 @@ export async function getAnswer(page: Page): Promise<string> {
     logger.info("Answer retrieved", { length: prevText.length });
     return prevText;
 }
+
+// import { promises as fs } from "fs";
+// import path from "path";
+
+export async function exportAnswers(
+    page: Page,
+): Promise<string> {
+
+    const SELECTOR = "labs-tailwind-doc-viewer";
+
+    await page.waitForSelector(SELECTOR);
+
+    const texts = await page.locator(SELECTOR).allInnerTexts();
+
+    const cleaned = texts
+        .map(t => t.trim())
+        .filter(Boolean)
+        .join("\n\n----------------------------------------\n\n");
+
+    // await fs.mkdir(path.dirname(outputPath), { recursive: true });
+
+    // await fs.writeFile(outputPath, cleaned, "utf8");
+
+    console.log(`Saved ${texts.length} items to `);
+    return cleaned;
+}

@@ -1,6 +1,7 @@
 import { logger } from "@/server/lib/logger";
 import { CLEAN_JSONPARSER } from "@/server/prompts/clean_JSON.prompt";
 import { CLEANUP_PROMPT } from "@/server/prompts/cleanup.prompt";
+import { CLEAN_JSONPARSER_FOR_JOSVE } from "@/server/prompts/JOSVE_clean.prompt";
 // import { JSONparser_PROMPT } from "@/server/prompts/JSONparser.prompt";
 import { VALIDATOR_PROMPT } from "@/server/prompts/validator.prompt";
 import { retry } from "@/server/retry";
@@ -107,6 +108,23 @@ export async function clean_ParseQuestions(
     return chat(
 
         CLEAN_JSONPARSER,
+
+        cleanedText
+
+    );
+
+}
+export async function clean_ParseJOSVE(
+
+    cleanedText: string
+
+): Promise<string> {
+
+    logger.info("Question parsing started");
+
+    return chat(
+
+        CLEAN_JSONPARSER_FOR_JOSVE,
 
         cleanedText
 
