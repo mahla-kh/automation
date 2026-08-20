@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { PROMPT_PRESETS, PromptPreset } from "@/server/prompts/notebookPrompts";
 
 export interface NoteBookJob {
@@ -70,10 +70,6 @@ export default function NotebookDashboard() {
 
   const [selectedPresetId, setSelectedPresetId] = useState<string>("");
   const [customPromptText, setCustomPromptText] = useState<string>("");
-  const [isPromptExpanded, setIsPromptExpanded] = useState<boolean>(false);
-  const [copiedPromptText, setCopiedPromptText] = useState<boolean>(false);
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Select first available preset when mode changes
   useEffect(() => {
@@ -91,41 +87,6 @@ export default function NotebookDashboard() {
     setSelectedPresetId(preset.id);
     setCustomPromptText(preset.template);
   };
-
-  // Helper to insert template variables into textarea at cursor position
-  const handleInsertVariable = (varName: string) => {
-    const textarea = textareaRef.current;
-    if (!textarea) {
-      setCustomPromptText((prev) => prev + varName);
-      return;
-    }
-
-    const startPos = textarea.selectionStart;
-    const endPos = textarea.selectionEnd;
-    const newText =
-      customPromptText.substring(0, startPos) + varName + customPromptText.substring(endPos);
-
-    setCustomPromptText(newText);
-
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(startPos + varName.length, startPos + varName.length);
-    }, 0);
-  };
-
-  const handleCopyPromptText = () => {
-    navigator.clipboard.writeText(customPromptText);
-    setCopiedPromptText(true);
-    setTimeout(() => setCopiedPromptText(false), 2000);
-  };
-
-  // Stats for custom prompt text
-  const promptStats = useMemo(() => {
-    const chars = customPromptText.length;
-    const words = customPromptText.trim() ? customPromptText.trim().split(/\s+/).length : 0;
-    const lines = customPromptText ? customPromptText.split("\n").length : 0;
-    return { chars, words, lines };
-  }, [customPromptText]);
 
   // Form Inputs
   const [noteBookUrl, setNoteBookUrl] = useState<string>("");
@@ -331,11 +292,10 @@ export default function NotebookDashboard() {
           <button
             type="button"
             onClick={toggleTheme}
-            className={`px-3 py-2 rounded-lg border font-semibold text-xs transition-all flex items-center gap-2 shadow-sm ${
-              isDark
-                ? "bg-slate-900 border-slate-800 text-amber-300 hover:bg-slate-800 hover:text-amber-200"
-                : "bg-white border-slate-300 text-slate-800 hover:bg-slate-100 shadow-slate-200"
-            }`}
+            className={`px-3 py-2 rounded-lg border font-semibold text-xs transition-all flex items-center gap-2 shadow-sm ${isDark
+              ? "bg-slate-900 border-slate-800 text-amber-300 hover:bg-slate-800 hover:text-amber-200"
+              : "bg-white border-slate-300 text-slate-800 hover:bg-slate-100 shadow-slate-200"
+              }`}
             title="Toggle Light/Dark Theme"
           >
             <span>{isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}</span>
@@ -386,11 +346,10 @@ export default function NotebookDashboard() {
                 <button
                   type="button"
                   onClick={() => setMode("question")}
-                  className={`py-3 px-4 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
-                    mode === "question"
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                      : `${styles.textMuted} hover:${styles.textTitle}`
-                  }`}
+                  className={`py-3 px-4 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${mode === "question"
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    : `${styles.textMuted} hover:${styles.textTitle}`
+                    }`}
                 >
                   <span>❓ Question Mode</span>
                   <span className={`text-xs px-2 py-0.5 rounded ${isDark ? "bg-slate-900/50 text-indigo-200" : "bg-white/70 text-indigo-700 font-bold"}`}>
@@ -400,11 +359,10 @@ export default function NotebookDashboard() {
                 <button
                   type="button"
                   onClick={() => setMode("jozve")}
-                  className={`py-3 px-4 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
-                    mode === "jozve"
-                      ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
-                      : `${styles.textMuted} hover:${styles.textTitle}`
-                  }`}
+                  className={`py-3 px-4 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 ${mode === "jozve"
+                    ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
+                    : `${styles.textMuted} hover:${styles.textTitle}`
+                    }`}
                 >
                   <span>📚 Jozve Mode</span>
                   <span className={`text-xs px-2 py-0.5 rounded ${isDark ? "bg-slate-900/50 text-purple-200" : "bg-white/70 text-purple-700 font-bold"}`}>
@@ -442,35 +400,32 @@ export default function NotebookDashboard() {
                       <div
                         key={preset.id}
                         onClick={() => handlePresetSelect(preset)}
-                        className={`cursor-pointer p-4 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                          isSelected
-                            ? isDark
-                              ? "bg-indigo-950/40 border-indigo-500 ring-1 ring-indigo-500"
-                              : "bg-indigo-50/80 border-indigo-500 ring-1 ring-indigo-500"
-                            : isDark
+                        className={`cursor-pointer p-4 rounded-xl border text-left transition-all flex flex-col justify-between ${isSelected
+                          ? isDark
+                            ? "bg-indigo-950/40 border-indigo-500 ring-1 ring-indigo-500"
+                            : "bg-indigo-50/80 border-indigo-500 ring-1 ring-indigo-500"
+                          : isDark
                             ? "bg-slate-950 border-slate-800 hover:border-slate-700"
                             : "bg-slate-50 border-slate-200 hover:border-slate-300"
-                        }`}
+                          }`}
                       >
                         <div>
                           <div className="flex items-center justify-between mb-1">
                             <span
-                              className={`text-xs font-bold px-2 py-0.5 rounded ${
-                                isSelected
-                                  ? "bg-indigo-600 text-white"
-                                  : isDark
+                              className={`text-xs font-bold px-2 py-0.5 rounded ${isSelected
+                                ? "bg-indigo-600 text-white"
+                                : isDark
                                   ? "bg-slate-800 text-slate-400"
                                   : "bg-slate-200 text-slate-700"
-                              }`}
+                                }`}
                             >
                               {preset.type.toUpperCase()}
                             </span>
                             <span
-                              className={`h-4 w-4 rounded-full border flex items-center justify-center ${
-                                isSelected
-                                  ? "border-indigo-500 bg-indigo-500"
-                                  : "border-slate-400"
-                              }`}
+                              className={`h-4 w-4 rounded-full border flex items-center justify-center ${isSelected
+                                ? "border-indigo-500 bg-indigo-500"
+                                : "border-slate-400"
+                                }`}
                             >
                               {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-white"></span>}
                             </span>
@@ -483,95 +438,30 @@ export default function NotebookDashboard() {
                   })}
                 </div>
 
-                {/* Extended & Enhanced Prompt Editor */}
+                {/* Editable Prompt Textarea */}
                 {selectedPresetId && (
-                  <div className={`mt-4 p-4 border rounded-xl space-y-3 transition-all ${styles.bgSubCard}`}>
-                    {/* Top Bar: Title & Primary Actions */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3 border-slate-800/40">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-indigo-500">✏️ Custom Prompt Editor</span>
-                        <span className={`text-[11px] px-2 py-0.5 rounded font-mono ${styles.badgeDefault}`}>
-                          {promptStats.lines} lines · {promptStats.words} words · {promptStats.chars} chars
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {/* Copy Prompt Text Button */}
-                        <button
-                          type="button"
-                          onClick={handleCopyPromptText}
-                          className={`text-xs px-2.5 py-1 rounded font-medium border transition ${
-                            isDark
-                              ? "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800"
-                              : "bg-white border-slate-300 text-slate-700 hover:bg-slate-100"
-                          }`}
-                          title="Copy prompt text to clipboard"
-                        >
-                          {copiedPromptText ? "✓ Copied" : "📋 Copy"}
-                        </button>
-
-                        {/* Reset Button */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const p = PROMPT_PRESETS.find((x) => x.id === selectedPresetId);
-                            if (p) setCustomPromptText(p.template);
-                          }}
-                          className="text-xs text-indigo-500 hover:text-indigo-400 font-semibold underline underline-offset-2"
-                        >
-                          🔄 Reset Template
-                        </button>
-
-                        {/* Expand / Collapse Toggle Button */}
-                        <button
-                          type="button"
-                          onClick={() => setIsPromptExpanded(!isPromptExpanded)}
-                          className={`text-xs px-2.5 py-1 rounded font-bold transition border ${
-                            isPromptExpanded
-                              ? "bg-indigo-600 text-white border-indigo-500"
-                              : isDark
-                              ? "bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
-                              : "bg-slate-200 border-slate-300 text-slate-800 hover:bg-slate-300"
-                          }`}
-                        >
-                          {isPromptExpanded ? "↕ Collapse Height" : "↔ Expand Height"}
-                        </button>
-                      </div>
+                  <div className="mt-3">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className={`text-xs font-semibold ${styles.textMuted}`}>
+                        Customize Prompt Text for this Run
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const p = PROMPT_PRESETS.find((x) => x.id === selectedPresetId);
+                          if (p) setCustomPromptText(p.template);
+                        }}
+                        className="text-xs text-indigo-500 hover:underline"
+                      >
+                        Reset to Original Template
+                      </button>
                     </div>
-
-                    {/* Variable Injection Chips Help Bar */}
-                    <div className="flex flex-wrap items-center gap-1.5 text-xs pt-1">
-                      <span className={`font-semibold text-[11px] ${styles.textMuted}`}>Insert Variables:</span>
-                      {(mode === "question" ? ["{start}", "{end}", "{index}", "{batch}"] : ["{topic}", "{index}"]).map(
-                        (varChip) => (
-                          <button
-                            key={varChip}
-                            type="button"
-                            onClick={() => handleInsertVariable(varChip)}
-                            className={`px-2 py-0.5 rounded font-mono text-[11px] border transition ${
-                              isDark
-                                ? "bg-indigo-950/60 border-indigo-800/80 text-indigo-300 hover:bg-indigo-900"
-                                : "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
-                            }`}
-                            title={`Click to insert ${varChip} into prompt at cursor`}
-                          >
-                            + {varChip}
-                          </button>
-                        )
-                      )}
-                    </div>
-
-                    {/* Monospace Code Editor Textarea */}
-                    <div className="relative">
-                      <textarea
-                        ref={textareaRef}
-                        value={customPromptText}
-                        onChange={(e) => setCustomPromptText(e.target.value)}
-                        rows={isPromptExpanded ? 16 : 8}
-                        className={`w-full rounded-xl p-4 text-xs font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ${styles.bgInput}`}
-                        placeholder="Type or customize your prompt text template here..."
-                      />
-                    </div>
+                    <textarea
+                      value={customPromptText}
+                      onChange={(e) => setCustomPromptText(e.target.value)}
+                      rows={5}
+                      className={`w-full rounded-xl p-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-indigo-500 ${styles.bgInput}`}
+                    />
                   </div>
                 )}
               </div>
@@ -660,11 +550,10 @@ export default function NotebookDashboard() {
                       topics.map((topic, idx) => (
                         <span
                           key={idx}
-                          className={`inline-flex items-center gap-1.5 border text-xs px-3 py-1.5 rounded-md ${
-                            isDark
-                              ? "bg-purple-950/80 border-purple-800/50 text-purple-200"
-                              : "bg-purple-50 border-purple-200 text-purple-800 font-medium"
-                          }`}
+                          className={`inline-flex items-center gap-1.5 border text-xs px-3 py-1.5 rounded-md ${isDark
+                            ? "bg-purple-950/80 border-purple-800/50 text-purple-200"
+                            : "bg-purple-50 border-purple-200 text-purple-800 font-medium"
+                            }`}
                         >
                           <span>{topic}</span>
                           <button
@@ -699,13 +588,12 @@ export default function NotebookDashboard() {
               <button
                 type="submit"
                 disabled={isSubmitting || !selectedPresetId}
-                className={`w-full py-3.5 px-6 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${
-                  isSubmitting || !selectedPresetId
-                    ? "bg-slate-400 text-slate-700 cursor-not-allowed"
-                    : mode === "question"
+                className={`w-full py-3.5 px-6 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${isSubmitting || !selectedPresetId
+                  ? "bg-slate-400 text-slate-700 cursor-not-allowed"
+                  : mode === "question"
                     ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30"
                     : "bg-purple-600 hover:bg-purple-500 text-white shadow-purple-600/30"
-                }`}
+                  }`}
               >
                 {isSubmitting ? (
                   <>
@@ -747,11 +635,10 @@ export default function NotebookDashboard() {
                 <button
                   type="button"
                   onClick={() => handleCopyResponse(selectedJob.responseContent || "")}
-                  className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${
-                    isDark
-                      ? "bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200"
-                      : "bg-slate-100 border-slate-300 hover:bg-slate-200 text-slate-800"
-                  }`}
+                  className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${isDark
+                    ? "bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200"
+                    : "bg-slate-100 border-slate-300 hover:bg-slate-200 text-slate-800"
+                    }`}
                 >
                   {copiedResponse ? "✓ Copied" : "📋 Copy Response Text"}
                 </button>
@@ -765,15 +652,14 @@ export default function NotebookDashboard() {
                   <div className="flex items-center justify-between text-xs">
                     <span className={`font-bold ${styles.textTitle}`}>{selectedJob.promptTitle}</span>
                     <span
-                      className={`px-2 py-0.5 rounded font-bold uppercase text-[10px] ${
-                        selectedJob.status === "completed"
-                          ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
-                          : selectedJob.status === "processing"
+                      className={`px-2 py-0.5 rounded font-bold uppercase text-[10px] ${selectedJob.status === "completed"
+                        ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                        : selectedJob.status === "processing"
                           ? "bg-amber-950 text-amber-300 border border-amber-800 animate-pulse"
                           : selectedJob.status === "failed"
-                          ? "bg-rose-950 text-rose-300 border border-rose-800"
-                          : "bg-slate-800 text-slate-300"
-                      }`}
+                            ? "bg-rose-950 text-rose-300 border border-rose-800"
+                            : "bg-slate-800 text-slate-300"
+                        }`}
                     >
                       {selectedJob.status}
                     </span>
@@ -931,15 +817,14 @@ export default function NotebookDashboard() {
                     <tr
                       key={job.id}
                       onClick={() => setSelectedJob(job)}
-                      className={`cursor-pointer transition-colors ${
-                        isSelected
-                          ? isDark
-                            ? "bg-indigo-950/40"
-                            : "bg-indigo-50/80"
-                          : isDark
+                      className={`cursor-pointer transition-colors ${isSelected
+                        ? isDark
+                          ? "bg-indigo-950/40"
+                          : "bg-indigo-50/80"
+                        : isDark
                           ? "hover:bg-slate-800/40"
                           : "hover:bg-slate-100/80"
-                      }`}
+                        }`}
                     >
                       <td className={`p-3 font-bold ${styles.textTitle}`}>
                         <div>{job.promptTitle}</div>
@@ -947,11 +832,10 @@ export default function NotebookDashboard() {
                       </td>
                       <td className="p-3">
                         <span
-                          className={`px-2 py-0.5 rounded font-bold text-[10px] ${
-                            job.promptType === "question"
-                              ? "bg-indigo-950 text-indigo-300 border border-indigo-800"
-                              : "bg-purple-950 text-purple-300 border border-purple-800"
-                          }`}
+                          className={`px-2 py-0.5 rounded font-bold text-[10px] ${job.promptType === "question"
+                            ? "bg-indigo-950 text-indigo-300 border border-indigo-800"
+                            : "bg-purple-950 text-purple-300 border border-purple-800"
+                            }`}
                         >
                           {job.promptType}
                         </span>
@@ -961,15 +845,14 @@ export default function NotebookDashboard() {
                       </td>
                       <td className="p-3">
                         <span
-                          className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase ${
-                            job.status === "completed"
-                              ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
-                              : job.status === "processing"
+                          className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase ${job.status === "completed"
+                            ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                            : job.status === "processing"
                               ? "bg-amber-950 text-amber-300 border border-amber-800"
                               : job.status === "failed"
-                              ? "bg-rose-950 text-rose-300 border border-rose-800"
-                              : "bg-slate-800 text-slate-300"
-                          }`}
+                                ? "bg-rose-950 text-rose-300 border border-rose-800"
+                                : "bg-slate-800 text-slate-300"
+                            }`}
                         >
                           {job.status}
                         </span>
@@ -985,11 +868,10 @@ export default function NotebookDashboard() {
                               e.stopPropagation();
                               setSelectedJob(job);
                             }}
-                            className={`px-2.5 py-1 rounded font-medium transition border ${
-                              isDark
-                                ? "bg-slate-800 hover:bg-slate-700 text-white border-slate-700"
-                                : "bg-slate-100 hover:bg-slate-200 text-slate-900 border-slate-300"
-                            }`}
+                            className={`px-2.5 py-1 rounded font-medium transition border ${isDark
+                              ? "bg-slate-800 hover:bg-slate-700 text-white border-slate-700"
+                              : "bg-slate-100 hover:bg-slate-200 text-slate-900 border-slate-300"
+                              }`}
                           >
                             View Details
                           </button>
