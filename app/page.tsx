@@ -140,7 +140,7 @@ export default function PipelineDashboard() {
     } catch {
       // silent background fetch catch
     }
-  }, [currentJobId]);
+  }, []);
 
   // Fetch job details
   const fetchJobStatus = useCallback(async (id: string, showLoading = false) => {
