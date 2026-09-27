@@ -107,6 +107,9 @@ export default function NotebookDashboard() {
   const [jobs, setJobs] = useState<NoteBookJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<NoteBookJob | null>(null);
   const [copiedResponse, setCopiedResponse] = useState<boolean>(false);
+  // Map of jobId -> merge state
+  const [mergeStatus, setMergeStatus] = useState<Record<string, "idle" | "merging" | "done" | "error">>({});
+  const [mergedContent, setMergedContent] = useState<Record<string, string>>({});
 
   // Filters
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -248,6 +251,42 @@ export default function NotebookDashboard() {
     navigator.clipboard.writeText(text);
     setCopiedResponse(true);
     setTimeout(() => setCopiedResponse(false), 2000);
+  };
+
+  // Merge responses for a completed job
+  const handleMerge = async (jobId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setMergeStatus((prev) => ({ ...prev, [jobId]: "merging" }));
+    try {
+      const res = await fetch("/api/notebook/merge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Merge failed");
+      }
+      setMergedContent((prev) => ({ ...prev, [jobId]: data.merged }));
+      setMergeStatus((prev) => ({ ...prev, [jobId]: "done" }));
+    } catch (err) {
+      console.error("Merge failed:", err);
+      setMergeStatus((prev) => ({ ...prev, [jobId]: "error" }));
+    }
+  };
+
+  // Download merged text as a file
+  const handleDownloadMerged = (jobId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const content = mergedContent[jobId];
+    if (!content) return;
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `merged-${jobId.slice(0, 8)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   // Filtered jobs list
@@ -861,7 +900,7 @@ export default function NotebookDashboard() {
                         {new Date(job.createdAt).toLocaleString()}
                       </td>
                       <td className="p-3 text-center">
-                        <div className="flex justify-center gap-2">
+                        <div className="flex justify-center gap-2 flex-wrap">
                           <button
                             type="button"
                             onClick={(e) => {
@@ -884,8 +923,28 @@ export default function NotebookDashboard() {
                               Retry
                             </button>
                           )}
+                          {job.status === "completed" && mergeStatus[job.id] !== "done" && (
+                            <button
+                              type="button"
+                              onClick={(e) => handleMerge(job.id, e)}
+                              disabled={mergeStatus[job.id] === "merging"}
+                              className="px-2.5 py-1 bg-indigo-800/80 hover:bg-indigo-700 text-white rounded font-medium transition disabled:opacity-50"
+                            >
+                              {mergeStatus[job.id] === "merging" ? "Merging..." : mergeStatus[job.id] === "error" ? "⚠ Retry Merge" : "📄 Merge Responses"}
+                            </button>
+                          )}
+                          {job.status === "completed" && mergeStatus[job.id] === "done" && (
+                            <button
+                              type="button"
+                              onClick={(e) => handleDownloadMerged(job.id, e)}
+                              className="px-2.5 py-1 bg-emerald-800/80 hover:bg-emerald-700 text-white rounded font-medium transition"
+                            >
+                              ⬇ Download Merged
+                            </button>
+                          )}
                         </div>
                       </td>
+
                     </tr>
                   );
                 })

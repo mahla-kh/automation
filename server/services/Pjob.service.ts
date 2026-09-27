@@ -39,6 +39,7 @@ export interface PipelineJob {
   id: string;
   status: "queued" | "processing" | "completed" | "failed";
   reformatEnabled: boolean;
+  folderId: string;
   createdAt: string;
   files: DriveFile[];
   fileStatuses: Record<string, FileProcessingStatus>;
@@ -60,7 +61,7 @@ export interface PipelineSummary {
 
 const jobs = new Map<string, PipelineJob>();
 
-export function createJob(files: DriveFile[], reformatEnabled: boolean = false): PipelineJob {
+export function createJob(files: DriveFile[], reformatEnabled: boolean = false, folderId: string = ""): PipelineJob {
   const fileStatuses: Record<string, FileProcessingStatus> = {};
 
   files.forEach((file) => {
@@ -79,6 +80,7 @@ export function createJob(files: DriveFile[], reformatEnabled: boolean = false):
     id: crypto.randomUUID(),
     status: "queued",
     reformatEnabled,
+    folderId,
     createdAt: new Date().toISOString(),
     files,
     fileStatuses,

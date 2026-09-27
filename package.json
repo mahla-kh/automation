@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-     "login": "tsx server/notebook/connect.ts"
+    "auth:login": "tsx server/auth/login.ts",
+    "login": "tsx server/auth/login.ts"
   },
   "dependencies": {
     "@mistralai/mistralai": "^2.5.0",

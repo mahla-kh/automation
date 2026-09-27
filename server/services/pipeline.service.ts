@@ -41,7 +41,7 @@ export const pipelineService = {
       logger.warn("No files found in Drive folder", { folderId });
     }
 
-    const job = createJob(files as DriveFile[], enableReformat);
+    const job = createJob(files as DriveFile[], enableReformat, folderId);
 
     logger.info("Job created", {
       jobId: job.id,
@@ -51,7 +51,7 @@ export const pipelineService = {
 
     updateJobStatus(job.id, "processing");
 
-    void runJob(job, enableReformat).catch((error) => {
+    void runJob(job).catch((error) => {
       logger.error("Unhandled error while running job", {
         error,
         jobId: job.id,
@@ -100,12 +100,12 @@ export const pipelineService = {
 /**
  * Processes all files belonging to a job with bounded concurrency.
  */
-async function runJob(job: PipelineJob, enableReformat: boolean): Promise<void> {
+async function runJob(job: PipelineJob): Promise<void> {
   const startedAt = performance.now();
   const limit = pLimit(CONCURRENCY_LIMIT);
 
   const results = await Promise.allSettled(
-    job.files.map((file) => limit(() => processPipeline(file, job.id, enableReformat)))
+    job.files.map((file) => limit(() => processPipeline(file, job.folderId, job.id, job.reformatEnabled)))
   );
 
   const failures = results.filter(

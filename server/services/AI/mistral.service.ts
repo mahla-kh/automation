@@ -33,7 +33,7 @@ logger.info("Upload completed", {
     uri: signedUrl.url
 });
 const response = await retry(()=>client.ocr.process({
-  model: "mistral-ocr-latest",
+  model: "mistral-ocr-4-1",
   document:{
 type:"document_url",
 documentUrl:signedUrl.url}}))

@@ -1,38 +1,24 @@
-import { chromium, Browser, Page } from "playwright";
+import { Page } from "playwright";
 import { logger } from "../lib/logger";
 import { expect } from "playwright/test";
-
-// Chrome must already be running with remote debugging enabled and logged
-// into the Google account that owns the notebook, e.g.:
-//   chrome --remote-debugging-port=9222 --user-data-dir=/path/to/profile
-const CDP_ENDPOINT = process.env.CHROME_CDP_ENDPOINT ?? "http://localhost:9222";
-
-let browserPromise: Promise<Browser> | null = null;
+import { browserManager } from "./browserManager";
 
 /**
- * Connects (once) to an already-running Chrome instance over CDP and reuses
- * that connection across jobs, so we don't repeatedly trigger Google auth
- * challenges by spinning up fresh, unauthenticated browser instances.
+ * Retrieves a new Page from the managed persistent browser context.
+ * Note: Callers should prefer using `browserManager.withPage(fn)` for automatic
+ * concurrency control and guaranteed page cleanup.
  */
-async function getBrowser(): Promise<Browser> {
-    if (!browserPromise) {
-        browserPromise = chromium.connectOverCDP(CDP_ENDPOINT);
-    }
-    return browserPromise;
+export async function connectChrome(): Promise<Page> {
+    return browserManager.newPage();
 }
 
-export async function connectChrome(): Promise<Page> {
-    const browser = await getBrowser();
-    const context = browser.contexts()[0] ?? (await browser.newContext());
-    return context.newPage();
-}
 
 // NOTE: NotebookLM's DOM is not versioned/public — these selectors are best
 // guesses and WILL need to be confirmed/updated against the live page
 // (inspect notebooklm.google.com and adjust before relying on this in prod).
 const CHAT_INPUT_SELECTOR = "textarea[aria-label='Query box']";
-// const SEND_BUTTON_SELECTOR = "button[aria-label='Submit']";
-const SEND_BUTTON_SELECTOR = "button[type='Submit']";
+const SEND_BUTTON_SELECTOR = "button[aria-label='Submit']:not([disabled])";
+// const SEND_BUTTON_SELECTOR = "button[type='Submit']";
 // const LAST_RESPONSE_SELECTOR = "labs-tailwind-doc-viewer:last-of-type";
 
 export async function sendPromptToPage(page: Page, prompt: string): Promise<void> {

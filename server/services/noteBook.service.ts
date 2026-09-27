@@ -13,7 +13,7 @@ import {
 } from "./Njob.service";
 import { logger } from "../lib/logger";
 import { processNoteBook } from "../workers/noteBook.worker";
-import { connectChrome } from "../browser/connect";
+import { browserManager } from "../browser/browserManager";
 import { expect } from "playwright/test";
 import { getPromptByTitle } from "../prompts/notebookPrompts";
 
@@ -135,97 +135,82 @@ async function runJob(job: noteBookJob): Promise<void> {
     const startedAt = performance.now();
     const limit = pLimit(CONCURRENCY_LIMIT);
 
-    let page;
     try {
-        page = await connectChrome();
-        await page.goto(job.noteBookUrl, { timeout: 180000 });
+        await browserManager.withPage(async (page) => {
+            await page.goto(job.noteBookUrl, { timeout: 180000 });
 
-        const input = page.locator("textarea[aria-label='Query box']");
-        await expect(input).toBeVisible();
-        await expect(input).toBeEditable();
-        logger.info("Notebook is ready for job", { jobId: job.id });
-    } catch (err) {
-        logger.error("Failed to connect Chrome or navigate to notebook", { error: err, jobId: job.id });
-        setJobError(job.id, err instanceof Error ? err.message : "Failed to open NotebookLM");
-        if (page) {
-            await page.close().catch(() => {});
-        }
-        return;
-    }
+            const input = page.locator("textarea[aria-label='Query box']");
+            await expect(input).toBeVisible();
+            await expect(input).toBeEditable();
+            logger.info("Notebook is ready for job", { jobId: job.id });
 
-    try {
-        if (job.promptType === "jozve" && job.topics && job.topics.length > 0) {
-            const results = await Promise.allSettled(
-                job.topics.map((topic, index) =>
-                    limit(async () => {
-                        const result = await processNoteBook(
-                            page,
-                            job.id,
-                            1,
-                            1,
-                            index,
-                            1,
-                            job.promptText,
-                            topic
-                        );
-                        incrementCompletedBatches(job.id);
-                        appendJobResponse(job.id, result.answer);
-                        return result;
-                    })
-                )
-            );
+            if (job.promptType === "jozve" && job.topics && job.topics.length > 0) {
+                const results = await Promise.allSettled(
+                    job.topics.map((topic, index) =>
+                        limit(async () => {
+                            const result = await processNoteBook(
+                                page,
+                                job.id,
+                                1,
+                                1,
+                                index,
+                                1,
+                                job.promptText,
+                                topic
+                            );
+                            incrementCompletedBatches(job.id);
+                            appendJobResponse(job.id, result.answer);
+                            return result;
+                        })
+                    )
+                );
 
-            const failures = results.filter(
-                (res): res is PromiseRejectedResult => res.status === "rejected"
-            );
+                const failures = results.filter(
+                    (res): res is PromiseRejectedResult => res.status === "rejected"
+                );
 
-            if (failures.length > 0) {
-                setJobError(job.id, `${failures.length} topic batches failed during execution.`);
-                return;
+                if (failures.length > 0) {
+                    setJobError(job.id, `${failures.length} topic batches failed during execution.`);
+                    return;
+                }
+            } else {
+                const ranges = buildRanges(job.qLength, job.batch);
+                logger.info("Job question ranges built", { jobId: job.id, totalBatches: ranges.length });
+
+                const results = await Promise.allSettled(
+                    ranges.map((range, index) =>
+                        limit(async () => {
+                            const result = await processNoteBook(
+                                page,
+                                job.id,
+                                range.start,
+                                range.end,
+                                index,
+                                job.batch,
+                                job.promptText
+                            );
+                            incrementCompletedBatches(job.id);
+                            appendJobResponse(job.id, result.answer);
+                            return result;
+                        })
+                    )
+                );
+
+                const failures = results.filter(
+                    (res): res is PromiseRejectedResult => res.status === "rejected"
+                );
+
+                if (failures.length > 0) {
+                    setJobError(job.id, `${failures.length} question batches failed during execution.`);
+                    return;
+                }
             }
-        } else {
-            const ranges = buildRanges(job.qLength, job.batch);
-            logger.info("Job question ranges built", { jobId: job.id, totalBatches: ranges.length });
 
-            const results = await Promise.allSettled(
-                ranges.map((range, index) =>
-                    limit(async () => {
-                        const result = await processNoteBook(
-                            page,
-                            job.id,
-                            range.start,
-                            range.end,
-                            index,
-                            job.batch,
-                            job.promptText
-                        );
-                        incrementCompletedBatches(job.id);
-                        appendJobResponse(job.id, result.answer);
-                        return result;
-                    })
-                )
-            );
-
-            const failures = results.filter(
-                (res): res is PromiseRejectedResult => res.status === "rejected"
-            );
-
-            if (failures.length > 0) {
-                setJobError(job.id, `${failures.length} question batches failed during execution.`);
-                return;
-            }
-        }
-
-        updateJobStatus(job.id, "completed");
-        logger.info("Job completed successfully", { jobId: job.id, duration: performance.now() - startedAt });
+            updateJobStatus(job.id, "completed");
+            logger.info("Job completed successfully", { jobId: job.id, duration: performance.now() - startedAt });
+        });
     } catch (err) {
         logger.error("Job execution failed", { error: err, jobId: job.id });
         setJobError(job.id, err instanceof Error ? err.message : String(err));
-    } finally {
-        if (page) {
-            await page.close().catch((closeErr: Error) => {
-                logger.warn("Failed to close page", { error: closeErr, jobId: job.id });
-            });
-        }
     }
 }

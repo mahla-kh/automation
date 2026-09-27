@@ -1,7 +1,6 @@
 import { DriveFile } from "@/types/drive";
 import fs from "fs/promises";
-import { downloadFile } from "../services/drive.service";
-import { saveJson, saveText } from "../services/storage.service";
+import { downloadFile, uploadTextToDrive, uploadJsonToDrive } from "../services/drive.service";
 import { logger } from "../lib/logger";
 import { ocrService } from "../services/AI";
 import { clean_ParseQuestions } from "../services/AI/deepseek.service";
@@ -20,6 +19,7 @@ export interface FileProcessingResult {
  */
 export async function processPipeline(
   file: DriveFile,
+  folderId: string,
   jobId: string,
   enableReformat: boolean = false
 ): Promise<FileProcessingResult> {
@@ -131,7 +131,17 @@ export async function processPipeline(
     });
 
     const outputName = sanitizeFileName(file.name);
-    await saveText(outputName, "01_raw.md", rawOCR);
+    const rawFileName = `${outputName}_01_raw.txt`;
+
+    addJobLog(jobId, {
+      level: "INFO",
+      message: `Uploading raw OCR output to Google Drive...`,
+      fileId: file.id,
+      fileName: file.name,
+      stage: "upload",
+    });
+
+    await uploadTextToDrive(folderId, rawFileName, rawOCR);
 
     const saveDuration = Math.round(performance.now() - saveStartedAt);
 
@@ -143,7 +153,7 @@ export async function processPipeline(
 
     addJobLog(jobId, {
       level: "INFO",
-      message: `Saved raw OCR output file 01_raw.md in ${saveDuration}ms`,
+      message: `Raw OCR output uploaded successfully to Google Drive as "${rawFileName}" in ${saveDuration}ms`,
       fileId: file.id,
       fileName: file.name,
       stage: "upload",
@@ -176,7 +186,17 @@ export async function processPipeline(
         allQuestions += result;
       }
 
-      await saveJson(outputName, "03_questions.json", allQuestions);
+      const jsonFileName = `${outputName}_03_questions.json`;
+
+      addJobLog(jobId, {
+        level: "INFO",
+        message: `Uploading reformat output to Google Drive...`,
+        fileId: file.id,
+        fileName: file.name,
+        stage: "reformat",
+      });
+
+      await uploadJsonToDrive(folderId, jsonFileName, allQuestions);
 
       const reformatDuration = Math.round(performance.now() - reformatStartedAt);
 
@@ -188,7 +208,7 @@ export async function processPipeline(
 
       addJobLog(jobId, {
         level: "INFO",
-        message: `Reformat completed and saved to 03_questions.json in ${reformatDuration}ms`,
+        message: `Reformat output uploaded successfully to Google Drive as "${jsonFileName}" in ${reformatDuration}ms`,
         fileId: file.id,
         fileName: file.name,
         stage: "reformat",

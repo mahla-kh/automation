@@ -5,15 +5,11 @@ export interface PromptPreset {
   preview: string;
   template: string;
 }
-let start = 1;
-let end = 20;
-let index = 20;
-let batch = 20;
-let Topics = [] as string[]
+
 
 const PROMPT_TEMPLATE_START_END = `You are an expert medical [anatomy] examiner specializing.
 
-Your task is to analyze questions ${start} to ${end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source files.
+Your task is to analyze questions {start} to {end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source files.
 Important:
 
 Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
@@ -75,7 +71,7 @@ D) ...
 Correct / Incorrect
 
 Explanation:
-Repeat the same format for questions ${start}-${end} only.
+Repeat the same format for questions {start}-{end} only.
 Ensure all conclusions are fully aligned with the uploaded  [parasitology ]notes and preserve the original terminology whenever possible.
 
 Concept Summary
@@ -145,7 +141,7 @@ You MUST NOT introduce external knowledge beyond the provided notes.
 answer in persion `
 const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical [anatomy] examiner specializing.
 
-Your task is to analyze ${index + 1}th ${batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
+Your task is to analyze {index}th {batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
 Important:
 
 Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
@@ -207,7 +203,7 @@ D) ...
 Correct / Incorrect
 
 Explanation:
-Repeat the same format for ${index + 1}th questions only.
+Repeat the same format for {index}th questions only.
 Ensure all conclusions are fully aligned with the uploaded  [parasitology ]notes and preserve the original terminology whenever possible.
 
 Concept Summary
@@ -284,7 +280,7 @@ Your task is to transform the provided medical materials into HIGH-YIELD CONDENS
 3. Correct answers
 4. Detailed explanations
 
-EXAMIN ONLY the ${index + 1}th ${batch} pages
+EXAMIN ONLY the {index}th {batch} pages
 
 OBJECTIVE
 
@@ -395,7 +391,7 @@ Verify that:
 Output only the final condensed notes in persion .`
 const PROMPT_TEMPLATE_JOZVE_topicBased_long = `You are an expert medical education content synthesizer and exam preparation specialist.
 
-Your task is to transform the provided medical materials into HIGH-YIELD CONDENSED NOTES for topic ${Topics[index]} using ONLY:
+Your task is to transform the provided medical materials into HIGH-YIELD CONDENSED NOTES for topic {topic} using ONLY:
 
 1. Lecture notes (primary source)
 2. Previous exam questions
@@ -511,7 +507,7 @@ Verify that:
 Output only the final condensed notes in persion .`
 const PROMPT_TEMPLATE_JOZVE_topicBased_shabEmtehan = `You are an expert medical education content synthesizer and exam preparation specialist.
 
-Your task is to create a HIGH-YIELD NIGHT-BEFORE-EXAM SUMMARY for topic ${Topics[index]} using ONLY the following sources:
+Your task is to create a HIGH-YIELD NIGHT-BEFORE-EXAM SUMMARY for topic {topic} using ONLY the following sources:
 
 1. Lecture notes (primary source)
 2. Previous exam questions
@@ -715,6 +711,190 @@ Before finishing verify that:
 ✓ Likely future questions are inferred.
 
 Output only the final exam summary.`
+const PROMPT_TEMPLATE_JOZVE_SHAB_FULL = `You are an expert medical education and exam-preparation specialist.
+
+
+Create a SHORT, HIGH-YIELD, CLEAR night-before-exam summary for:
+
+
+{topic}
+
+
+Sources
+
+You will receive:
+
+
+
+Lecture notes — PRIMARY SOURCE
+
+Previous exam questions
+
+Correct answers
+
+Detailed explanations
+
+
+Use ONLY these materials. Never add external medical knowledge, invented facts, examples, cases, questions, traps, images, or predictions. Preserve source meaning and accuracy. If sources conflict, prefer the lecture notes for core content and use exam explanations only when clearly supported.
+
+
+Critical rules
+
+
+Never repeat a concept. Each fact has one primary location.
+
+Merge identical/repeated information from different sources and questions.
+
+Prefer one clear explanation over multiple fragmented ones.
+
+Prioritize: frequently tested → core concepts → important distinctions → repeated exam patterns → high-yield explanation details → important cases/examples/figures.
+
+Remove filler, obvious statements, generic textbook language, and low-yield details.
+
+Be concise but never vague; every sentence must add value.
+
+Analyze sources silently before writing.
+
+
+
+{topic}
+
+1. خلاصه مبحث
+
+Explain the core topic clearly and compactly. Include essential concepts, mechanisms, relationships, classifications, and distinctions. This section should provide the main understanding of the topic.
+
+
+2. نکات امتحانی
+
+2.1 نکات موجود در جزوه و پاسخ تشریحی
+
+Include important facts appearing in both the lecture and exam material.
+
+
+Format:
+
+
+[سؤال امتحان]
+Question
+
+
+→ نکته: concise key point
+
+
+Do not repeat concepts already explained. Merge questions testing the same concept.
+
+
+2.2 نکات موجود در پاسخ تشریحی ولی خارج از جزوه
+
+Include only important, exam-useful information found in explanations but absent from the lecture. Do not reproduce full explanations.
+
+
+3. 🚨 تله‌های امتحانی
+
+الگوهای تکرارشونده سوالات
+
+Only actual repeated patterns from the provided questions.
+
+
+تله‌های مشاهده‌شده
+
+Only actual misleading alternatives/mistakes in the questions.
+
+
+Never invent traps or predict future questions.
+
+
+4. ⚠️ قاطی نشه!
+
+Only genuinely confusing distinctions.
+
+
+A vs B
+
+
+
+A: ...
+
+B: ...
+
+
+Avoid repeating previously explained facts.
+
+
+5. نکات تکمیلی ضروری
+
+Only source-supported information necessary for understanding that has not already been explained. Omit this section if unnecessary.
+
+
+6. 🩺 سناریوهای بالینی
+
+Only clinical scenarios explicitly present in the sources. Keep them short and state the key concept. Do not invent or repeat them.
+
+
+7. مثال‌های استاد
+
+Only professor-provided examples.
+
+
+مثال استاد: ...
+→ مفهوم: ...
+
+
+8. 🖼️ تصاویر مهم
+
+Only important figures actually present in the sources. Give a short title and explain their importance in one sentence. Preserve provided image references.
+
+
+9. جدول‌های مقایسه‌ای
+
+Create a table only when it substantially improves understanding or prevents confusion. Keep it compact and avoid repeating content.
+
+
+10. 🔮 مطالب مهمی که مستقیماً سؤال نشده‌اند
+
+Only important lecture concepts connected to repeatedly tested areas. Do not predict questions.
+
+
+Do not label everything.
+
+
+Style
+
+Write in Persian with standard medical terminology and English terms in parentheses when useful.
+
+
+Use:
+
+
+
+short sentences
+
+bullets
+
+bold keywords
+
+compact tables
+
+clear headings
+
+
+Avoid excessive emojis, headings, long paragraphs, filler, and repetition.
+
+
+Final silent check
+
+Ensure:
+
+
+
+major lecture concepts and important exam content are covered;
+
+no concept is repeated;* the result is substantially shorter, highly reviewable, and still understandable.
+
+
+OUTPUT
+
+Output ONLY the final structured summary. No analysis, reasoning, methodology, source evaluation, or introductory text.`
 export const PROMPT_PRESETS: PromptPreset[] = [
   {
     id: "question-range",
@@ -736,6 +916,13 @@ export const PROMPT_PRESETS: PromptPreset[] = [
     type: "jozve",
     preview: "Lossless medical knowledge compression into structured study notes for topic.",
     template: PROMPT_TEMPLATE_JOZVEv2
+  },
+  {
+    id: "jozve-full",
+    title: "Jozve - Topic Based full",
+    type: "jozve",
+    preview: "In-depth lossless compression organized by topic headings and exam priorities.",
+    template: PROMPT_TEMPLATE_JOZVE_SHAB_FULL
   },
   {
     id: "jozve-detailed",

@@ -7,8 +7,9 @@ import { logger } from "../lib/logger";
 import { ocrService } from "../services/AI";
 import { clean_ParseQuestions} from "../services/AI/deepseek.service";
 import { createNoteBook } from "../services/noteBookLM/createNoteBook";
-import { connectChrome } from "../browser/connect";
+import { browserManager } from "../browser/browserManager";
 import { uploadToNotebook } from "../services/noteBookLM/uploadSource";
+
 
 export interface FileProcessingResult {
     fileId: string;
@@ -67,17 +68,16 @@ export async function processCRNPipeline(
 
         // --- Save output -------------------------------------------------
         const outputName = sanitizeFileName(file.name);
-        await saveText(outputName,"01_raw.md",rawOCR);
-        // const json = sanitizeAndValidateJson(rawResult, file);
+        await saveText(outputName, "01_raw.md", rawOCR);
 
-        const page = await connectChrome();
-        
-        await page.goto(NOTEBOOK_URL, {
-            // waitUntil: "networkidle",
-            timeout: 180000,
+        await browserManager.withPage(async (page) => {
+            await page.goto(NOTEBOOK_URL, {
+                timeout: 180000,
+            });
+            await createNoteBook(page);
+            await uploadToNotebook(page, outputName);
         });
-        await createNoteBook(page);
-        await uploadToNotebook(page, outputName);
+
         const saveStartedAt = performance.now();
         logger.info("OCR Output saved", {
             fileId: file.id,
