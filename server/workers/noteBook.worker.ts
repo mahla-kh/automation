@@ -217,7 +217,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 "عامل مخدوش‌کننده (Confounder) و تحلیل زیرگروهی"
 ] as string[]
 
-// const PROMPT_TEMPLATE_START_END = `You are an expert medical [anatomy] examiner specializing.
+// const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject  examiner specializing.
 
 // Your task is to analyze questions ${start} to ${end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
 // Important:
@@ -282,7 +282,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // Explanation:
 // Repeat the same format for questions ${start}-${end} only.
-// Ensure all conclusions are fully aligned with the uploaded  [parasitology ]notes and preserve the original terminology whenever possible.
+// Ensure all conclusions are fully aligned with the uploaded  {subject notes and preserve the original terminology whenever possible.
 
 // Concept Summary
 
@@ -349,7 +349,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // You MUST NOT introduce external knowledge beyond the provided notes.
 // answer in persion `
-// const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical [anatomy] examiner specializing.
+// const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical {subject  examiner specializing.
 
 // Your task is to analyze ${index+1}th ${batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
 // Important:
@@ -414,7 +414,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // Explanation:
 // Repeat the same format for ${index+1}th questions only.
-// Ensure all conclusions are fully aligned with the uploaded  [parasitology ]notes and preserve the original terminology whenever possible.
+// Ensure all conclusions are fully aligned with the uploaded  {subject notes and preserve the original terminology whenever possible.
 
 // Concept Summary
 
