@@ -1,4 +1,4 @@
-import { MistralOCR } from "./mistral.service";
+import { DeepSeekOCR, deepseekOCR } from "./deepseek.service";
 
 
 export interface OCRProvider{
@@ -11,4 +11,5 @@ export interface OCRProvider{
 
 }
 
-export const ocrService= new MistralOCR();
+export const ocrService: OCRProvider = new DeepSeekOCR();
+export { deepseekOCR };

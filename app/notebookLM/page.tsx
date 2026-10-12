@@ -3,9 +3,26 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { PROMPT_PRESETS, PromptPreset } from "@/server/prompts/notebookPrompts";
 
+export type PromptStatus = "pending" | "sending" | "completed" | "failed";
+
+export interface PromptRecord {
+  index: number;
+  start: number;
+  end: number;
+  subject?: string;
+  qnumber?: number;
+  batch?: number;
+  prompt: string;
+  status: PromptStatus;
+  responseFile?: string;
+  errorMessage?: string;
+}
+
 export interface NoteBookJob {
   id: string;
   noteBookUrl: string;
+  subject?: string;
+  folderName: string;
   promptTitle: string;
   promptText?: string;
   promptType: "question" | "jozve";
@@ -15,6 +32,7 @@ export interface NoteBookJob {
   topics?: string[];
   totalBatches: number;
   completedBatches: number;
+  prompts: PromptRecord[];
   responseContent?: string;
   errorMessage?: string;
   retryCount: number;
@@ -90,6 +108,8 @@ export default function NotebookDashboard() {
 
   // Form Inputs
   const [noteBookUrl, setNoteBookUrl] = useState<string>("");
+  const [subject, setSubject] = useState<string>("Anatomy");
+  const [folderName, setFolderName] = useState<string>("");
   const [questionsLength, setQuestionsLength] = useState<number>(100);
   const [batch, setBatch] = useState<number>(15);
 
@@ -110,6 +130,19 @@ export default function NotebookDashboard() {
   // Map of jobId -> merge state
   const [mergeStatus, setMergeStatus] = useState<Record<string, "idle" | "merging" | "done" | "error">>({});
   const [mergedContent, setMergedContent] = useState<Record<string, string>>({});
+  // Set of "jobId:promptIndex" currently being retried (to disable the button while in-flight)
+  const [retryingPrompts, setRetryingPrompts] = useState<Set<string>>(new Set());
+
+  // Standalone Answer Extraction State
+  const [extractUrl, setExtractUrl] = useState<string>("");
+  const [isExtracting, setIsExtracting] = useState<boolean>(false);
+  const [extractStatus, setExtractStatus] = useState<"idle" | "extracting" | "completed" | "failed">("idle");
+  const [extractError, setExtractError] = useState<string | null>(null);
+  const [extractedData, setExtractedData] = useState<{
+    count: number;
+    mergedText: string;
+    message?: string;
+  } | null>(null);
 
   // Filters
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -141,7 +174,10 @@ export default function NotebookDashboard() {
   }, [fetchJobs]);
 
   const hasActiveJob = jobs.some(
-    (job) => job.status === "queued" || job.status === "processing"
+    (job) =>
+      job.status === "queued" ||
+      job.status === "processing" ||
+      (job.prompts && job.prompts.some((p) => p.status === "sending"))
   );
 
   useEffect(() => {
@@ -175,6 +211,16 @@ export default function NotebookDashboard() {
       return;
     }
 
+    if (!subject.trim()) {
+      setSubmitError("Subject is required");
+      return;
+    }
+
+    if (!folderName.trim()) {
+      setSubmitError("Response folder name is required");
+      return;
+    }
+
     if (!selectedPreset) {
       setSubmitError("Prompt selection is required");
       return;
@@ -190,6 +236,8 @@ export default function NotebookDashboard() {
     try {
       const payload = {
         noteBookUrl: noteBookUrl.trim(),
+        subject: subject.trim(),
+        folderName: folderName.trim(),
         promptTitle: selectedPreset.title,
         promptText: customPromptText,
         promptType: mode,
@@ -226,7 +274,7 @@ export default function NotebookDashboard() {
     }
   };
 
-  // Retry Handler
+  // Retry Handler (whole job)
   const handleRetry = async (jobId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     try {
@@ -243,6 +291,35 @@ export default function NotebookDashboard() {
       }
     } catch (err) {
       console.error("Retry failed:", err);
+    }
+  };
+
+  // Retry a single prompt within a job
+  const handleRetryPrompt = async (jobId: string, promptIndex: number, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const key = `${jobId}:${promptIndex}`;
+    setRetryingPrompts((prev) => new Set(prev).add(key));
+    try {
+      const res = await fetch("/api/notebook/prompts/retry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, promptIndex }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        alert(data.error || "Prompt retry failed");
+      } else {
+        // Refresh immediately to show "sending" status, then rely on polling.
+        await fetchJobs();
+      }
+    } catch (err) {
+      console.error("Prompt retry failed:", err);
+    } finally {
+      setRetryingPrompts((prev) => {
+        const next = new Set(prev);
+        next.delete(key);
+        return next;
+      });
     }
   };
 
@@ -285,6 +362,55 @@ export default function NotebookDashboard() {
     const a = document.createElement("a");
     a.href = url;
     a.download = `merged-${jobId.slice(0, 8)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Standalone Answer Extraction Handler
+  const handleExtractAnswers = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!extractUrl.trim()) return;
+
+    setIsExtracting(true);
+    setExtractStatus("extracting");
+    setExtractError(null);
+    setExtractedData(null);
+
+    try {
+      const res = await fetch("/api/notebook/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ noteBookUrl: extractUrl.trim() }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to extract answers from NotebookLM");
+      }
+
+      setExtractedData({
+        count: data.count,
+        mergedText: data.mergedText,
+        message: data.message,
+      });
+      setExtractStatus("completed");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Extraction failed";
+      setExtractError(msg);
+      setExtractStatus("failed");
+    } finally {
+      setIsExtracting(false);
+    }
+  };
+
+  // Download standalone extracted responses as .txt
+  const handleDownloadExtracted = () => {
+    if (!extractedData || !extractedData.mergedText) return;
+    const blob = new Blob([extractedData.mergedText], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `notebooklm-answers-${Date.now()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -425,6 +551,36 @@ export default function NotebookDashboard() {
                   className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition ${styles.bgInput}`}
                   required
                 />
+              </div>
+
+              {/* Subject & Folder Name Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
+                    Subject *
+                  </label>
+                  <input
+                    type="text"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="e.g. Anatomy, Pathology, Physiology"
+                    className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition ${styles.bgInput}`}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
+                    Response Folder Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={folderName}
+                    onChange={(e) => setFolderName(e.target.value)}
+                    placeholder="e.g. Anatomy - Thorax, Anatomy - Chapter 1"
+                    className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition ${styles.bgInput}`}
+                    required
+                  />
+                </div>
               </div>
 
               {/* Prompt Selection Presets */}
@@ -661,6 +817,115 @@ export default function NotebookDashboard() {
               </button>
             </form>
           </div>
+
+          {/* Standalone Answer Extraction Card */}
+          <div className={`border rounded-2xl p-6 ${styles.bgCard}`}>
+            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800/60">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-emerald-600/20">
+                📥
+              </div>
+              <div>
+                <h2 className={`text-base font-bold tracking-tight ${styles.textTitle}`}>
+                  Extract NotebookLM Answers
+                </h2>
+                <p className={`text-xs ${styles.textMuted}`}>
+                  Extract all available answers from an existing NotebookLM notebook and merge into a downloadable .txt file
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleExtractAnswers} className="space-y-4">
+              <div>
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
+                  Notebook URL *
+                </label>
+                <input
+                  type="url"
+                  value={extractUrl}
+                  onChange={(e) => setExtractUrl(e.target.value)}
+                  placeholder="https://notebooklm.google.com/notebook/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                  className={`w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 transition ${styles.bgInput}`}
+                  required
+                />
+              </div>
+
+              {extractError && (
+                <div className="p-3 bg-rose-950/80 border border-rose-800 rounded-xl text-rose-200 text-xs flex items-center justify-between">
+                  <span>⚠️ {extractError}</span>
+                  <button
+                    type="button"
+                    onClick={() => setExtractError(null)}
+                    className="text-rose-400 hover:text-white font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+
+              {extractStatus === "completed" && extractedData && (
+                <div className="p-4 bg-emerald-950/40 border border-emerald-800/80 rounded-xl text-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-400 font-bold">✓ Status:</span>
+                      <span className="text-emerald-200 font-medium">Completed</span>
+                    </div>
+                    <div className="text-emerald-300 font-mono">
+                      Responses extracted: <span className="font-bold text-white">{extractedData.count}</span>
+                    </div>
+                  </div>
+
+                  {extractedData.count > 0 ? (
+                    <button
+                      type="button"
+                      onClick={handleDownloadExtracted}
+                      className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-600/30"
+                    >
+                      <span>⬇ Download merged answers.txt</span>
+                    </button>
+                  ) : (
+                    <p className="text-amber-300 italic text-[11px]">
+                      No NotebookLM responses were found in this notebook.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isExtracting || !extractUrl.trim()}
+                className={`w-full py-3 px-6 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${
+                  isExtracting || !extractUrl.trim()
+                    ? "bg-slate-400 text-slate-700 cursor-not-allowed"
+                    : "bg-teal-600 hover:bg-teal-500 text-white shadow-teal-600/30"
+                }`}
+              >
+                {isExtracting ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      ></path>
+                    </svg>
+                    <span>Extracting & Merging Answers...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>📑 Extract & Merge Answers</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Right Column: Active Job & Response Viewer (5 cols) */}
@@ -728,6 +993,12 @@ export default function NotebookDashboard() {
                   {/* Metadata */}
                   <div className={`grid grid-cols-2 gap-2 text-[11px] pt-1 ${styles.textMuted}`}>
                     <div>
+                      Subject: <span className={`font-semibold text-indigo-400`}>{selectedJob.subject || "General"}</span>
+                    </div>
+                    <div>
+                      Folder: <span className={`font-medium font-mono text-[10px] ${styles.textTitle}`}>{selectedJob.folderName}</span>
+                    </div>
+                    <div>
                       Mode: <span className={`font-medium ${styles.textTitle}`}>{selectedJob.promptType}</span>
                     </div>
                     <div>
@@ -752,6 +1023,101 @@ export default function NotebookDashboard() {
                     >
                       🔄 Retry Job
                     </button>
+                  </div>
+                )}
+
+                {/* Prompt List — only shown when prompts have been tracked */}
+                {selectedJob.prompts && selectedJob.prompts.length > 0 && (
+                  <div className={`border rounded-xl overflow-hidden ${styles.bgSubCard}`}>
+                    <div className={`px-3 py-2 border-b flex items-center justify-between ${styles.borderLine}`}>
+                      <span className={`text-xs font-bold ${styles.textTitle}`}>
+                        📋 Prompts ({selectedJob.prompts.length})
+                      </span>
+                      <span className={`text-[10px] ${styles.textMuted}`}>
+                        {selectedJob.prompts.filter((p) => p.status === "completed").length} completed
+                        {selectedJob.prompts.filter((p) => p.status === "failed").length > 0 &&
+                          ` · ${selectedJob.prompts.filter((p) => p.status === "failed").length} failed`}
+                      </span>
+                    </div>
+                    <div className="max-h-72 overflow-y-auto divide-y divide-slate-800/50 p-1.5 space-y-1">
+                      {[...selectedJob.prompts]
+                        .sort((a, b) => a.index - b.index)
+                        .map((p) => {
+                          const isRetrying = retryingPrompts.has(`${selectedJob.id}:${p.index}`);
+                          return (
+                            <div
+                              key={p.index}
+                              className={`p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs transition-colors rounded-lg ${
+                                p.status === "failed"
+                                  ? isDark ? "bg-rose-950/30 border border-rose-800/40" : "bg-rose-50 border border-rose-200"
+                                  : p.status === "sending"
+                                  ? isDark ? "bg-amber-950/30 border border-amber-800/40" : "bg-amber-50 border border-amber-200"
+                                  : isDark ? "bg-slate-900/40" : "bg-white"
+                              }`}
+                            >
+                              {/* Left: Metadata details */}
+                              <div className="space-y-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-bold text-indigo-400">
+                                    {p.subject || selectedJob.subject || "General"}
+                                  </span>
+                                  <span className={`font-mono text-[11px] font-semibold ${styles.textTitle}`}>
+                                    Question: {p.qnumber ?? p.start}
+                                  </span>
+                                  <span className={`text-[10px] ${styles.textMuted}`}>
+                                    Batch: {p.batch ?? selectedJob.batch}
+                                  </span>
+                                  <span className={`font-mono text-[10px] font-bold ${styles.textTitle}`}>
+                                    Index: {p.index}
+                                  </span>
+                                  <span className={`font-mono text-[10px] ${styles.textMuted}`}>
+                                    Start: {p.start} · End: {p.end}
+                                  </span>
+                                </div>
+                                {p.responseFile && (
+                                  <div className={`text-[10px] font-mono truncate ${styles.textMuted}`} title={p.responseFile}>
+                                    📄 {p.responseFile}
+                                  </div>
+                                )}
+                                {p.errorMessage && (
+                                  <div className="text-[10px] text-rose-400 truncate" title={p.errorMessage}>
+                                    ⚠ {p.errorMessage}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Right: status + Resend button */}
+                              <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                <span
+                                  className={`px-1.5 py-0.5 rounded font-bold text-[9px] uppercase ${
+                                    p.status === "completed"
+                                      ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                                      : p.status === "sending"
+                                      ? "bg-amber-950 text-amber-300 border border-amber-800 animate-pulse"
+                                      : p.status === "failed"
+                                      ? "bg-rose-950 text-rose-300 border border-rose-800"
+                                      : isDark
+                                      ? "bg-slate-800 text-slate-400"
+                                      : "bg-slate-200 text-slate-500"
+                                  }`}
+                                >
+                                  {p.status}
+                                </span>
+                                {p.status === "failed" && (
+                                  <button
+                                    type="button"
+                                    disabled={isRetrying}
+                                    onClick={(e) => handleRetryPrompt(selectedJob.id, p.index, e)}
+                                    className="px-2.5 py-1 bg-rose-900/90 hover:bg-rose-800 text-white rounded text-[10px] font-bold transition disabled:opacity-50 shadow-sm"
+                                  >
+                                    {isRetrying ? "…" : "Resend"}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
                 )}
 
@@ -834,7 +1200,7 @@ export default function NotebookDashboard() {
           <table className="w-full text-left text-xs">
             <thead className={`uppercase font-semibold border-b ${isDark ? "bg-slate-950 text-slate-400 border-slate-800" : "bg-slate-100 text-slate-600 border-slate-200"}`}>
               <tr>
-                <th className="p-3">Prompt Title</th>
+                <th className="p-3">Prompt Title & Folder</th>
                 <th className="p-3">Mode</th>
                 <th className="p-3">Batches</th>
                 <th className="p-3">Status</th>
@@ -867,6 +1233,10 @@ export default function NotebookDashboard() {
                     >
                       <td className={`p-3 font-bold ${styles.textTitle}`}>
                         <div>{job.promptTitle}</div>
+                        <div className="flex items-center gap-2 text-[11px] font-normal mt-0.5">
+                          <span className="text-indigo-400 font-semibold">{job.subject || "General"}</span>
+                          <span className={styles.textMuted}>📁 {job.folderName}</span>
+                        </div>
                         <div className={`text-[10px] truncate max-w-xs ${styles.textMuted}`}>{job.noteBookUrl}</div>
                       </td>
                       <td className="p-3">

@@ -112,15 +112,14 @@
 //         .trim();
 // }
 
-import { connectChrome, sendPromptToPage, getAnswer, exportAnswers } from "../browser/connect";
-import { saveResponse } from "../services/storage.service";
+import { connectChrome, sendPromptToPage } from "../browser/connect";
 import { logger } from "../lib/logger";
 
 export interface FileProcessingResult {
     jobId: string;
     start: number;
     end: number;
-    outputName: string;
+    outputName?: string;
     durationMs: number;
     index?: number;
     batch?: number;
@@ -217,9 +216,9 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 "عامل مخدوش‌کننده (Confounder) و تحلیل زیرگروهی"
 ] as string[]
 
-// const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject  examiner specializing.
+// const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject} examiner specializing.
 
-// Your task is to analyze questions ${start} to ${end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
+// Your task is to analyze questions ${start} to ${end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file
 // Important:
 
 // Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
@@ -282,7 +281,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // Explanation:
 // Repeat the same format for questions ${start}-${end} only.
-// Ensure all conclusions are fully aligned with the uploaded  {subject notes and preserve the original terminology whenever possible.
+// Ensure all conclusions are fully aligned with the uploaded  {subject}notes and preserve the original terminology whenever possible.
 
 // Concept Summary
 
@@ -341,7 +340,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // The missing options must be:
 
-// Strictly based on the uploaded source file [ "کلیات پاتولوژی اکبری مهر99"]
+// Strictly based on the uploaded source file [ "کل ر99"]
 
 // Consistent with the same topic and difficulty level of the question
 
@@ -349,9 +348,9 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // You MUST NOT introduce external knowledge beyond the provided notes.
 // answer in persion `
-// const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical {subject  examiner specializing.
+// const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical {subject} examiner specializing.
 
-// Your task is to analyze ${index+1}th ${batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
+// Your task is to analyze ${index+1}th ${batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file
 // Important:
 
 // Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
@@ -414,7 +413,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // Explanation:
 // Repeat the same format for ${index+1}th questions only.
-// Ensure all conclusions are fully aligned with the uploaded  {subject notes and preserve the original terminology whenever possible.
+// Ensure all conclusions are fully aligned with the uploaded  {subject}notes and preserve the original terminology whenever possible.
 
 // Concept Summary
 
@@ -473,7 +472,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 // The missing options must be:
 
-// Strictly based on the uploaded source file [ "کلیات پاتولوژی اکبری مهر99"]
+// Strictly based on the uploaded source file [ "کل ر99"]
 
 // Consistent with the same topic and difficulty level of the question
 
@@ -1042,7 +1041,7 @@ const Topics = ["الگوی انتقال بیماری‌ها و مفاهیم پ�
 
 export function buildPromptForBatch(
     promptTemplate: string | undefined,
-    context: { start?: number; end?: number; index?: number; batch?: number; topic?: string }
+    context: { start?: number; end?: number; index?: number; batch?: number; topic?: string; subject?: string; qnumber?: number }
 ): string {
     let tpl = promptTemplate || "";
     if (!tpl) {
@@ -1057,16 +1056,17 @@ export function buildPromptForBatch(
         .replace(/\{end\}/g, String(context.end ?? 20))
         .replace(/\{index\}/g, String((context.index ?? 0) + 1))
         .replace(/\{batch\}/g, String(context.batch ?? 15))
-        .replace(/\{topic\}/g, context.topic ?? "");
+        .replace(/\{topic\}/g, context.topic ?? "")
+        .replace(/\{subject\}/g, context.subject ?? "")
+        .replace(/\{qnumber\}/g, String(context.qnumber ?? context.start ?? 1));
 }
 
 /**
- * Processes a single batch end-to-end: open the notebook -> send the
- * range-specific prompt -> read the answer -> save it.
+ * Processes a single batch: open the notebook -> send the
+ * range-specific prompt -> continue immediately without extracting the answer.
  *
  * Throws on any stage failure so the caller (noteBook.service's
  * Promise.allSettled) can correctly mark the batch/job as failed.
- * Always closes the page it opened, success or failure.
  */
 export async function processNoteBook(
     page: Awaited<ReturnType<typeof connectChrome>>,
@@ -1076,42 +1076,43 @@ export async function processNoteBook(
     index: number,
     batch?: number,
     customPromptTemplate?: string,
-    topic?: string
-): Promise<FileProcessingResult & { answer: string }> {
+    topic?: string,
+    subject?: string,
+    folderName?: string
+): Promise<FileProcessingResult> {
 
     const startedAt = performance.now();
 
-    logger.info("Notebook batch started", { jobId, start, end , index, topic });
+    logger.info("Notebook prompt batch started", { jobId, start, end, index, topic, subject, folderName });
 
     try {
-        const prompt = buildPromptForBatch(customPromptTemplate, { start, end, index, batch, topic });
+        const prompt = buildPromptForBatch(customPromptTemplate, { start, end, index, batch, topic, subject, qnumber: start });
 
-        await sendPromptToPage(page, prompt);
-
-        const answer = await getAnswer(page);
-
-        // Save individual response file: outputs/<jobId>/responses/response-<XXXX>.txt
-        // Uses index (0-based) for deterministic ordering across concurrent batches.
-        const outputName = await saveResponse(jobId, index, answer);
+        const turnIndex = await sendPromptToPage(page, prompt);
 
         const durationMs = performance.now() - startedAt;
 
-        logger.info("Notebook batch finished", {
+        logger.info("Notebook prompt sent successfully", {
             jobId,
             start,
             end,
+            index,
+            turnIndex,
             duration: durationMs
         });
 
-        return { jobId, start, end, outputName, durationMs, answer };
+        return { jobId, start, end, durationMs, index, batch };
 
     } catch (error) {
-        logger.error("Notebook batch failed", {
+        logger.error("Notebook batch prompt sending failed", {
             error,
             jobId,
             start,
             end,
-            topic
+            index,
+            topic,
+            subject,
+            folderName
         });
         throw error;
     }

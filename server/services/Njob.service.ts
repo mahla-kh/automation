@@ -1,6 +1,33 @@
+import { resolveUniqueFolderName } from "./storage.service";
+
+export type PromptStatus = "pending" | "sending" | "completed" | "failed";
+
+export interface PromptRecord {
+    /** 0-based position in the job's batch sequence. Immutable after creation. */
+    index: number;
+    /** 1-based, inclusive start of the question range. Immutable after creation. */
+    start: number;
+    /** 1-based, inclusive end of the question range. Immutable after creation. */
+    end: number;
+    /** Subject associated with this prompt (e.g. "Anatomy"). Immutable after creation. */
+    subject?: string;
+    /** Question start number (e.g. 150). Immutable after creation. */
+    qnumber?: number;
+    /** Batch size/identifier. Immutable after creation. */
+    batch?: number;
+    /** The exact prompt text that was (or will be) sent. Immutable after creation. */
+    prompt: string;
+    status: PromptStatus;
+    /** Filename of the saved response, set once the response is stored. */
+    responseFile?: string;
+    errorMessage?: string;
+}
+
 export interface noteBookJob {
     id: string;
     noteBookUrl: string;
+    subject?: string;
+    folderName: string;
     promptTitle: string;
     promptText?: string;
     promptType: "question" | "jozve";
@@ -10,6 +37,8 @@ export interface noteBookJob {
     topics?: string[];
     totalBatches: number;
     completedBatches: number;
+    /** Per-prompt tracking records. Populated before any prompt is sent. */
+    prompts: PromptRecord[];
     responseContent?: string;
     errorMessage?: string;
     retryCount: number;
@@ -20,6 +49,8 @@ export interface noteBookJob {
 
 export interface CreateJobParams {
     noteBookUrl: string;
+    subject?: string;
+    folderName?: string;
     promptTitle: string;
     promptText?: string;
     promptType: "question" | "jozve";
@@ -36,6 +67,8 @@ export function createJob(
     legacyQLength?: number
 ): noteBookJob {
     let noteBookUrl: string;
+    let subject: string | undefined;
+    let rawFolderName: string | undefined;
     let promptTitle: string;
     let promptText: string | undefined;
     let promptType: "question" | "jozve";
@@ -45,12 +78,16 @@ export function createJob(
 
     if (typeof paramsOrUrl === "string") {
         noteBookUrl = paramsOrUrl;
+        subject = undefined;
+        rawFolderName = undefined;
         promptTitle = "Default Prompt";
         promptType = "question";
         batch = legacyBatch ?? 15;
         qLength = legacyQLength ?? 100;
     } else {
         noteBookUrl = paramsOrUrl.noteBookUrl;
+        subject = paramsOrUrl.subject?.trim() || undefined;
+        rawFolderName = paramsOrUrl.folderName?.trim() || undefined;
         promptTitle = paramsOrUrl.promptTitle;
         promptText = paramsOrUrl.promptText;
         promptType = paramsOrUrl.promptType;
@@ -63,9 +100,20 @@ export function createJob(
         ? topics.length
         : Math.max(1, Math.ceil(qLength / Math.max(1, batch)));
 
+    // Determine the base folder name from user input, subject, or promptTitle
+    const baseFolderName = rawFolderName || subject || promptTitle || "responses";
+    const folderName = resolveUniqueFolderName(baseFolderName, (candidate) => {
+        for (const existingJob of jobs.values()) {
+            if (existingJob.folderName === candidate) return true;
+        }
+        return false;
+    });
+
     const job: noteBookJob = {
         id: crypto.randomUUID(),
         noteBookUrl,
+        subject,
+        folderName,
         promptTitle,
         promptText,
         promptType,
@@ -75,6 +123,7 @@ export function createJob(
         topics,
         totalBatches,
         completedBatches: 0,
+        prompts: [],
         responseContent: "",
         retryCount: 0,
         createdAt: Date.now()
@@ -140,4 +189,48 @@ export function prepareJobForRetry(id: string): noteBookJob | undefined {
     job.startedAt = undefined;
     job.completedAt = undefined;
     return job;
+}
+
+/**
+ * Register a prompt record for a job before sending begins.
+ * Called once per prompt when the job starts, to give each prompt a persistent
+ * identity (index, start, end, prompt text) before any async work happens.
+ */
+export function registerPrompt(
+    jobId: string,
+    record: Omit<PromptRecord, "status" | "responseFile" | "errorMessage">
+): void {
+    const job = jobs.get(jobId);
+    if (!job) return;
+    // Ensure no duplicate registration for the same index.
+    if (job.prompts.some((p) => p.index === record.index)) return;
+    job.prompts.push({ ...record, status: "pending" });
+}
+
+/**
+ * Update the status of a specific prompt within a job.
+ * index, start, and end are NEVER modified here — they are immutable identifiers.
+ */
+export function updatePromptStatus(
+    jobId: string,
+    promptIndex: number,
+    update: Partial<Pick<PromptRecord, "status" | "responseFile" | "errorMessage">>
+): void {
+    const job = jobs.get(jobId);
+    if (!job) return;
+    const record = job.prompts.find((p) => p.index === promptIndex);
+    if (!record) return;
+    Object.assign(record, update);
+}
+
+/**
+ * Get a single prompt record by its immutable index.
+ */
+export function getPromptRecord(
+    jobId: string,
+    promptIndex: number
+): PromptRecord | undefined {
+    const job = jobs.get(jobId);
+    if (!job) return undefined;
+    return job.prompts.find((p) => p.index === promptIndex);
 }

@@ -77,6 +77,7 @@ class BrowserManager {
     headless: false,
     executablePath,
     viewport: null,
+    permissions: ["clipboard-read", "clipboard-write"],
     args: [
         "--no-first-run",
         "--no-default-browser-check",

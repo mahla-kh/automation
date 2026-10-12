@@ -1,4 +1,5 @@
-type LogLevel = "INFO" | "WARN" | "ERROR";
+
+type LogLevel = "INFO" | "WARN" | "ERROR" | "DEBUG";
 
 function log(level: LogLevel, message: string, data?: unknown) {
   const time = new Date().toISOString();
@@ -10,6 +11,10 @@ function log(level: LogLevel, message: string, data?: unknown) {
 }
 
 export const logger = {
+
+  debug(message: string, data?: unknown) {
+    log("DEBUG", message, data);
+  },
 
   info(message: string, data?: unknown) {
     log("INFO", message, data);

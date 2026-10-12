@@ -7,141 +7,235 @@ export interface PromptPreset {
 }
 
 
-const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject} examiner specializing.
+// const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject} examiner specializing.
 
-Your task is to analyze questions {start} to {end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source files.
+// Your task is to analyze questions {start} to {end} in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source files.
+// Important:
+
+// Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
+
+// If part of the question is unreadable, incomplete, or ambiguous, explicitly mention it.
+// For each question:
+// Write the complete question stem.
+// Determine the single best answer based strictly on the uploaded notes.
+// try not  to use external knowledge unless explicitly stated in the notes.
+// If none of the options is fully correct, state this clearly.
+
+// If multiple options appear correct according to the notes, state this clearly.
+// For every option (A, B, C, D):
+// Explain why the option is correct or incorrect.
+
+// Keep explanations concise but scientifically precise.
+
+// If the stem or options contain a flaw, explicitly describe the flaw.
+
+// If the question cannot be resolved confidently from the uploaded notes:
+
+// Do NOT invent an answer.
+// Mark:
+
+// متن واضح نیست
+
+// Do NOT delete questions.
+
+// Even if a question is flawed, incomplete, or ambiguous, analyze it and explain the problem.
+
+// For each question, identify the most relevant source topic from the notes.
+// Requirements:
+// Use the terminology and headings found in the notes whenever possible.
+
+// Output format:
+
+// Questions 1
+// Question Stem
+
+// [Write the complete question text here exactly as it appears in the file]
+// Options
+// A) ..
+// B) .
+// C) ...
+// D) ...
+// Correct Option
+// C) ...
+// Option Analysis
+// A) ...
+// Correct / Incorrect
+// Explanation:
+// B) ...
+// Correct / Incorrect
+// Explanation:
+// C) ...
+// Correct / Incorrect
+// Explanation:
+// D) ...
+// Correct / Incorrect
+
+// Explanation:
+// Repeat the same format for questions {start}-{end} only.
+// Ensure all conclusions are fully aligned with the uploaded  {subject} notes and preserve the original terminology whenever possible.
+
+// Concept Summary
+
+// After completing the option analysis for each question, write a short educational summary based ONLY on the uploaded notes.
+
+// Requirements:
+// Length: approximately 3–7 lines.
+
+// Stay strictly within the scope of the uploaded notes.
+
+// Do not introduce external knowledge.
+
+// Focus on helping the student review the tested concept rather than repeating the explanation of the correct option.
+
+// The summary should preferably include one of the following:
+
+// A concise collection of the most important facts related to the tested concept.
+
+// A comparison between closely related anatomical structures.
+
+// Key distinguishing features.
+
+// Commonly confused structures.
+
+// Functional relationships.
+
+// High-yield exam points mentioned in the notes.
+
+// Avoid simply repeating the option analysis.
+
+// Avoid repetition
+
+// Maintain awareness of previous summaries.
+
+// If an earlier question has already explained the same concept in sufficient detail:
+// Do NOT repeat the same explanation.
+
+// Instead, introduce another important aspect of that topic from the notes.
+
+// If no additional information exists in the notes, write:
+// "این مبحث در سوالات قبل به طور کامل جمع‌بندی شده است."
+// Output position
+// Insert the summary immediately after the Option Analysis section.
+// Example:
+// Concept Summary
+
+// OPTION COMPLETION RULE (VERY IMPORTANT)
+
+// If a question does NOT have exactly 4 options:
+
+// Keep all existing options exactly as they are.
+
+// Do NOT rewrite or modify them.
+
+// Complete missing options (A, B, C, D) ONLY if fewer than 4 options exist.
+
+// The missing options must be:
+
+// Strictly based on the uploaded source files
+
+// Consistent with the same topic and difficulty level of the question
+
+// Plausible exam-style distractors (not random text)
+
+// You MUST NOT introduce external knowledge beyond the provided notes.
+// answer in persion `
+const PROMPT_TEMPLATE_START_END = `You are an expert medical {subject} examiner.
+
+Your task is to analyze questions {start} to {end} in the order they appear in [Questions.txt], using ONLY the uploaded source files, notes, and guidelines.
+
 Important:
 
-Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
+* ALWAYS reproduce the complete question stem exactly as written before analyzing the options.
+* If any part is unreadable, incomplete, or ambiguous, explicitly state it.
+* Do NOT use external knowledge unless explicitly provided in the uploaded sources.
+* If no option is fully correct, state this clearly.
+* If multiple options are correct according to the sources, state this clearly.
+* Do NOT invent answers.
+* Do NOT delete questions.
+* If a question cannot be resolved confidently, write: **متن واضح نیست**
+* If the question or options contain an error or flaw, explicitly explain it.
+* Identify the most relevant source topic for each question.
+* Use the terminology and headings from the uploaded sources whenever possible.
 
-If part of the question is unreadable, incomplete, or ambiguous, explicitly mention it.
 For each question:
-Write the complete question stem.
-Determine the single best answer based strictly on the uploaded notes.
-try not  to use external knowledge unless explicitly stated in the notes.
-If none of the options is fully correct, state this clearly.
 
-If multiple options appear correct according to the notes, state this clearly.
-For every option (A, B, C, D):
-Explain why the option is correct or incorrect.
+### Question {number}
 
-Keep explanations concise but scientifically precise.
+**Question Stem**
 
-If the stem or options contain a flaw, explicitly describe the flaw.
+[Write the complete question exactly as it appears in the file]
 
-If the question cannot be resolved confidently from the uploaded notes:
+**Options**
 
-Do NOT invent an answer.
-Mark:
-
-متن واضح نیست
-
-Do NOT delete questions.
-
-Even if a question is flawed, incomplete, or ambiguous, analyze it and explain the problem.
-
-For each question, identify the most relevant source topic from the notes.
-Requirements:
-Use the terminology and headings found in the notes whenever possible.
-
-Output format:
-
-Questions 1
-Question Stem
-
-[Write the complete question text here exactly as it appears in the file]
-Options
-A) ..
-B) .
-C) ...
-D) ...
-Correct Option
-C) ...
-Option Analysis
 A) ...
-Correct / Incorrect
-Explanation:
+
 B) ...
-Correct / Incorrect
-Explanation:
+
 C) ...
-Correct / Incorrect
-Explanation:
+
 D) ...
-Correct / Incorrect
 
-Explanation:
-Repeat the same format for questions {start}-{end} only.
-Ensure all conclusions are fully aligned with the uploaded  {subject} notes and preserve the original terminology whenever possible.
+**Correct Option**
 
-Concept Summary
+[Best answer based ONLY on the uploaded sources]
 
-After completing the option analysis for each question, write a short educational summary based ONLY on the uploaded notes.
+**Option Analysis**
 
-Requirements:
-Length: approximately 3–7 lines.
+A) Correct / Incorrect
+Explanation: ...
 
-Stay strictly within the scope of the uploaded notes.
+B) Correct / Incorrect
+Explanation: ...
 
-Do not introduce external knowledge.
+C) Correct / Incorrect
+Explanation: ...
 
-Focus on helping the student review the tested concept rather than repeating the explanation of the correct option.
+D) Correct / Incorrect
+Explanation: ...
 
-The summary should preferably include one of the following:
+### Concept Summary
 
-A concise collection of the most important facts related to the tested concept.
+After the option analysis, provide a concise educational summary based ONLY on the uploaded notes and guidelines.
 
-A comparison between closely related anatomical structures.
+When a disease, diagnosis, or clinical condition is involved, include:
 
-Key distinguishing features.
+1. **تعریف:** تعریف بیماری/تشخیص مطرح‌شده.
+2. **مشخصه‌ها:** مهم‌ترین علائم، یافته‌ها و ویژگی‌های تشخیصی ذکرشده در منابع.
+3. **تحلیل سؤال:** ارتباط یافته‌های سؤال با بیماری/تشخیص و دلیل افتراق گزینه‌ها.
+4. **جدول مقایسه‌ای:** یک جدول کوتاه برای مقایسه بیماری‌ها، تشخیص‌ها، یا علائم مرتبط، ONLY بر اساس اطلاعات موجود در جزوه و گایدلاین‌های آپلودشده.
 
-Commonly confused structures.
+The summary should be approximately 3–7 lines **plus the comparison table when applicable**.
 
-Functional relationships.
+Focus on high-yield exam points and clinically important distinctions. Do not simply repeat the option analysis.
 
-High-yield exam points mentioned in the notes.
+### Comparison Table
 
-Avoid simply repeating the option analysis.
+Use a compact table such as:
 
-Avoid repetition
+| بیماری / تشخیص | علائم مهم | ویژگی تشخیصی | نکته افتراقی |
+| -------------- | --------- | ------------ | ------------ |
+| ...            | ...       | ...          | ...          |
 
-Maintain awareness of previous summaries.
+Only include information explicitly supported by the uploaded notes/guidelines. Do NOT fill missing information using external knowledge.
 
-If an earlier question has already explained the same concept in sufficient detail:
-Do NOT repeat the same explanation.
+### OPTION COMPLETION RULE
 
-Instead, introduce another important aspect of that topic from the notes.
+If a question has fewer than 4 options:
 
-If no additional information exists in the notes, write:
-"این مبحث در سوالات قبل به طور کامل جمع‌بندی شده است."
-Output position
-Insert the summary immediately after the Option Analysis section.
-Example:
-Concept Summary
+* Keep all existing options EXACTLY as they are.
+* Do NOT rewrite or modify existing options.
+* Complete only the missing options (A–D).
+* New options must be based strictly on the uploaded sources, match the topic and difficulty, and be plausible exam-style distractors.
+* Never introduce external knowledge.
+* Ensure the correct answer is randomly distributed among options A–D;
 
-OPTION COMPLETION RULE (VERY IMPORTANT)
+Repeat this format only for questions {start}–{end}.
 
-If a question does NOT have exactly 4 options:
-
-Keep all existing options exactly as they are.
-
-Do NOT rewrite or modify them.
-
-Complete missing options (A, B, C, D) ONLY if fewer than 4 options exist.
-
-The missing options must be:
-
-Strictly based on the uploaded source files
-
-Consistent with the same topic and difficulty level of the question
-
-Plausible exam-style distractors (not random text)
-
-You MUST NOT introduce external knowledge beyond the provided notes.
-answer in persion `
+All answers and explanations must be in Persian and fully aligned with the uploaded {subject} notes and guidelines.
+`
 const PROMPT_TEMPLATE_QUESTION_ORDER = `You are an expert medical {subject} examiner specializing.
 
-Your task is to analyze {index}th {batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file [کلیات پاتولوژی اکبری مهر99].
+Your task is to analyze {index}th {batch} questions in the order they appear in the pasted text [Questions.txt] using ONLY the uploaded source file
 Important:
 
 Before analyzing the options, ALWAYS reproduce the complete question stem exactly as written in the question file.
@@ -239,13 +333,6 @@ Avoid repetition
 
 Maintain awareness of previous summaries.
 
-If an earlier question has already explained the same concept in sufficient detail:
-Do NOT repeat the same explanation.
-
-Instead, introduce another important aspect of that topic from the notes.
-
-If no additional information exists in the notes, write:
-"این مبحث در سوالات قبل به طور کامل جمع‌بندی شده است."
 Output position
 Insert the summary immediately after the Option Analysis section.
 Example:
@@ -263,7 +350,7 @@ Complete missing options (A, B, C, D) ONLY if fewer than 4 options exist.
 
 The missing options must be:
 
-Strictly based on the uploaded source file [ "کلیات پاتولوژی اکبری مهر99"]
+Strictly based on the uploaded source files
 
 Consistent with the same topic and difficulty level of the question
 
@@ -895,6 +982,84 @@ no concept is repeated;* the result is substantially shorter, highly reviewable,
 OUTPUT
 
 Output ONLY the final structured summary. No analysis, reasoning, methodology, source evaluation, or introductory text.`
+const PROMPT_TEMPLATE_JOZVE_SHAB_PHYSIOPATH = `You are an expert medical exam-prep specialist.
+
+**TASK**
+Create a SHORT, HIGH-YIELD, CLEAR night-before-exam summary of {topic}, at about 25–35% of the lecture notes' volume. Reduce volume by compressing form (prose → tables, merged duplicates), not by dropping tested or distinguishing concepts.
+
+**SOURCES (ONLY)**
+1. Lecture notes (PRIMARY).
+2. Previous exam questions, and explanations.
+
+Never add outside medical knowledge, invented facts, examples, cases, questions, traps, or predictions.
+
+**STEP 0: SILENT ANALYSIS (do not output)**
+- Map each question to the concept it tests.
+- Rank concepts:
+  - TIER 1: tested ≥2 times, OR needed to distinguish similar diseases/mechanisms, OR an exception/"which is NOT" item.
+  - TIER 2: tested once, or a core mechanism/classification needed to understand Tier 1.
+  - TIER 3: supporting detail unrelated to tested areas.
+- Space allocation: Tier 1 ≈ 55%, Tier 2 ≈ 35%, Tier 3 ≈ 10%.
+- For negatively phrased questions ("which is NOT / incorrect"), preserve the COMPLETE member list of the category and its exceptions.
+
+**PRIORITY RULES**
+- KEEP almost intact: definitions, classifications, tested mechanisms, distinguishing features, diagnostic criteria and cut-offs, first-step/best-test answers, exceptions, complete lists behind negative questions.
+- COMPRESS (table or one line): repetitive prose, long mechanisms, drug/cause lists, epidemiology, untested treatment details.
+- REMOVE: lecturer chatter, greetings, repeated headings, headers/footers, image placeholders, stories, restated facts, generic textbook language, untested minor details unrelated to tested concepts.
+- Don't delete an untested item if it is needed to understand or distinguish a tested concept; compress it instead.
+
+**CRITICAL RULES**
+- Never repeat a concept
+- Prefer one clear statement over fragmented ones.
+- Be concise but never vague; every sentence must add value.
+
+**OUTPUT STRUCTURE (Persian; omit any empty or redundant section)**
+
+# {topic}
+
+## 1. خلاصه مبحث
+Compact core: definitions, classification, mechanism, key findings, diagnosis, key distinctions. Short bullets and tables, in lecture order, with bold keywords.
+
+## 2. نکات امتحانی
+### 2.1 نکات موجود در جزوه و پاسخ تشریحی
+For each merged concept (Tier 1 first):
+[سؤال امتحان] short wording (×n if repeated)
+→ نکته: concise key point (with cut-off/value if tested)
+Add only the exam angle; don't restate section 1.
+
+### 2.2 نکات موجود در پاسخ تشریحی ولی خارج از جزوه
+Only important, exam-useful facts absent from the lecture, tagged [فقط پاسخ‌نامه]. No full explanations.
+
+## 3. فهرست‌های کامل و استثناها
+Only for categories tested via negative questions: full member list, odd/excluded item in bold. Skip if section 1 or 9 already has the complete list.
+
+## 4. 🚨 تله‌های امتحانی
+- الگوهای تکرارشونده: only patterns actually repeated in the questions.
+- تله‌های مشاهده‌شده: only misleading options/mistakes actually present.
+
+## 5. ⚠️ قاطی نشه!
+Only genuinely confusable pairs/groups, as A vs B, one line per side, no repeated facts.
+
+## 6. جدول‌های مقایسه‌ای
+Only where a table replaces prose or prevents confusion. Prefer one master table; no repeated content.
+
+## 7. 🩺 سناریوهای بالینی
+Only scenarios explicit in the sources, one line each.
+
+## 8. مثال‌های استاد
+Only examples clarifying Tier 1/2 concepts: مثال استاد → مفهوم.
+
+##9. 🔮 مطالب مهم جزوه که مستقیماً سؤال نشده‌اند
+Only lecture concepts closely linked to repeatedly tested areas, one line each. No predictions.
+
+**STYLE**
+- Persian, standard medical terminology, English terms in parentheses when useful.
+
+**FINAL SILENT CHECK**
+- All Tier 1 concepts, exceptions, and distinguishing features are present.
+- No concept appears twice; no outside facts added.
+
+**OUTPUT:** ONLY the final structured summary.`
 export const PROMPT_PRESETS: PromptPreset[] = [
   {
     id: "question-range",
@@ -923,6 +1088,13 @@ export const PROMPT_PRESETS: PromptPreset[] = [
     type: "jozve",
     preview: "In-depth lossless compression organized by topic headings and exam priorities.",
     template: PROMPT_TEMPLATE_JOZVE_SHAB_FULL
+  },
+  {
+    id: "jozve-physiopath-test",
+    title: "Jozve - PhysioPath Test",
+    type: "jozve",
+    preview: "In-depth lossless compression organized by topic headings and exam priorities.",
+    template: PROMPT_TEMPLATE_JOZVE_SHAB_PHYSIOPATH
   },
   {
     id: "jozve-detailed",

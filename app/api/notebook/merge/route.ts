@@ -24,11 +24,13 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const merged = await mergeResponses(jobId);
+        const targetFolder = job.folderName || jobId;
+        const merged = await mergeResponses(targetFolder);
 
         return NextResponse.json({
             success: true,
             jobId,
+            folderName: targetFolder,
             merged,
             length: merged.length
         });
@@ -52,12 +54,14 @@ export async function GET(req: NextRequest) {
         }
 
         // Validate job exists
-        await noteBookService.status(jobId);
+        const job = await noteBookService.status(jobId);
+        const targetFolder = job.folderName || jobId;
 
-        const files = await listResponses(jobId);
+        const files = await listResponses(targetFolder);
         return NextResponse.json({
             success: true,
             jobId,
+            folderName: targetFolder,
             fileCount: files.length,
             files: files.map((f) => {
                 const parts = f.split(/[\\/]/);

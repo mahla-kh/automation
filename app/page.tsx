@@ -24,6 +24,8 @@ export interface FileProcessingStatus {
   startedAt?: string;
   completedAt?: string;
   totalDurationMs?: number;
+  outputFilename?: string;
+  outputPath?: string;
 }
 
 export interface PipelineLog {
@@ -524,12 +526,13 @@ export default function PipelineDashboard() {
                     <th className="p-3">OCR Extraction</th>
                     <th className="p-3">Reformat</th>
                     <th className="p-3">Overall Status</th>
+                    <th className="p-3 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className={`divide-y ${styles.borderLine}`}>
                   {!jobData || filteredFiles.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className={`text-center py-12 italic ${styles.textMuted}`}>
+                      <td colSpan={7} className={`text-center py-12 italic ${styles.textMuted}`}>
                         {!jobData ? "No active pipeline job selected." : "No files match the selected filter criteria."}
                       </td>
                     </tr>
@@ -573,6 +576,24 @@ export default function PipelineDashboard() {
                           <span className={`px-2.5 py-1 rounded font-bold uppercase text-[10px] ${file.overallStatus === "success" ? "bg-emerald-950 text-emerald-300 border border-emerald-800" : file.overallStatus === "error" ? "bg-rose-950 text-rose-300 border border-rose-800" : "bg-amber-950 text-amber-300 border border-amber-800"}`}>
                             {file.overallStatus}
                           </span>
+                        </td>
+                        <td className="p-3 text-right">
+                          {file.reformat.status === "success" && jobData ? (
+                            <a
+                              href={`/api/pipelines/download?jobId=${jobData.id}&fileId=${file.fileId}`}
+                              download
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition"
+                              title="Download reformat questions JSON"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                              </svg>
+                              Download
+                            </a>
+                          ) : (
+                            <span className="text-[11px] text-slate-500">—</span>
+                          )}
                         </td>
                       </tr>
                     ))

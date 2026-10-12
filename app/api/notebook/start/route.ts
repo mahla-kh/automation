@@ -6,6 +6,8 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const {
             noteBookUrl,
+            subject,
+            folderName,
             promptTitle,
             promptText,
             promptType,
@@ -51,6 +53,8 @@ export async function POST(req: NextRequest) {
 
         const jobData = await noteBookService.start({
             noteBookUrl,
+            subject: typeof subject === "string" ? subject.trim() : undefined,
+            folderName: typeof folderName === "string" ? folderName.trim() : undefined,
             promptTitle,
             promptText,
             promptType: mode,
