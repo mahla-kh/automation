@@ -1,13 +1,77 @@
-import { Page, Locator } from "playwright";
+import { Page, Locator ,Browser,BrowserContext } from "playwright";
 import { logger } from "../lib/logger";
-import { expect } from "playwright/test";
+import { chromium, expect } from "playwright/test";
+// import { Browser, chromium, expect } from "playwright/test";
 import { browserManager } from "./browserManager";
 
+const CDP_ENDPOINT = process.env.CHROME_CDP_ENDPOINT ?? "http://localhost:9222";
+
+let browserPromise: Promise<Browser> | null = null;
 /**
  * Retrieves a new Page from the managed persistent browser context.
  * Note: Callers should prefer using `browserManager.withPage(fn)` for automatic
  * concurrency control and guaranteed page cleanup.
  */
+async function getBrowser(): Promise<Browser> {
+    if (browserPromise) {
+        return browserPromise;
+    }
+    const connectionPromise = chromium.connectOverCDP(CDP_ENDPOINT);
+    browserPromise = connectionPromise;
+
+    try {
+        const browser = await connectionPromise;
+
+        browser.on("disconnected", () => {
+            // Reset only if this is still the active connection.
+            if (browserPromise === connectionPromise) {
+                browserPromise = null;
+            }
+
+            logger.warn("Chrome CDP connection disconnected");
+        });
+
+        logger.info("Connected to existing Chrome via CDP", {
+            endpoint: CDP_ENDPOINT,
+        });
+
+        return browser;
+    } catch (error) {
+        // Allow a future call to retry the connection.
+        if (browserPromise === connectionPromise) {
+            browserPromise = null;
+        }
+
+        logger.error("Failed to connect to Chrome via CDP", {
+            endpoint: CDP_ENDPOINT,
+            error,
+        });
+
+        throw error;
+    }
+}
+
+// export async function connectChrome(): Promise<Page> {
+//     const browser = await getBrowser();
+
+//     const contexts: BrowserContext[] = browser.contexts();
+//     const context = contexts[0];
+
+//     if (!context) {
+//         throw new Error(
+//             "No existing Chrome browser context found. " +
+//             "Start Chrome with the configured remote debugging port."
+//         );
+//     }
+
+//     const page = await context.newPage();
+
+//     logger.info("New tab created in existing Chrome profile", {
+//         endpoint: CDP_ENDPOINT,
+//     });
+
+//     return page;
+// }
 export async function connectChrome(): Promise<Page> {
     return browserManager.newPage();
 }
