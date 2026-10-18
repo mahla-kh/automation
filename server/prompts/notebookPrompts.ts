@@ -1019,38 +1019,33 @@ Never add outside medical knowledge, invented facts, examples, cases, questions,
 
 ## 1. خلاصه مبحث
 Compact core: definitions, classification, mechanism, key findings, diagnosis, key distinctions. Short bullets and tables, in lecture order, with bold keywords.
+## 2. 🩺 سناریوهای بالینی
+Only scenarios explicit in the sources, one line each.
 
-## 2. نکات امتحانی
-### 2.1 نکات موجود در جزوه و پاسخ تشریحی
+## 3. مثال‌های استاد
+Only examples clarifying Tier 1/2 concepts: مثال استاد → مفهوم.
+## ?. نکات امتحانی
+### ?.1 نکات موجود در جزوه و پاسخ تشریحی
 For each merged concept (Tier 1 first):
 [سؤال امتحان] short wording (×n if repeated)
 → نکته: concise key point (with cut-off/value if tested)
 Add only the exam angle; don't restate section 1.
 
-### 2.2 نکات موجود در پاسخ تشریحی ولی خارج از جزوه
+### 4. نکات موجود در پاسخ تشریحی ولی خارج از جزوه
 Only important, exam-useful facts absent from the lecture, tagged [فقط پاسخ‌نامه]. No full explanations.
 
-## 3. فهرست‌های کامل و استثناها
+## 5. فهرست‌های کامل و استثناها
 Only for categories tested via negative questions: full member list, odd/excluded item in bold. Skip if section 1 or 9 already has the complete list.
 
-## 4. 🚨 تله‌های امتحانی
+## 6. 🚨 تله‌های امتحانی
 - الگوهای تکرارشونده: only patterns actually repeated in the questions.
 - تله‌های مشاهده‌شده: only misleading options/mistakes actually present.
 
-## 5. ⚠️ قاطی نشه!
+## 7. ⚠️ قاطی نشه!
 Only genuinely confusable pairs/groups, as A vs B, one line per side, no repeated facts.
 
-## 6. جدول‌های مقایسه‌ای
+## 8. جدول‌های مقایسه‌ای
 Only where a table replaces prose or prevents confusion. Prefer one master table; no repeated content.
-
-## 7. 🩺 سناریوهای بالینی
-Only scenarios explicit in the sources, one line each.
-
-## 8. مثال‌های استاد
-Only examples clarifying Tier 1/2 concepts: مثال استاد → مفهوم.
-
-##9. 🔮 مطالب مهم جزوه که مستقیماً سؤال نشده‌اند
-Only lecture concepts closely linked to repeatedly tested areas, one line each. No predictions.
 
 **STYLE**
 - Persian, standard medical terminology, English terms in parentheses when useful.

@@ -4,7 +4,7 @@ import { pipelineService } from "@/server/services/pipeline.service";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { folderUrl, enableReformat } = body;
+    const { folderUrl } = body;
 
     if (!folderUrl) {
       return NextResponse.json(
@@ -13,13 +13,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const jobData = await pipelineService.start(folderUrl, Boolean(enableReformat));
+    const jobData = await pipelineService.start(folderUrl);
 
     return NextResponse.json({
       success: true,
       jobId: jobData.jobId,
       totalFiles: jobData.totalFiles,
-      reformatEnabled: Boolean(enableReformat),
     });
   } catch (error) {
     console.error("Pipeline start error:", error);

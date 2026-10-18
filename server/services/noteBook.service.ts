@@ -26,10 +26,8 @@ export interface PipelineStartResult {
     jobId: string;
 }
 
-export interface QuestionRange {
-    start: number; // 1-indexed, inclusive
-    end: number;   // 1-indexed, inclusive
-}
+import { buildRanges, resolveQuestionsLength, type QuestionRange } from "./batchRanges";
+export type { QuestionRange } from "./batchRanges";
 
 export const noteBookService = {
     async start(
@@ -46,7 +44,7 @@ export const noteBookService = {
                 promptTitle: "Default Question Analysis",
                 promptType: "question",
                 batch: legacyBatch ?? 15,
-                qLength: legacyQLength ?? 100
+                qLength: resolveQuestionsLength(legacyQLength)
             };
         } else {
             jobParams = paramsOrUrl;
@@ -71,6 +69,7 @@ export const noteBookService = {
             promptType: job.promptType,
             batch: job.batch,
             qLength: job.qLength,
+            startpoint: job.startpoint,
             totalBatches: job.totalBatches
         });
 
@@ -187,16 +186,6 @@ export const noteBookService = {
     }
 };
 
-function buildRanges(qLength: number, batch: number): QuestionRange[] {
-    const ranges: QuestionRange[] = [];
-    for (let x = 0; x < qLength; x += batch) {
-        ranges.push({
-            start: x + 1,
-            end: Math.min(x + batch, qLength)
-        });
-    }
-    return ranges;
-}
 
 async function runJob(job: noteBookJob): Promise<void> {
     const startedAt = performance.now();
@@ -279,12 +268,15 @@ async function runJob(job: noteBookJob): Promise<void> {
                     return;
                 }
             } else {
-                const ranges = buildRanges(job.qLength, job.batch);
+                const ranges = buildRanges(job.qLength, job.batch, job.startpoint ?? 1);
                 logger.info("Job question ranges built", {
                     jobId: job.id,
                     subject: job.subject,
                     folderName: job.folderName,
-                    totalBatches: ranges.length
+                    totalBatches: ranges.length,
+                    startpoint: job.startpoint,
+                    firstQuestion: ranges[0]?.start,
+                    lastQuestion: ranges[ranges.length - 1]?.end
                 });
 
                 // Register all prompts BEFORE any async work starts.

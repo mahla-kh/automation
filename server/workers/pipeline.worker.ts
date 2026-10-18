@@ -3,10 +3,8 @@ import fs from "fs/promises";
 import { downloadFile } from "../services/drive.service";
 import { logger } from "../lib/logger";
 import { ocrService } from "../services/AI";
-import { clean_ParseQuestions } from "../services/AI/deepseek.service";
 import { updateFileStageStatus, addJobLog } from "../services/Pjob.service";
-import { splitByLines } from "../lib/splitByLines";
-import { saveJson, saveText } from "../services/storage.service";
+import { saveText } from "../services/storage.service";
 
 export interface FileProcessingResult {
     fileId: string;
@@ -17,17 +15,16 @@ export interface FileProcessingResult {
 
 /**
  * Processes a single Drive file end-to-end:
- * Download -> OCR -> Upload (Save raw text) -> Reformat (optional, if enableReformat is true).
+ * Download -> OCR -> Upload (Save raw text).
  */
 export async function processPipeline(
     file: DriveFile,
     folderId: string,
-    jobId: string,
-    enableReformat: boolean = false
+    jobId: string
 ): Promise<FileProcessingResult> {
     const jobStartedAt = performance.now();
     let pdfPath: string | null = null;
-    let currentStage: "download" | "upload" | "ocr" | "reformat" = "download";
+    let currentStage: "download" | "upload" | "ocr" = "download";
 
     logger.info("File processing started", {
         fileId: file.id,
@@ -100,9 +97,9 @@ export async function processPipeline(
             stage: "ocr",
         });
 
-        const rawOCR = await ocrService.extract(pdfPath, file.name);
+        const result = await ocrService.extract(pdfPath, file.name);
 
-        if (!rawOCR) {
+        if (!result) {
             throw new Error("OCR provider returned an empty response");
         }
 
@@ -122,7 +119,7 @@ export async function processPipeline(
             stage: "ocr",
         });
 
-        // --- Stage 3: Upload (Saving raw output) ------------------------------
+        // --- Stage 3: Upload (Saving result) -----------------------------------
         currentStage = "upload";
         const saveStartedAt = performance.now();
         const saveStartTimeIso = new Date().toISOString();
@@ -133,130 +130,47 @@ export async function processPipeline(
         });
 
         const outputName = sanitizeFileName(file.name);
-        const rawFileName = `${outputName}_01_raw.txt`;
+        const resultFileName = `${outputName}_result.txt`;
+        const outputFilename = `${outputName}_result.txt`;
+        const outputPath = `outputs/${outputName}/result.txt`;
 
         addJobLog(jobId, {
             level: "INFO",
-            message: `Uploading raw OCR output to Google Drive...`,
+            message: `Saving OCR result locally...`,
             fileId: file.id,
             fileName: file.name,
             stage: "upload",
         });
 
-        // await uploadTextToDrive(folderId, rawFileName, rawOCR);
-        await saveText(outputName, "01_raw", rawOCR).catch((err) => {
-            logger.warn("Failed to save local raw OCR file", { error: err, outputName });
-        });
+        await saveText(outputName, "result", result);
 
         const saveDuration = Math.round(performance.now() - saveStartedAt);
-
-        updateFileStageStatus(jobId, file.id, "upload", {
-            status: "success",
-            completedAt: new Date().toISOString(),
-            durationMs: saveDuration,
-        });
-
-        addJobLog(jobId, {
-            level: "INFO",
-            message: `Raw OCR output uploaded successfully to Google Drive as "${rawFileName}" in ${saveDuration}ms`,
-            fileId: file.id,
-            fileName: file.name,
-            stage: "upload",
-        });
-
-        // --- Stage 4: Reformat (Optional - Controlled by Toggle) --------------
-        if (enableReformat) {
-            currentStage = "reformat";
-            const reformatStartedAt = performance.now();
-            const reformatStartTimeIso = new Date().toISOString();
-
-            updateFileStageStatus(jobId, file.id, "reformat", {
-                status: "in_progress",
-                startedAt: reformatStartTimeIso,
-            });
-
-            addJobLog(jobId, {
-                level: "INFO",
-                message: `Reformat stage started (DeepSeek parsing)`,
-                fileId: file.id,
-                fileName: file.name,
-                stage: "reformat",
-            });
-
-            const chunks = splitByLines(rawOCR, 600);
-            let allQuestions = "";
-
-            for (const chunk of chunks) {
-                const result = await clean_ParseQuestions(chunk);
-                allQuestions += result;
-            }
-
-            const jsonFileName = `${outputName}_03_questions.json`;
-
-            addJobLog(jobId, {
-                level: "INFO",
-                message: `Uploading reformat output to Google Drive...`,
-                fileId: file.id,
-                fileName: file.name,
-                stage: "reformat",
-            });
-
-            // await uploadJsonToDrive(folderId, jsonFileName, allQuestions);
-
-            // Also save locally for dashboard download
-            await saveJson(outputName, "03_questions", allQuestions).catch((err) => {
-                logger.warn("Failed to save local reformat JSON file", { error: err, outputName });
-            });
-            const outputFilename = `${outputName}_03_questions.json`;
-            const outputPath = `outputs/${outputName}/03_questions.json`;
-
-            const reformatDuration = Math.round(performance.now() - reformatStartedAt);
-
-            updateFileStageStatus(
-                jobId,
-                file.id,
-                "reformat",
-                {
-                    status: "success",
-                    completedAt: new Date().toISOString(),
-                    durationMs: reformatDuration,
-                },
-                undefined,
-                {
-                    outputFilename,
-                    outputPath,
-                }
-            );
-
-            addJobLog(jobId, {
-                level: "INFO",
-                message: `Reformat output uploaded successfully to Google Drive as "${jsonFileName}" in ${reformatDuration}ms`,
-                fileId: file.id,
-                fileName: file.name,
-                stage: "reformat",
-            });
-        } else {
-            updateFileStageStatus(jobId, file.id, "reformat", {
-                status: "skipped",
-            });
-            addJobLog(jobId, {
-                level: "INFO",
-                message: `Reformat stage skipped as requested by toggle setting`,
-                fileId: file.id,
-                fileName: file.name,
-                stage: "reformat",
-            });
-        }
-
-        const durationMs = Math.round(performance.now() - jobStartedAt);
 
         updateFileStageStatus(
             jobId,
             file.id,
-            "reformat",
-            {},
-            "success"
+            "upload",
+            {
+                status: "success",
+                completedAt: new Date().toISOString(),
+                durationMs: saveDuration,
+            },
+            "success",
+            {
+                outputFilename,
+                outputPath,
+            }
         );
+
+        addJobLog(jobId, {
+            level: "INFO",
+            message: `OCR result saved locally as "${resultFileName}" in ${saveDuration}ms`,
+            fileId: file.id,
+            fileName: file.name,
+            stage: "upload",
+        });
+
+        const durationMs = Math.round(performance.now() - jobStartedAt);
 
         addJobLog(jobId, {
             level: "INFO",
@@ -323,5 +237,3 @@ function sanitizeFileName(name: string): string {
         .replace(/[\\/:*?"<>|]+/g, "_")
         .trim();
 }
-
-export { splitByLines };

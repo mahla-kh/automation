@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
   // Marking them external forces Node.js to load them directly as native ESM/CJS
   // at runtime, bypassing Turbopack's module graph entirely.
   serverExternalPackages: [
-    "pdf-to-img",
     "pdfjs-dist",
     "@napi-rs/canvas",
     "playwright",

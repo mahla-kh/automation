@@ -36,9 +36,9 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (fileStatus.reformat.status !== "success") {
+    if (fileStatus.upload.status !== "success") {
       return NextResponse.json(
-        { error: `Reformat stage is not completed yet for file: ${fileStatus.fileName}` },
+        { error: `OCR output is not ready yet for file: ${fileStatus.fileName}` },
         { status: 400 }
       );
     }
@@ -52,8 +52,7 @@ export async function GET(req: NextRequest) {
     }
 
     const folderDir = path.resolve(OUTPUTS_ROOT, sanitizeFolderName(baseName));
-    candidates.push(path.join(folderDir, "03_questions.json"));
-    candidates.push(path.join(folderDir, "03_questions.txt"));
+    candidates.push(path.join(folderDir, "result.txt"));
 
     let resolvedPath: string | null = null;
     for (const cand of candidates) {
@@ -75,9 +74,8 @@ export async function GET(req: NextRequest) {
     }
 
     const fileBuffer = await fs.readFile(resolvedPath);
-    const downloadName = fileStatus.outputFilename || `${baseName}_03_questions.json`;
-    const isJson = resolvedPath.endsWith(".json") || downloadName.endsWith(".json");
-    const contentType = isJson ? "application/json; charset=utf-8" : "text/plain; charset=utf-8";
+    const downloadName = fileStatus.outputFilename || `${baseName}_result.txt`;
+    const contentType = "text/plain; charset=utf-8";
 
     return new NextResponse(fileBuffer, {
       status: 200,

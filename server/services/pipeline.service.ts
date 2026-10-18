@@ -24,7 +24,7 @@ export const pipelineService = {
    * Starts a pipeline job for a Google Drive folder.
    * Processes files asynchronously with concurrency limit.
    */
-  async start(folderUrl: string, enableReformat: boolean = false): Promise<PipelineStartResult> {
+  async start(folderUrl: string): Promise<PipelineStartResult> {
     const startedAt = performance.now();
     const folderId = extractFolderId(folderUrl);
 
@@ -33,7 +33,7 @@ export const pipelineService = {
       throw new Error("Invalid Google Drive folder URL");
     }
 
-    logger.info("Pipeline start requested", { folderId, enableReformat });
+    logger.info("Pipeline start requested", { folderId });
 
     const files = await getFilesFromFolder(folderId);
 
@@ -41,12 +41,11 @@ export const pipelineService = {
       logger.warn("No files found in Drive folder", { folderId });
     }
 
-    const job = createJob(files as DriveFile[], enableReformat, folderId);
+    const job = createJob(files as DriveFile[], folderId);
 
     logger.info("Job created", {
       jobId: job.id,
       totalFiles: job.files.length,
-      reformatEnabled: enableReformat,
     });
 
     updateJobStatus(job.id, "processing");
@@ -105,7 +104,7 @@ async function runJob(job: PipelineJob): Promise<void> {
   const limit = pLimit(CONCURRENCY_LIMIT);
 
   const results = await Promise.allSettled(
-    job.files.map((file) => limit(() => processPipeline(file, job.folderId, job.id, job.reformatEnabled)))
+    job.files.map((file) => limit(() => processPipeline(file, job.folderId, job.id)))
   );
 
   const failures = results.filter(

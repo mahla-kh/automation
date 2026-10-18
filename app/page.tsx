@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useLanguage } from "@/app/context/LanguageContext";
+import LanguageSelector from "@/app/components/LanguageSelector";
 
 export type StageStatus = "not_started" | "pending" | "in_progress" | "success" | "error" | "skipped";
 
@@ -19,7 +21,6 @@ export interface FileProcessingStatus {
   download: StageDetails;
   upload: StageDetails;
   ocr: StageDetails;
-  reformat: StageDetails;
   overallStatus: "not_started" | "pending" | "in_progress" | "success" | "error";
   startedAt?: string;
   completedAt?: string;
@@ -33,7 +34,7 @@ export interface PipelineLog {
   timestamp: string;
   level: "INFO" | "WARN" | "ERROR";
   message: string;
-  stage?: "download" | "upload" | "ocr" | "reformat" | "pipeline";
+  stage?: "download" | "upload" | "ocr" | "pipeline";
   fileId?: string;
   fileName?: string;
   error?: string;
@@ -47,15 +48,12 @@ export interface PipelineSummary {
   pending: number;
   ocrSuccessRate: number;
   ocrErrorRate: number;
-  reformatSuccessRate: number;
   avgOcrDurationMs: number;
-  avgReformatDurationMs: number;
 }
 
 export interface JobDetailsResponse {
   id: string;
   status: "queued" | "processing" | "completed" | "failed";
-  reformatEnabled: boolean;
   createdAt: string;
   files: FileProcessingStatus[];
   logs: PipelineLog[];
@@ -65,12 +63,13 @@ export interface JobDetailsResponse {
 export interface JobSummary {
   id: string;
   status: string;
-  reformatEnabled: boolean;
   createdAt: string;
   totalFiles: number;
 }
 
 export default function PipelineDashboard() {
+  const { language, t, isRtl, dir } = useLanguage();
+
   // Theme State: "dark" | "light"
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
@@ -106,7 +105,6 @@ export default function PipelineDashboard() {
   }, [isDark]);
 
   const [folderUrl, setFolderUrl] = useState("");
-  const [enableReformat, setEnableReformat] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [jobsList, setJobsList] = useState<JobSummary[]>([]);
@@ -119,7 +117,7 @@ export default function PipelineDashboard() {
   // Filters & Views
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "success" | "processing" | "failed" | "pending">("all");
-  const [stageFilter, setStageFilter] = useState<"all" | "download" | "upload" | "ocr" | "reformat">("all");
+  const [stageFilter, setStageFilter] = useState<"all" | "download" | "upload" | "ocr">("all");
   const [selectedFile, setSelectedFile] = useState<FileProcessingStatus | null>(null);
 
   const [activeTab, setActiveTab] = useState<"dashboard" | "logs">("dashboard");
@@ -142,7 +140,7 @@ export default function PipelineDashboard() {
     } catch {
       // silent background fetch catch
     }
-  }, []);
+  }, [currentJobId]);
 
   // Fetch job details
   const fetchJobStatus = useCallback(async (id: string, showLoading = false) => {
@@ -199,7 +197,6 @@ export default function PipelineDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           folderUrl: folderUrl.trim(),
-          enableReformat,
         }),
       });
 
@@ -260,33 +257,41 @@ export default function PipelineDashboard() {
 
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "—";
-    return new Date(dateStr).toLocaleTimeString();
+    return new Date(dateStr).toLocaleTimeString(language === "fa" ? "fa-IR" : "en-US");
   };
 
+  const successCount = (jobData?.files || []).filter((f) => f.overallStatus === "success").length;
+  const failedCount = (jobData?.files || []).filter((f) => f.overallStatus === "error").length;
+  const jobFinished = !!jobData && jobData.status !== "processing" && jobData.status !== "queued";
+  const canMerge = jobFinished && successCount > 0;
+
   return (
-    <div className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
+    <div dir={dir} className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
       {/* Top Navigation Bar */}
       <header className={`border-b backdrop-blur sticky top-0 z-40 px-6 py-4 ${styles.bgHeader}`}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">
+            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 shrink-0">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <div>
               <h1 className={`text-lg font-bold tracking-tight flex items-center gap-2 ${styles.textTitle}`}>
-                WePass
+                {t.pipeline.pageTitle}
                 <span className={`text-xs px-2 py-0.5 rounded-full font-mono font-medium border ${isDark ? "bg-slate-800 text-slate-400 border-slate-700" : "bg-slate-100 text-slate-600 border-slate-300"}`}>
-                  Engine
+                  {t.pipeline.engineBadge}
                 </span>
               </h1>
-              <p className={`text-xs ${styles.textMuted}`}>OCR & Document Reformatting Processing Engine</p>
+              <p className={`text-xs ${styles.textMuted}`}>{t.pipeline.pageDescription}</p>
             </div>
           </div>
 
-          {/* Job Selection, Refresh & Theme Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Job Selection, Language, Refresh & Theme Toggle */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Language Selector */}
+            <LanguageSelector isDark={isDark} />
+
             {/* Theme Toggle Button */}
             <button
               type="button"
@@ -296,9 +301,9 @@ export default function PipelineDashboard() {
                   ? "bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700"
                   : "bg-white border-slate-300 text-slate-800 hover:bg-slate-100"
               }`}
-              title="Toggle Light/Dark Theme"
+              title={t.common.toggleTheme}
             >
-              <span>{isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}</span>
+              <span>{isDark ? t.common.darkMode : t.common.lightMode}</span>
             </button>
 
             {jobsList.length > 0 && (
@@ -311,7 +316,7 @@ export default function PipelineDashboard() {
               >
                 {jobsList.map((j) => (
                   <option key={j.id} value={j.id}>
-                    Job: {j.id.slice(0, 8)}... ({j.totalFiles} files, {j.status})
+                    {t.pipeline.jobPrefix} {j.id.slice(0, 8)}... ({j.totalFiles} {t.pipeline.filesCount}, {j.status})
                   </option>
                 ))}
               </select>
@@ -325,7 +330,7 @@ export default function PipelineDashboard() {
                   ? "bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300"
                   : "bg-white hover:bg-slate-100 border-slate-300 text-slate-700 shadow-sm"
               }`}
-              title="Refresh Data"
+              title={t.common.refresh}
             >
               <svg className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -343,37 +348,24 @@ export default function PipelineDashboard() {
               {/* Folder URL Input */}
               <div className="flex-1 space-y-1.5">
                 <label className={`text-xs font-semibold uppercase tracking-wider ${styles.textMuted}`}>
-                  Google Drive Folder URL / ID
+                  {t.pipeline.folderUrlLabel}
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <div className={`absolute inset-y-0 ${isRtl ? "right-0 pr-3" : "left-0 pl-3"} flex items-center pointer-events-none text-slate-500`}>
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                     </svg>
                   </div>
                   <input
                     type="text"
+                    dir="ltr"
                     value={folderUrl}
                     onChange={(e) => setFolderUrl(e.target.value)}
-                    placeholder="https://drive.google.com/drive/folders/..."
-                    className={`w-full pl-9 rounded-lg px-3 py-2 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none transition ${styles.bgInput}`}
+                    placeholder={t.pipeline.folderUrlPlaceholder}
+                    className={`w-full ${isRtl ? "pr-9 pl-3 text-left" : "pl-9 pr-3 text-left"} rounded-lg py-2 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none transition ${styles.bgInput}`}
                     required
                   />
                 </div>
-              </div>
-
-              {/* Reformat Checkbox */}
-              <div className={`flex items-center gap-2 border px-3 py-2 rounded-lg cursor-pointer ${isDark ? "bg-slate-950 border-slate-800" : "bg-slate-100 border-slate-300"}`}>
-                <input
-                  type="checkbox"
-                  id="enableReformat"
-                  checked={enableReformat}
-                  onChange={(e) => setEnableReformat(e.target.checked)}
-                  className="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-indigo-500 h-4 w-4"
-                />
-                <label htmlFor="enableReformat" className={`text-xs font-medium cursor-pointer select-none ${styles.textTitle}`}>
-                  Enable Reformat Stage
-                </label>
               </div>
 
               {/* Submit Button */}
@@ -388,7 +380,7 @@ export default function PipelineDashboard() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    <span>Starting...</span>
+                    <span>{t.pipeline.startingPipeline}</span>
                   </>
                 ) : (
                   <>
@@ -396,7 +388,7 @@ export default function PipelineDashboard() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Run Pipeline</span>
+                    <span>{t.pipeline.runPipeline}</span>
                   </>
                 )}
               </button>
@@ -423,27 +415,27 @@ export default function PipelineDashboard() {
         {jobData && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>Total Files</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.pipeline.totalFiles}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{jobData.summary.total}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 block mb-1">Completed</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 block mb-1">{t.pipeline.completedFiles}</span>
               <span className="text-2xl font-extrabold text-emerald-400">{jobData.summary.completed}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400 block mb-1">Processing</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400 block mb-1">{t.pipeline.processingFiles}</span>
               <span className="text-2xl font-extrabold text-amber-400">{jobData.summary.processing}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-400 block mb-1">Failed</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-400 block mb-1">{t.pipeline.failedFiles}</span>
               <span className="text-2xl font-extrabold text-rose-400">{jobData.summary.failed}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>OCR Success</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.pipeline.ocrSuccessRate}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{jobData.summary.ocrSuccessRate}%</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>Avg OCR Time</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.pipeline.avgOcrTime}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{formatMs(jobData.summary.avgOcrDurationMs)}</span>
             </div>
           </div>
@@ -460,7 +452,7 @@ export default function PipelineDashboard() {
                   : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
               }`}
             >
-              Files Dashboard
+              {t.pipeline.tabDashboard}
             </button>
             <button
               onClick={() => setActiveTab("logs")}
@@ -470,7 +462,7 @@ export default function PipelineDashboard() {
                   : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
               }`}
             >
-              Pipeline System Logs ({jobData?.logs.length || 0})
+              {t.pipeline.tabLogs} ({jobData?.logs.length || 0})
             </button>
           </div>
         </div>
@@ -484,56 +476,87 @@ export default function PipelineDashboard() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search files..."
+                placeholder={t.pipeline.searchFiles}
                 className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${styles.bgInput}`}
               />
 
               <div className="flex items-center gap-2 w-full sm:w-auto">
+                {canMerge && jobData ? (
+                  <a
+                    href={`/api/pipelines/merge?jobId=${jobData.id}`}
+                    download
+                    onClick={(e) => {
+                      if (
+                        failedCount > 0 &&
+                        !window.confirm(
+                          t.pipeline.mergeConfirmation
+                            .replace("{failedCount}", String(failedCount))
+                            .replace("{successCount}", String(successCount))
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition"
+                    title={t.pipeline.downloadTooltip}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    {t.pipeline.mergeAndDownload} ({successCount})
+                  </a>
+                ) : (
+                  <span
+                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-not-allowed opacity-50 ${styles.bgSubCard} ${styles.textMuted}`}
+                    title={t.pipeline.mergeDisabledTooltip}
+                  >
+                    {t.pipeline.mergeAndDownload}
+                  </span>
+                )}
+
                 <select
                   value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value as any)}
+                  onChange={(e) => setStatusFilter(e.target.value as "all" | "success" | "processing" | "failed" | "pending")}
                   className={`text-xs rounded-lg px-3 py-1.5 focus:outline-none ${styles.bgInput}`}
                 >
-                  <option value="all">All Statuses</option>
-                  <option value="success">Success</option>
-                  <option value="processing">Processing</option>
-                  <option value="failed">Failed</option>
-                  <option value="pending">Pending</option>
+                  <option value="all">{t.pipeline.filterAllStatuses}</option>
+                  <option value="success">{t.pipeline.filterSuccess}</option>
+                  <option value="processing">{t.pipeline.filterProcessing}</option>
+                  <option value="failed">{t.pipeline.filterFailed}</option>
+                  <option value="pending">{t.pipeline.filterPending}</option>
                 </select>
 
                 <select
                   value={stageFilter}
-                  onChange={(e) => setStageFilter(e.target.value as any)}
+                  onChange={(e) => setStageFilter(e.target.value as "all" | "download" | "upload" | "ocr")}
                   className={`text-xs rounded-lg px-3 py-1.5 focus:outline-none ${styles.bgInput}`}
                 >
-                  <option value="all">All Stages</option>
-                  <option value="download">Download</option>
-                  <option value="upload">Upload</option>
-                  <option value="ocr">OCR</option>
-                  <option value="reformat">Reformat</option>
+                  <option value="all">{t.pipeline.filterAllStages}</option>
+                  <option value="download">{t.pipeline.filterDownload}</option>
+                  <option value="upload">{t.pipeline.filterUpload}</option>
+                  <option value="ocr">{t.pipeline.filterOcr}</option>
                 </select>
               </div>
             </div>
 
             {/* Files List Table */}
             <div className={`overflow-x-auto rounded-xl border ${styles.borderLine}`}>
-              <table className="w-full text-left text-xs">
+              <table className={`w-full text-xs ${isRtl ? "text-right" : "text-left"}`}>
                 <thead className={`uppercase font-semibold border-b ${isDark ? "bg-slate-900 text-slate-400 border-slate-800" : "bg-slate-100 text-slate-600 border-slate-200"}`}>
                   <tr>
-                    <th className="p-3">File Name</th>
-                    <th className="p-3">Download</th>
-                    <th className="p-3">Upload</th>
-                    <th className="p-3">OCR Extraction</th>
-                    <th className="p-3">Reformat</th>
-                    <th className="p-3">Overall Status</th>
-                    <th className="p-3 text-right">Action</th>
+                    <th className="p-3">{t.pipeline.thFileName}</th>
+                    <th className="p-3">{t.pipeline.thDownload}</th>
+                    <th className="p-3">{t.pipeline.thUpload}</th>
+                    <th className="p-3">{t.pipeline.thOcr}</th>
+                    <th className="p-3">{t.pipeline.thOverallStatus}</th>
+                    <th className={`p-3 ${isRtl ? "text-left" : "text-right"}`}>{t.pipeline.thAction}</th>
                   </tr>
                 </thead>
                 <tbody className={`divide-y ${styles.borderLine}`}>
                   {!jobData || filteredFiles.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className={`text-center py-12 italic ${styles.textMuted}`}>
-                        {!jobData ? "No active pipeline job selected." : "No files match the selected filter criteria."}
+                      <td colSpan={6} className={`text-center py-12 italic ${styles.textMuted}`}>
+                        {!jobData ? t.pipeline.noActiveJob : t.pipeline.noMatchingFiles}
                       </td>
                     </tr>
                   ) : (
@@ -551,7 +574,7 @@ export default function PipelineDashboard() {
                             : "hover:bg-slate-100/80"
                         }`}
                       >
-                        <td className={`p-3 font-semibold ${styles.textTitle}`}>{file.fileName}</td>
+                        <td className={`p-3 font-semibold ${styles.textTitle}`} dir="ltr">{file.fileName}</td>
                         <td className="p-3">
                           <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${file.download.status === "success" ? "bg-emerald-950 text-emerald-300" : "bg-slate-800 text-slate-400"}`}>
                             {file.download.status}
@@ -568,28 +591,23 @@ export default function PipelineDashboard() {
                           </span>
                         </td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${file.reformat.status === "success" ? "bg-emerald-950 text-emerald-300" : file.reformat.status === "skipped" ? "bg-slate-800 text-slate-500" : "bg-slate-800 text-slate-400"}`}>
-                            {file.reformat.status}
-                          </span>
-                        </td>
-                        <td className="p-3">
                           <span className={`px-2.5 py-1 rounded font-bold uppercase text-[10px] ${file.overallStatus === "success" ? "bg-emerald-950 text-emerald-300 border border-emerald-800" : file.overallStatus === "error" ? "bg-rose-950 text-rose-300 border border-rose-800" : "bg-amber-950 text-amber-300 border border-amber-800"}`}>
                             {file.overallStatus}
                           </span>
                         </td>
-                        <td className="p-3 text-right">
-                          {file.reformat.status === "success" && jobData ? (
+                        <td className={`p-3 ${isRtl ? "text-left" : "text-right"}`}>
+                          {file.overallStatus === "success" && jobData ? (
                             <a
                               href={`/api/pipelines/download?jobId=${jobData.id}&fileId=${file.fileId}`}
                               download
                               onClick={(e) => e.stopPropagation()}
                               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition"
-                              title="Download reformat questions JSON"
+                              title={t.pipeline.downloadOcrTxt}
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                               </svg>
-                              Download
+                              {t.pipeline.downloadOcrTxt}
                             </a>
                           ) : (
                             <span className="text-[11px] text-slate-500">—</span>
@@ -612,25 +630,30 @@ export default function PipelineDashboard() {
                 type="text"
                 value={logSearchQuery}
                 onChange={(e) => setLogSearchQuery(e.target.value)}
-                placeholder="Search log messages..."
+                placeholder={t.pipeline.searchLogs}
                 className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${styles.bgInput}`}
               />
 
               <select
                 value={logLevelFilter}
-                onChange={(e) => setLogLevelFilter(e.target.value as any)}
+                onChange={(e) => setLogLevelFilter(e.target.value as "ALL" | "INFO" | "WARN" | "ERROR")}
                 className={`text-xs rounded-lg px-3 py-1.5 focus:outline-none ${styles.bgInput}`}
               >
-                <option value="ALL">All Levels</option>
+                <option value="ALL">{t.pipeline.filterAllLevels}</option>
                 <option value="INFO">INFO</option>
                 <option value="WARN">WARN</option>
                 <option value="ERROR">ERROR</option>
               </select>
             </div>
 
-            <div className={`p-4 rounded-xl border font-mono text-xs max-h-[500px] overflow-y-auto space-y-1 ${isDark ? "bg-slate-950 border-slate-800" : "bg-slate-900 border-slate-800 text-slate-200"}`}>
+            <div
+              dir="ltr"
+              className={`p-4 rounded-xl border font-mono text-xs max-h-[500px] overflow-y-auto space-y-1 text-left ${
+                isDark ? "bg-slate-950 border-slate-800" : "bg-slate-900 border-slate-800 text-slate-200"
+              }`}
+            >
               {filteredLogs.length === 0 ? (
-                <p className="text-slate-500 italic">No logs recorded.</p>
+                <p className="text-slate-500 italic">{t.pipeline.noLogs}</p>
               ) : (
                 filteredLogs.map((log) => (
                   <div key={log.id} className="flex gap-3 leading-relaxed">

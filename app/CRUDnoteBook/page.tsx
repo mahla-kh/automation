@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/app/context/LanguageContext";
+import LanguageSelector from "@/app/components/LanguageSelector";
 
 export default function Home() {
+  const { t, dir } = useLanguage();
   const [noteBookUrl, setNoteBookUrl] = useState("");
   const [batch, setBatch] = useState(15);
   const [qLength, setQLength] = useState(100);
@@ -29,21 +32,25 @@ export default function Home() {
   }
 
   return (
-    <main className="main">
+    <main dir={dir} className="main">
+      <div className="absolute top-4 right-4">
+        <LanguageSelector isDark={false} />
+      </div>
       <form onSubmit={handleSubmit} className="form">
         <input
           type="text"
+          dir="ltr"
           value={noteBookUrl}
           onChange={(e) => setNoteBookUrl(e.target.value)}
-          placeholder="آدرس نوت‌بوک را وارد کنید"
+          placeholder={t.crud.notebookUrlPlaceholder}
           className="input"
         />
 
         <button type="submit" className="button">
-          ارسال
+          {t.crud.submit}
         </button>
 
-        {result && <p className="result">پاسخ بک‌اند: {result}</p>}
+        {result && <p className="result">{t.crud.responsePrefix}{result}</p>}
       </form>
     </main>
   );

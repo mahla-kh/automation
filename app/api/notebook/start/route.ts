@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { noteBookService } from "@/server/services/noteBook.service";
+import { resolveStartpoint, resolveQuestionsLength } from "@/server/services/batchRanges";
 
 export async function POST(req: NextRequest) {
     try {
@@ -14,6 +15,7 @@ export async function POST(req: NextRequest) {
             questionsLength,
             qLength,
             batch,
+            startpoint,
             topics
         } = body;
 
@@ -32,6 +34,8 @@ export async function POST(req: NextRequest) {
         }
 
         const mode = promptType === "jozve" ? "jozve" : "question";
+        let finalQLength = 0;
+        let finalStartpoint = 1;
 
         if (mode === "jozve") {
             if (!Array.isArray(topics) || topics.length === 0 || topics.every(t => !t || !t.trim())) {
@@ -41,11 +45,26 @@ export async function POST(req: NextRequest) {
                 );
             }
         } else {
-            const finalQLength = Number(questionsLength ?? qLength ?? 100);
-            const finalBatch = Number(batch ?? 15);
-            if (isNaN(finalQLength) || finalQLength <= 0 || isNaN(finalBatch) || finalBatch <= 0) {
+            try {
+                finalQLength = resolveQuestionsLength(questionsLength ?? qLength);
+            } catch (err) {
                 return NextResponse.json(
-                    { error: "Valid questions length and batch size are required for Question Mode" },
+                    { error: err instanceof Error ? err.message : String(err) },
+                    { status: 400 }
+                );
+            }
+            const finalBatch = Number(batch ?? 15);
+            if (isNaN(finalBatch) || finalBatch <= 0) {
+                return NextResponse.json(
+                    { error: "Valid batch size is required for Question Mode" },
+                    { status: 400 }
+                );
+            }
+            try {
+                finalStartpoint = resolveStartpoint(startpoint);
+            } catch (err) {
+                return NextResponse.json(
+                    { error: err instanceof Error ? err.message : String(err) },
                     { status: 400 }
                 );
             }
@@ -59,7 +78,8 @@ export async function POST(req: NextRequest) {
             promptText,
             promptType: mode,
             batch: Number(batch ?? 15),
-            qLength: Number(questionsLength ?? qLength ?? 100),
+            qLength: finalQLength,
+            startpoint: finalStartpoint,
             topics: Array.isArray(topics) ? topics.filter(t => t && t.trim()) : undefined
         });
 

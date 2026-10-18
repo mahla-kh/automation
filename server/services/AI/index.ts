@@ -1,15 +1,7 @@
-import { DeepSeekOCR, deepseekOCR } from "./deepseek.service";
+import { GeminiOCR } from "./gemini.service";
 
-
-export interface OCRProvider{
-
-    extract(
-
-        pdfPath:string , fileName:string
-
-    ):Promise<string>
-
+export interface OCRProvider {
+  extract(pdfPath: string, fileName: string): Promise<string>;
 }
 
-export const ocrService: OCRProvider = new DeepSeekOCR();
-export { deepseekOCR };
+export const ocrService: OCRProvider = new GeminiOCR();

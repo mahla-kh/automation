@@ -1,4 +1,5 @@
 import { resolveUniqueFolderName } from "./storage.service";
+import { resolveQuestionsLength } from "./batchRanges";
 
 export type PromptStatus = "pending" | "sending" | "completed" | "failed";
 
@@ -34,6 +35,8 @@ export interface noteBookJob {
     status: "queued" | "processing" | "completed" | "failed";
     batch: number;
     qLength: number;
+    /** First question number. Immutable after creation. Defaults to 1. */
+    startpoint: number;
     topics?: string[];
     totalBatches: number;
     completedBatches: number;
@@ -56,6 +59,7 @@ export interface CreateJobParams {
     promptType: "question" | "jozve";
     batch?: number;
     qLength?: number;
+    startpoint?: number;
     topics?: string[];
 }
 
@@ -74,6 +78,7 @@ export function createJob(
     let promptType: "question" | "jozve";
     let batch: number;
     let qLength: number;
+    let startpoint = 1;
     let topics: string[] | undefined;
 
     if (typeof paramsOrUrl === "string") {
@@ -83,7 +88,7 @@ export function createJob(
         promptTitle = "Default Prompt";
         promptType = "question";
         batch = legacyBatch ?? 15;
-        qLength = legacyQLength ?? 100;
+        qLength = resolveQuestionsLength(legacyQLength);
     } else {
         noteBookUrl = paramsOrUrl.noteBookUrl;
         subject = paramsOrUrl.subject?.trim() || undefined;
@@ -92,7 +97,8 @@ export function createJob(
         promptText = paramsOrUrl.promptText;
         promptType = paramsOrUrl.promptType;
         batch = paramsOrUrl.batch ?? 15;
-        qLength = paramsOrUrl.qLength ?? 100;
+        qLength = promptType === "question" ? resolveQuestionsLength(paramsOrUrl.qLength) : (paramsOrUrl.qLength ?? 0);
+        startpoint = paramsOrUrl.startpoint ?? 1;
         topics = paramsOrUrl.topics;
     }
 
@@ -120,6 +126,7 @@ export function createJob(
         status: "queued",
         batch,
         qLength,
+        startpoint,
         topics,
         totalBatches,
         completedBatches: 0,

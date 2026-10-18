@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { parseCutSections, ParsedSection } from "@/server/lib/cutParser";
 import { splitByLines } from "@/server/lib/splitByLines";
+import { useLanguage } from "@/app/context/LanguageContext";
+import LanguageSelector from "@/app/components/LanguageSelector";
 
 export type SectionStatus = "pending" | "processing" | "completed" | "failed";
 
@@ -677,6 +679,8 @@ Do not explain anything.
 The HTML must be immediately ready for conversion to PDF using Puppeteer, Playwright, or wkhtmltopdf.`;
 
 export default function ToHtmlDashboard() {
+  const { language, t, isRtl, dir } = useLanguage();
+
   // Theme State: "dark" | "light"
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
@@ -1003,29 +1007,29 @@ export default function ToHtmlDashboard() {
   };
 
   return (
-    <div className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
+    <div dir={dir} className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
       {/* Top Navigation Bar */}
       <header className={`border-b backdrop-blur sticky top-0 z-40 px-6 py-4 ${styles.bgHeader}`}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">
+            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 shrink-0">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
             <div>
               <h1 className={`text-lg font-bold tracking-tight flex items-center gap-2 ${styles.textTitle}`}>
-                WePass
-                <span className={`text-xs px-2 py-0.5 rounded-full font-mono font-medium border ${isDark ? "bg-indigo-950 text-indigo-400 border-indigo-800" : "bg-indigo-50 text-indigo-700 border-indigo-200"}`}>
-                  CUT Splitter & DeepSeek
-                </span>
+                {t.tohtml.pageTitle}
               </h1>
-              <p className={`text-xs ${styles.textMuted}`}>Chunk-by-Chunk TXT Processing & Individual Downloads</p>
+              <p className={`text-xs ${styles.textMuted}`}>{t.tohtml.pageDescription}</p>
             </div>
           </div>
 
-          {/* Job Selection, Refresh & Theme Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Job Selection, Refresh, Language & Theme Toggle */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Language Selector */}
+            <LanguageSelector isDark={isDark} />
+
             {/* Theme Toggle Button */}
             <button
               type="button"
@@ -1034,9 +1038,9 @@ export default function ToHtmlDashboard() {
                 ? "bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700"
                 : "bg-white border-slate-300 text-slate-800 hover:bg-slate-100"
                 }`}
-              title="Toggle Light/Dark Theme"
+              title={t.common.toggleTheme}
             >
-              <span>{isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}</span>
+              <span>{isDark ? t.common.darkMode : t.common.lightMode}</span>
             </button>
 
             {jobsList.length > 0 && (
@@ -1079,7 +1083,7 @@ export default function ToHtmlDashboard() {
               {/* File Upload & Parse Summary */}
               <div className="space-y-3">
                 <label className={`text-xs font-semibold uppercase tracking-wider block ${styles.textMuted}`}>
-                  1. Select TXT File with CUT Markers
+                  1. {t.tohtml.uploadTitle}
                 </label>
                 <div className={`border-2 border-dashed rounded-xl p-4 text-center transition-colors ${isDark ? "border-slate-800 bg-slate-950/60 hover:border-indigo-500/50" : "border-slate-300 bg-slate-50 hover:border-indigo-500/50"}`}>
                   <input
@@ -1097,9 +1101,9 @@ export default function ToHtmlDashboard() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                     <span className={`text-xs font-semibold ${styles.textTitle}`}>
-                      {fileName ? fileName : "Click to browse or drop a .txt file"}
+                      {fileName ? fileName : t.tohtml.dropzoneText}
                     </span>
-                    <span className={`text-[11px] ${styles.textMuted}`}>
+                    <span className={`text-[11px] ${styles.textMuted}`} dir="ltr">
                       Files formatted with `CUT 1`, `CUT 2`, etc.
                     </span>
                   </label>
@@ -1110,13 +1114,13 @@ export default function ToHtmlDashboard() {
                   <div className={`p-3 rounded-lg border text-xs flex flex-wrap items-center justify-between gap-2 ${styles.bgSubCard}`}>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{fileName}</span>
-                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${isDark ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-700"}`}>
+                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${isDark ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-700"}`} dir="ltr">
                         {fileContent.length.toLocaleString()} chars
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-emerald-400 font-bold">
-                        {parsedSections.length} section(s) · {totalParsedChunksCount} chunk(s)
+                        {parsedSections.length} {t.tohtml.sectionsFound} · {totalParsedChunksCount} {t.tohtml.chunksEstimated}
                       </span>
                       {parsedSections.length > 0 && (
                         <button
@@ -1124,7 +1128,7 @@ export default function ToHtmlDashboard() {
                           onClick={() => setActiveTab("preview")}
                           className="text-indigo-400 hover:text-indigo-300 underline font-semibold text-[11px]"
                         >
-                          Preview Sections & Chunks
+                          {t.tohtml.tabPreview}
                         </button>
                       )}
                     </div>
@@ -1146,22 +1150,23 @@ export default function ToHtmlDashboard() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className={`text-xs font-semibold uppercase tracking-wider ${styles.textMuted}`}>
-                    2. DeepSeek Prompt Configuration
+                    2. {t.tohtml.deepseekPromptTitle}
                   </label>
                   <button
                     type="button"
                     onClick={() => setPrompt(DEFAULT_PROMPT)}
                     className="text-[11px] text-indigo-400 hover:text-indigo-300 underline"
                   >
-                    Reset Default
+                    {t.tohtml.resetPrompt}
                   </button>
                 </div>
                 <textarea
                   rows={6}
+                  dir="ltr"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Enter system prompt for processing each chunk..."
-                  className={`w-full rounded-lg p-3 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none transition ${styles.bgInput}`}
+                  className={`w-full rounded-lg p-3 text-xs font-mono text-left focus:ring-2 focus:ring-indigo-500 focus:outline-none transition ${styles.bgInput}`}
                   required
                 />
               </div>
@@ -1170,7 +1175,7 @@ export default function ToHtmlDashboard() {
             {/* Action Bar */}
             <div className={`pt-3 border-t flex flex-col sm:flex-row items-center justify-between gap-3 ${styles.borderLine}`}>
               <div className="text-xs text-slate-500">
-                Each CUT section is split into ≤ 600-line chunks, processed independently through DeepSeek API, and saved as a separate .txt response.
+                {t.tohtml.deepseekPromptDesc}
               </div>
               <button
                 type="submit"
@@ -1183,7 +1188,7 @@ export default function ToHtmlDashboard() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    <span>Starting Job...</span>
+                    <span>{t.tohtml.submitting}</span>
                   </>
                 ) : (
                   <>
@@ -1192,7 +1197,7 @@ export default function ToHtmlDashboard() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span>
-                      Start Processing ({totalParsedChunksCount} chunk{totalParsedChunksCount !== 1 ? "s" : ""} from {parsedSections.length} section{parsedSections.length !== 1 ? "s" : ""})
+                      {t.tohtml.startProcessing} ({totalParsedChunksCount} / {parsedSections.length})
                     </span>
                   </>
                 )}
@@ -1220,27 +1225,27 @@ export default function ToHtmlDashboard() {
         {jobData && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>Total Sections</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.tohtml.totalSections}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{jobData.summary.total}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 block mb-1">Completed</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 block mb-1">{t.tohtml.completedSections}</span>
               <span className="text-2xl font-extrabold text-emerald-400">{jobData.summary.completed}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400 block mb-1">Processing</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400 block mb-1">{t.tohtml.processingSections}</span>
               <span className="text-2xl font-extrabold text-amber-400">{jobData.summary.processing}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-400 block mb-1">Failed</span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-400 block mb-1">{t.tohtml.failedSections}</span>
               <span className="text-2xl font-extrabold text-rose-400">{jobData.summary.failed}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>Pending</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.common.pending}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{jobData.summary.pending}</span>
             </div>
             <div className={`p-4 rounded-xl border ${styles.bgCard}`}>
-              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>Avg Time / Sec</span>
+              <span className={`text-[11px] font-semibold uppercase tracking-wider block mb-1 ${styles.textMuted}`}>{t.tohtml.avgDuration}</span>
               <span className={`text-2xl font-extrabold ${styles.textTitle}`}>{formatMs(jobData.summary.avgDurationMs)}</span>
             </div>
           </div>
@@ -1256,7 +1261,7 @@ export default function ToHtmlDashboard() {
                 : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                 }`}
             >
-              Sections Dashboard {jobData ? `(${jobData.sections.length})` : ""}
+              {t.tohtml.tabSections} {jobData ? `(${jobData.sections.length})` : ""}
             </button>
             {parsedSections.length > 0 && (
               <button
@@ -1266,7 +1271,7 @@ export default function ToHtmlDashboard() {
                   : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                   }`}
               >
-                Uploaded Preview ({parsedSections.length})
+                {t.tohtml.tabPreview} ({parsedSections.length})
               </button>
             )}
             <button
@@ -1276,7 +1281,7 @@ export default function ToHtmlDashboard() {
                 : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                 }`}
             >
-              Job System Logs ({jobData?.logs.length || 0})
+              {t.tohtml.tabLogs} ({jobData?.logs.length || 0})
             </button>
           </div>
 
@@ -1292,7 +1297,7 @@ export default function ToHtmlDashboard() {
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  <span>Retry All Failed ({jobData.summary.failed})</span>
+                  <span>{t.tohtml.retryFailed} ({jobData.summary.failed})</span>
                 </button>
               )}
               {jobData.summary.completed > 0 && (
@@ -1304,7 +1309,7 @@ export default function ToHtmlDashboard() {
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
-                  <span>Download Merged TXT</span>
+                  <span>{t.tohtml.downloadMergedHtml}</span>
                 </button>
               )}
             </div>
@@ -1330,34 +1335,34 @@ export default function ToHtmlDashboard() {
                   onChange={(e) => setStatusFilter(e.target.value as any)}
                   className={`text-xs rounded-lg px-3 py-1.5 focus:outline-none ${styles.bgInput}`}
                 >
-                  <option value="all">All Statuses</option>
-                  <option value="completed">Completed</option>
-                  <option value="processing">Processing</option>
-                  <option value="failed">Failed</option>
-                  <option value="pending">Pending</option>
+                  <option value="all">{t.pipeline.filterAllStatuses}</option>
+                  <option value="completed">{t.common.completed}</option>
+                  <option value="processing">{t.common.processing}</option>
+                  <option value="failed">{t.common.failed}</option>
+                  <option value="pending">{t.common.pending}</option>
                 </select>
               </div>
             </div>
 
             {/* Sections List Table */}
             <div className={`overflow-x-auto rounded-xl border ${styles.borderLine}`}>
-              <table className="w-full text-left text-xs">
+              <table className={`w-full text-xs ${isRtl ? "text-right" : "text-left"}`}>
                 <thead className={`uppercase font-semibold border-b ${isDark ? "bg-slate-900 text-slate-400 border-slate-800" : "bg-slate-100 text-slate-600 border-slate-200"}`}>
                   <tr>
                     <th className="p-3">#</th>
-                    <th className="p-3">Section / Chunk</th>
-                    <th className="p-3">Size</th>
-                    <th className="p-3">Content Preview</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3">Duration</th>
-                    <th className="p-3 text-right">Actions</th>
+                    <th className="p-3">{t.tohtml.thMarker}</th>
+                    <th className="p-3">{t.tohtml.thLength}</th>
+                    <th className="p-3">{t.tohtml.thContentPreview}</th>
+                    <th className="p-3">{t.tohtml.thStatus}</th>
+                    <th className="p-3">{t.tohtml.avgDuration}</th>
+                    <th className={`p-3 ${isRtl ? "text-left" : "text-right"}`}>{t.tohtml.thActions}</th>
                   </tr>
                 </thead>
                 <tbody className={`divide-y ${styles.borderLine}`}>
                   {!jobData || filteredSections.length === 0 ? (
                     <tr>
                       <td colSpan={7} className={`text-center py-12 italic ${styles.textMuted}`}>
-                        {!jobData ? "No active processing job selected. Upload a file and start processing." : "No sections match the filter criteria."}
+                        {!jobData ? t.common.noData : t.tohtml.noSectionsMatch}
                       </td>
                     </tr>
                   ) : (

@@ -17,7 +17,6 @@ export interface FileProcessingStatus {
   download: StageDetails;
   upload: StageDetails;
   ocr: StageDetails;
-  reformat: StageDetails;
   overallStatus: "not_started" | "pending" | "in_progress" | "success" | "error";
   startedAt?: string;
   completedAt?: string;
@@ -31,7 +30,7 @@ export interface PipelineLog {
   timestamp: string;
   level: "INFO" | "WARN" | "ERROR";
   message: string;
-  stage?: "download" | "upload" | "ocr" | "reformat" | "pipeline";
+  stage?: "download" | "upload" | "ocr" | "pipeline";
   fileId?: string;
   fileName?: string;
   error?: string;
@@ -40,7 +39,6 @@ export interface PipelineLog {
 export interface PipelineJob {
   id: string;
   status: "queued" | "processing" | "completed" | "failed";
-  reformatEnabled: boolean;
   folderId: string;
   createdAt: string;
   files: DriveFile[];
@@ -56,14 +54,12 @@ export interface PipelineSummary {
   pending: number;
   ocrSuccessRate: number;
   ocrErrorRate: number;
-  reformatSuccessRate: number;
   avgOcrDurationMs: number;
-  avgReformatDurationMs: number;
 }
 
 const jobs = new Map<string, PipelineJob>();
 
-export function createJob(files: DriveFile[], reformatEnabled: boolean = false, folderId: string = ""): PipelineJob {
+export function createJob(files: DriveFile[], folderId: string = ""): PipelineJob {
   const fileStatuses: Record<string, FileProcessingStatus> = {};
 
   files.forEach((file) => {
@@ -73,7 +69,6 @@ export function createJob(files: DriveFile[], reformatEnabled: boolean = false, 
       download: { status: "pending" },
       upload: { status: "pending" },
       ocr: { status: "pending" },
-      reformat: { status: reformatEnabled ? "pending" : "skipped" },
       overallStatus: "pending",
     };
   });
@@ -81,7 +76,6 @@ export function createJob(files: DriveFile[], reformatEnabled: boolean = false, 
   const job: PipelineJob = {
     id: crypto.randomUUID(),
     status: "queued",
-    reformatEnabled,
     folderId,
     createdAt: new Date().toISOString(),
     files,
@@ -91,7 +85,7 @@ export function createJob(files: DriveFile[], reformatEnabled: boolean = false, 
         id: crypto.randomUUID(),
         timestamp: new Date().toISOString(),
         level: "INFO",
-        message: `Job initialized with ${files.length} file(s). Reformat stage is ${reformatEnabled ? "ENABLED" : "DISABLED"}.`,
+        message: `Job initialized with ${files.length} file(s).`,
         stage: "pipeline",
       },
     ],
@@ -114,7 +108,7 @@ export function updateJobStatus(id: string, status: PipelineJob["status"]) {
 export function updateFileStageStatus(
   jobId: string,
   fileId: string,
-  stage: "download" | "upload" | "ocr" | "reformat",
+  stage: "download" | "upload" | "ocr",
   stageData: Partial<StageDetails>,
   overallStatus?: FileProcessingStatus["overallStatus"],
   extra?: { outputFilename?: string; outputPath?: string }
@@ -185,10 +179,6 @@ export function getJobDetails(id: string) {
   let totalOcrDuration = 0;
   let ocrDurationCount = 0;
 
-  let reformatSuccessCount = 0;
-  let totalReformatDuration = 0;
-  let reformatDurationCount = 0;
-
   fileList.forEach((file) => {
     if (file.overallStatus === "success") completed++;
     else if (file.overallStatus === "in_progress") processing++;
@@ -204,22 +194,11 @@ export function getJobDetails(id: string) {
     } else if (file.ocr.status === "error") {
       ocrErrorCount++;
     }
-
-    if (file.reformat.status === "success") {
-      reformatSuccessCount++;
-      if (file.reformat.durationMs) {
-        totalReformatDuration += file.reformat.durationMs;
-        reformatDurationCount++;
-      }
-    }
   });
 
   const ocrSuccessRate = total > 0 ? Math.round((ocrSuccessCount / total) * 100) : 0;
   const ocrErrorRate = total > 0 ? Math.round((ocrErrorCount / total) * 100) : 0;
-  const reformatSuccessRate = total > 0 ? Math.round((reformatSuccessCount / total) * 100) : 0;
   const avgOcrDurationMs = ocrDurationCount > 0 ? Math.round(totalOcrDuration / ocrDurationCount) : 0;
-  const avgReformatDurationMs =
-    reformatDurationCount > 0 ? Math.round(totalReformatDuration / reformatDurationCount) : 0;
 
   const summary: PipelineSummary = {
     total,
@@ -229,15 +208,12 @@ export function getJobDetails(id: string) {
     pending,
     ocrSuccessRate,
     ocrErrorRate,
-    reformatSuccessRate,
     avgOcrDurationMs,
-    avgReformatDurationMs,
   };
 
   return {
     id: job.id,
     status: job.status,
-    reformatEnabled: job.reformatEnabled,
     createdAt: job.createdAt,
     files: fileList,
     logs: job.logs,
@@ -249,7 +225,6 @@ export function getAllJobs() {
   return Array.from(jobs.values()).map((job) => ({
     id: job.id,
     status: job.status,
-    reformatEnabled: job.reformatEnabled,
     createdAt: job.createdAt,
     totalFiles: job.files.length,
   }));

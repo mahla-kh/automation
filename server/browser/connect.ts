@@ -83,9 +83,7 @@ const CHAT_INPUT_SELECTOR = "textarea[aria-label='Query box']";
 const SEND_BUTTON_SELECTOR = "button[aria-label='Submit']:not([disabled])";
 const STOP_GENERATING_SELECTOR = "button[aria-label='Stop generating']";
 const RESPONSE_DOC_SELECTOR = "labs-tailwind-doc-viewer";
-
-const COPY_BUTTON_LABEL = "Copy model response to clipboard";
-const COPY_BUTTON_NAME = /copy model response to clipboard/i;
+const COPY_BUTTON_SELECTOR = 'button[aria-label="Copy model response to clipboard"]';
 
 export async function sendPromptToPage(page: Page, prompt: string): Promise<number> {
     await page.waitForSelector(CHAT_INPUT_SELECTOR, { timeout: 30_000 });
@@ -111,32 +109,6 @@ export async function sendPromptToPage(page: Page, prompt: string): Promise<numb
     return initialCount;
 }
 
-/**
- * Scopes to the ancestor turn container of a given response and locates its unique Copy button.
- */
-async function getCopyButtonForResponse(
-    response: Locator,
-    index: number
-): Promise<Locator> {
-    const turn = response.locator(
-        `xpath=ancestor-or-self::*[.//button[contains(@aria-label,"${COPY_BUTTON_LABEL}")]][1]`
-    );
-
-    const buttons = turn.getByRole("button", {
-        name: COPY_BUTTON_NAME,
-    });
-
-    const n = await buttons.count();
-
-    if (n !== 1) {
-        throw new Error(
-            `Expected exactly 1 Copy button for response #${index + 1}, found ${n}. ` +
-            `The turn wrapper scoping needs adjusting.`
-        );
-    }
-
-    return buttons;
-}
 
 /**
  * Waits for any in-flight response generation to complete before attempting extraction.
@@ -151,44 +123,54 @@ async function waitForResponseGenerationToFinish(page: Page): Promise<void> {
     await expect(page.locator(CHAT_INPUT_SELECTOR)).toBeEditable({ timeout: 180_000 });
 }
 
-/**
- * Copies the canonical Markdown of a specific response using NotebookLM's Copy button
- * with a sentinel clipboard verification protocol.
- */
-async function copyResponseMarkdown(
-    page: Page,
-    targetResponse: Locator,
-    index: number
-): Promise<string> {
-    const copyButton = await getCopyButtonForResponse(targetResponse, index);
+async function installClipboardCapture(page: Page): Promise<void> {
+    await page.evaluate(() => {
+        const w = window as any;
+        if (w.__nlmClipInstalled) return;
+        w.__nlmClipInstalled = true;
+        w.__nlmCaptured = null;
+        const clip = navigator.clipboard;
+        const origWriteText = clip.writeText?.bind(clip);
+        const origWrite = clip.write?.bind(clip);
+        clip.writeText = async (text: string) => {
+            w.__nlmCaptured = text;
+            try { await origWriteText?.(text); } catch {}
+        };
+        clip.write = async (items: ClipboardItem[]) => {
+            for (const item of items) {
+                if (item.types.includes("text/plain")) {
+                    w.__nlmCaptured = await (await item.getType("text/plain")).text();
+                }
+            }
+            try { await origWrite?.(items); } catch {}
+        };
+    });
+}
 
-    await copyButton.waitFor({ state: "attached", timeout: 15_000 });
-    await copyButton.scrollIntoViewIfNeeded().catch(() => {});
-
-    const sentinel = `__NLM_SENTINEL_${Date.now()}_${index}__`;
-
-    // 1. Write unique sentinel to clipboard before clicking Copy
-    await page.evaluate((s) => navigator.clipboard.writeText(s), sentinel);
-
-    // 2. Click the response's Copy button
-    await copyButton.click();
-
-    // 3. Poll clipboard until content changes from sentinel
-    const POLL_INTERVAL_MS = 200;
-    const MAX_POLL_ATTEMPTS = 50; // Up to 10 seconds
-
-    for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt++) {
-        await page.waitForTimeout(POLL_INTERVAL_MS);
-
-        const clipboardContent = await page.evaluate(() => navigator.clipboard.readText()).catch(() => "");
-
-        if (clipboardContent && clipboardContent !== sentinel) {
-            // Insignificant line-ending normalization without altering Markdown content
-            return clipboardContent.replace(/\r\n/g, "\n").replace(/\n$/, "");
-        }
+async function waitForStableCount(page: Page, selector: string, stableMs = 1500, maxMs = 30_000): Promise<number> {
+    const start = Date.now();
+    let last = -1;
+    let lastChange = Date.now();
+    while (Date.now() - start < maxMs) {
+        const n = await page.locator(selector).count();
+        if (n !== last) { last = n; lastChange = Date.now(); }
+        else if (n > 0 && Date.now() - lastChange >= stableMs) return n;
+        await page.waitForTimeout(300);
     }
+    return last < 0 ? 0 : last;
+}
 
-    throw new Error("Clipboard did not change after clicking Copy button (timed out waiting for copied text)");
+async function copyResponseMarkdown(page: Page, copyButton: Locator, index: number): Promise<string> {
+    await page.evaluate(() => { (window as any).__nlmCaptured = null; });
+    await copyButton.scrollIntoViewIfNeeded().catch(() => {});
+    await copyButton.click({ timeout: 10_000 });
+    try {
+        await page.waitForFunction(() => (window as any).__nlmCaptured !== null, undefined, { timeout: 10_000 });
+    } catch {
+        throw new Error(`Copy click on response #${index + 1} did not write to the clipboard`);
+    }
+    const text: string = await page.evaluate(() => (window as any).__nlmCaptured);
+    return text.replace(/\r\n/g, "\n").replace(/\n$/, "");
 }
 
 export async function getAnswer(page: Page, expectedTurnIndex?: number): Promise<string> {
@@ -212,7 +194,8 @@ export async function getAnswer(page: Page, expectedTurnIndex?: number): Promise
     await waitForResponseGenerationToFinish(page);
 
     // 3. Copy canonical markdown
-    const markdown = await copyResponseMarkdown(page, targetResponse, turnIndex);
+    await installClipboardCapture(page);
+    const markdown = await copyResponseMarkdown(page, page.locator(COPY_BUTTON_SELECTOR).nth(turnIndex), turnIndex);
 
     if (!markdown || markdown.length === 0) {
         logger.error("NotebookLM returned empty answer", { turnIndex });
@@ -248,22 +231,23 @@ export function formatMergedResponses(responses: string[]): string {
  * to settle, extracts each response's Markdown via the Copy button, and merges them.
  */
 export async function extractAllResponses(page: Page): Promise<ExtractionResult> {
+    await page.bringToFront().catch(() => {});
     logger.info("Starting extraction of all responses from NotebookLM");
 
     // 1. Wait for NotebookLM interface to load
     await page.waitForSelector(CHAT_INPUT_SELECTOR, { timeout: 45_000 }).catch(() => {
         logger.warn("Chat input selector not found within initial timeout, checking for response elements");
     });
+    await page.locator(COPY_BUTTON_SELECTOR).first().waitFor({ state: "attached", timeout: 30_000 }).catch(() => logger.warn("No copy button appeared within 30s"));
 
     // 2. Wait for any in-flight response generation
     await waitForResponseGenerationToFinish(page);
 
-    const responseLocator = page.locator(RESPONSE_DOC_SELECTOR);
-    const count = await responseLocator.count();
-
-    logger.info(`Detected ${count} response elements in NotebookLM`);
+    const count = await waitForStableCount(page, COPY_BUTTON_SELECTOR);
+    logger.info(`Detected ${count} copy buttons (responses)`);
 
     if (count === 0) {
+        logger.warn("Zero responses", { url: page.url(), title: await page.title().catch(() => ""), docViewers: await page.locator(RESPONSE_DOC_SELECTOR).count(), viewport: page.viewportSize() });
         return {
             responses: [],
             mergedText: "",
@@ -271,18 +255,13 @@ export async function extractAllResponses(page: Page): Promise<ExtractionResult>
         };
     }
 
+    await installClipboardCapture(page);
+    const buttons = page.locator(COPY_BUTTON_SELECTOR);
     const responses: string[] = [];
 
     for (let i = 0; i < count; i++) {
-        const targetResponse = responseLocator.nth(i);
-
         try {
-            await targetResponse.waitFor({ state: "attached", timeout: 15_000 });
-
-            // Ensure generation is complete before extracting this turn
-            await waitForResponseGenerationToFinish(page);
-
-            const markdown = await copyResponseMarkdown(page, targetResponse, i);
+            const markdown = await copyResponseMarkdown(page, buttons.nth(i), i);
 
             if (markdown.length > 0) {
                 responses.push(markdown);
