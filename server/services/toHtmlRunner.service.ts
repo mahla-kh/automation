@@ -91,6 +91,7 @@ async function processSingleSection(
     updateToHtmlSection(job.id, section.index, {
       status: "completed",
       outputFilename: filename,
+      responseText,
       durationMs,
       completedAt,
     });

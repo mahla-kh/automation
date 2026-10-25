@@ -6,50 +6,48 @@ import { pipeline } from "stream/promises";
 
 
 const auth =
-new google.auth.GoogleAuth({
+  new google.auth.GoogleAuth({
 
-credentials:{
-client_email:
-process.env.GOOGLE_CLIENT_EMAIL,
+    credentials: {
+      client_email:
+        process.env.GOOGLE_CLIENT_EMAIL,
 
-private_key:
-process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g,"\n")
-},
+      private_key:
+        process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n")
+    },
 
-scopes:[
-"https://www.googleapis.com/auth/drive.readonly"
-]
+    scopes: [
+      "https://www.googleapis.com/auth/drive.readonly"
+    ]
 
-});
-
-console.log(process.env.GOOGLE_PRIVATE_KEY?.slice(0,50));
+  });
 
 const drive =
-google.drive({
-version:"v3",
-auth
-});
+  google.drive({
+    version: "v3",
+    auth
+  });
 
 
 
 export async function getFilesFromFolder(
-folderId:string
-){
+  folderId: string
+) {
 
 
-const response =
-await drive.files.list({
+  const response =
+    await drive.files.list({
 
-q:
-`'${folderId}' in parents`,
+      q:
+        `'${folderId}' in parents`,
 
-fields:
-"files(id,name,mimeType)"
+      fields:
+        "files(id,name,mimeType)"
 
-});
+    });
 
 
-return response.data.files ?? [];
+  return response.data.files ?? [];
 
 }
 

@@ -45,14 +45,14 @@ export async function GET(req: NextRequest) {
 
     // Determine target file candidate paths
     const baseName = fileStatus.fileName.replace(/\.[^/.]+$/, "").replace(/[\\/:*?"<>|]+/g, "_").trim();
-    const candidates: string[] = [];
+    const folderDir = path.resolve(OUTPUTS_ROOT, sanitizeFolderName(baseName));
+    const targetFile = path.join(folderDir, "result.txt");
+    const candidates: string[] = [targetFile];
 
     if (fileStatus.outputPath) {
-      candidates.push(path.resolve(process.cwd(), fileStatus.outputPath));
+      const cleanRel = fileStatus.outputPath.replace(/^[\\/]?(outputs[\\/])?/, "");
+      candidates.push(path.resolve(OUTPUTS_ROOT, cleanRel));
     }
-
-    const folderDir = path.resolve(OUTPUTS_ROOT, sanitizeFolderName(baseName));
-    candidates.push(path.join(folderDir, "result.txt"));
 
     let resolvedPath: string | null = null;
     for (const cand of candidates) {
@@ -66,22 +66,36 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    if (!resolvedPath) {
+    let fileContent: string | null = null;
+    if (resolvedPath) {
+      fileContent = await fs.readFile(resolvedPath, "utf8");
+    } else if (fileStatus.result) {
+      // Ensure file is persisted to project disk and serve
+      try {
+        await fs.mkdir(folderDir, { recursive: true });
+        await fs.writeFile(targetFile, fileStatus.result, "utf8");
+      } catch (writeErr) {
+        console.warn("Failed saving fallback result to disk:", writeErr);
+      }
+      fileContent = fileStatus.result;
+    }
+
+    if (fileContent === null) {
       return NextResponse.json(
-        { error: `Output file not found on disk for file: ${fileStatus.fileName}` },
+        { error: `Output file not found for file: ${fileStatus.fileName}` },
         { status: 404 }
       );
     }
 
-    const fileBuffer = await fs.readFile(resolvedPath);
     const downloadName = fileStatus.outputFilename || `${baseName}_result.txt`;
     const contentType = "text/plain; charset=utf-8";
 
-    return new NextResponse(fileBuffer, {
+    const safeAscii = downloadName.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "");
+    return new NextResponse(fileContent, {
       status: 200,
       headers: {
         "Content-Type": contentType,
-        "Content-Disposition": `attachment; filename="${encodeURIComponent(downloadName)}"`,
+        "Content-Disposition": `attachment; filename="${safeAscii}"; filename*=UTF-8''${encodeURIComponent(downloadName)}`,
       },
     });
   } catch (error) {

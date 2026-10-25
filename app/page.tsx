@@ -27,6 +27,7 @@ export interface FileProcessingStatus {
   totalDurationMs?: number;
   outputFilename?: string;
   outputPath?: string;
+  result?: string;
 }
 
 export interface PipelineLog {

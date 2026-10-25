@@ -23,6 +23,7 @@ export interface FileProcessingStatus {
   totalDurationMs?: number;
   outputFilename?: string;
   outputPath?: string;
+  result?: string;
 }
 
 export interface PipelineLog {
@@ -111,7 +112,7 @@ export function updateFileStageStatus(
   stage: "download" | "upload" | "ocr",
   stageData: Partial<StageDetails>,
   overallStatus?: FileProcessingStatus["overallStatus"],
-  extra?: { outputFilename?: string; outputPath?: string }
+  extra?: { outputFilename?: string; outputPath?: string; result?: string }
 ) {
   const job = jobs.get(jobId);
   if (!job) return;
@@ -133,6 +134,9 @@ export function updateFileStageStatus(
   }
   if (extra?.outputPath) {
     fileStatus.outputPath = extra.outputPath;
+  }
+  if (extra?.result !== undefined) {
+    fileStatus.result = extra.result;
   }
 
   // Update timestamps and total duration

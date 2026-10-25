@@ -159,6 +159,7 @@ export async function processPipeline(
             {
                 outputFilename,
                 outputPath,
+                result,
             }
         );
 

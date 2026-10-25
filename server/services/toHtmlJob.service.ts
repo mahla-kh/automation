@@ -18,6 +18,7 @@ export interface ToHtmlSectionRecord {
   lineCount: number;
   status: ToHtmlSectionStatus;
   outputFilename?: string;
+  responseText?: string;
   error?: string;
   startedAt?: string;
   completedAt?: string;

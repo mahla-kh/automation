@@ -73,3 +73,6 @@ Thumbs.db
 # ==========================
 .docker/
 docker-compose.override.yml
+
+
+auth/auth.json

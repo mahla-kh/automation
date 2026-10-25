@@ -25,7 +25,10 @@ export async function POST(req: NextRequest) {
         }
 
         const targetFolder = job.folderName || jobId;
-        const merged = await mergeResponses(targetFolder);
+        let merged = job.responseContent || "";
+        if (!merged) {
+            merged = await mergeResponses(targetFolder);
+        }
 
         return NextResponse.json({
             success: true,

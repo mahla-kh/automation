@@ -6,12 +6,16 @@ import { sanitizeFolderName } from "@/server/services/storage.service";
 
 const OUTPUTS_ROOT = path.join(process.cwd(), "outputs");
 
-async function readResult(fileName: string, outputPath?: string): Promise<string | null> {
+async function readResult(fileName: string, outputPath?: string, resultMemory?: string): Promise<string | null> {
   const baseName = fileName.replace(/\.[^/.]+$/, "").replace(/[\\/:*?"<>|]+/g, "_").trim();
-  const candidates = [
-    ...(outputPath ? [path.resolve(process.cwd(), outputPath)] : []),
-    path.join(OUTPUTS_ROOT, sanitizeFolderName(baseName), "result.txt"),
-  ];
+  const folderDir = path.join(OUTPUTS_ROOT, sanitizeFolderName(baseName));
+  const targetFile = path.join(folderDir, "result.txt");
+  const candidates: string[] = [targetFile];
+
+  if (outputPath) {
+    const cleanRel = outputPath.replace(/^[\\/]?(outputs[\\/])?/, "");
+    candidates.push(path.resolve(OUTPUTS_ROOT, cleanRel));
+  }
 
   for (const candidate of candidates) {
     // Path traversal protection
@@ -22,6 +26,17 @@ async function readResult(fileName: string, outputPath?: string): Promise<string
       // try next candidate
     }
   }
+
+  if (resultMemory) {
+    try {
+      await fs.mkdir(folderDir, { recursive: true });
+      await fs.writeFile(targetFile, resultMemory, "utf8");
+    } catch (writeErr) {
+      console.warn("Failed saving fallback result to disk in merge:", writeErr);
+    }
+    return resultMemory;
+  }
+
   return null;
 }
 
@@ -51,7 +66,7 @@ export async function GET(req: NextRequest) {
     const missing: string[] = [];
 
     for (const f of succeeded) {
-      const text = await readResult(f.fileName, f.outputPath);
+      const text = await readResult(f.fileName, f.outputPath, f.result);
       if (text === null) {
         missing.push(f.fileName);
         continue;

@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     // Merged download support
     if (isMerged) {
       const completedSections = job.sections.filter(
-        (s) => s.status === "completed" && s.outputFilename
+        (s) => s.status === "completed" && (s.responseText !== undefined || s.outputFilename)
       );
 
       if (completedSections.length === 0) {
@@ -43,10 +43,14 @@ export async function GET(req: NextRequest) {
 
       const contents: string[] = [];
       for (const s of completedSections) {
-        if (!s.outputFilename) continue;
-        const filePath = getJobOutputPath(job.folderName, s.outputFilename);
-        if (fsSync.existsSync(filePath)) {
-          const text = await fs.readFile(filePath, "utf8");
+        let text = s.responseText;
+        if (text === undefined && s.outputFilename) {
+          const filePath = getJobOutputPath(job.folderName, s.outputFilename);
+          if (fsSync.existsSync(filePath)) {
+            text = await fs.readFile(filePath, "utf8");
+          }
+        }
+        if (text !== undefined) {
           contents.push(`========================================\n${s.label || s.marker}\n========================================\n\n${text}`);
         }
       }
@@ -55,17 +59,19 @@ export async function GET(req: NextRequest) {
       const baseFilename = job.fileName.replace(/\.[^/.]+$/, "") || "job";
       const mergedDownloadName = `${baseFilename}-merged.txt`;
 
+      const safeMergedAscii = mergedDownloadName.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "");
       return new NextResponse(mergedText, {
         status: 200,
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
-          "Content-Disposition": `attachment; filename="${encodeURIComponent(mergedDownloadName)}"`,
+          "Content-Disposition": `attachment; filename="${safeMergedAscii}"; filename*=UTF-8''${encodeURIComponent(mergedDownloadName)}`,
         },
       });
     }
 
     // Individual file download
-    let targetFilename = filenameParam;
+    let targetFilename: string | undefined = filenameParam || undefined;
+    let targetContent: string | undefined;
 
     if (!targetFilename && sectionIndexStr !== null) {
       const sectionIndex = parseInt(sectionIndexStr, 10);
@@ -77,7 +83,7 @@ export async function GET(req: NextRequest) {
       }
 
       const section = job.sections[sectionIndex];
-      if (section.status !== "completed" || !section.outputFilename) {
+      if (section.status !== "completed" || (section.responseText === undefined && !section.outputFilename)) {
         return NextResponse.json(
           { error: `Section ${section.label || section.marker} is not completed yet` },
           { status: 400 }
@@ -85,32 +91,52 @@ export async function GET(req: NextRequest) {
       }
 
       targetFilename = section.outputFilename;
+      targetContent = section.responseText;
+    } else if (targetFilename) {
+      const section = job.sections.find((s) => s.outputFilename === targetFilename);
+      if (section?.responseText !== undefined) {
+        targetContent = section.responseText;
+      }
     }
 
-    if (!targetFilename) {
+    if (!targetFilename && targetContent === undefined) {
       return NextResponse.json(
         { error: "Either sectionIndex or filename must be provided" },
         { status: 400 }
       );
     }
 
-    // Safe path resolution
-    const filePath = getJobOutputPath(job.folderName, targetFilename);
+    const downloadFilename = targetFilename || "section.txt";
+
+    if (targetContent !== undefined) {
+      const safeTargetAscii = path.basename(downloadFilename).replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "");
+      return new NextResponse(targetContent, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Content-Disposition": `attachment; filename="${safeTargetAscii}"; filename*=UTF-8''${encodeURIComponent(path.basename(downloadFilename))}`,
+        },
+      });
+    }
+
+    // Safe path resolution for legacy files
+    const filePath = getJobOutputPath(job.folderName, downloadFilename);
 
     if (!fsSync.existsSync(filePath)) {
       return NextResponse.json(
-        { error: `Output file not found on disk: ${targetFilename}` },
+        { error: `Output file not found: ${downloadFilename}` },
         { status: 404 }
       );
     }
 
     const fileBuffer = await fs.readFile(filePath);
+    const safeFileAscii = path.basename(filePath).replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "");
 
     return new NextResponse(fileBuffer, {
       status: 200,
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Content-Disposition": `attachment; filename="${encodeURIComponent(path.basename(filePath))}"`,
+        "Content-Disposition": `attachment; filename="${safeFileAscii}"; filename*=UTF-8''${encodeURIComponent(path.basename(filePath))}`,
       },
     });
   } catch (error) {

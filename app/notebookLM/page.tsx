@@ -5,6 +5,7 @@ import { PROMPT_PRESETS, PromptPreset } from "@/server/prompts/notebookPrompts";
 import { useLanguage } from "@/app/context/LanguageContext";
 import LanguageSelector from "@/app/components/LanguageSelector";
 import { getLocalizedPromptTitle, getLocalizedPromptPreview } from "@/app/i18n/translations";
+import { downloadFile } from "@/app/lib/download";
 
 export type PromptStatus = "pending" | "sending" | "completed" | "failed";
 
@@ -380,18 +381,35 @@ export default function NotebookDashboard() {
     }
   };
 
-  // Download merged text as a file
-  const handleDownloadMerged = (jobId: string, e?: React.MouseEvent) => {
+  // Download merged text as a file (.txt or .md)
+  const handleDownloadMerged = async (jobId: string, e?: React.MouseEvent, format: "txt" | "md" = "txt") => {
     if (e) e.stopPropagation();
     const content = mergedContent[jobId];
     if (!content) return;
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `merged-${jobId.slice(0, 8)}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const res = await downloadFile({
+      filename: `merged-${jobId.slice(0, 8)}.${format}`,
+      content,
+      format,
+    });
+    if (!res.success && res.error) {
+      alert(res.error);
+    }
+  };
+
+  // Download individual answer response for a job/prompt
+  const handleDownloadIndividual = async (job: NoteBookJob, format: "txt" | "md" = "txt") => {
+    if (!job || !job.responseContent) return;
+    const titlePart = (job.promptTitle || job.id.slice(0, 8))
+      .replace(/[\\/:*?"<>|]+/g, "_")
+      .trim();
+    const res = await downloadFile({
+      filename: `answer-${titlePart}.${format}`,
+      content: job.responseContent,
+      format,
+    });
+    if (!res.success && res.error) {
+      alert(res.error);
+    }
   };
 
   // Standalone Answer Extraction Handler
@@ -431,16 +449,17 @@ export default function NotebookDashboard() {
     }
   };
 
-  // Download standalone extracted responses as .txt
-  const handleDownloadExtracted = () => {
+  // Download standalone extracted responses as .txt or .md
+  const handleDownloadExtracted = async (format: "txt" | "md" = "txt") => {
     if (!extractedData || !extractedData.mergedText) return;
-    const blob = new Blob([extractedData.mergedText], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `notebooklm-answers-${Date.now()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const res = await downloadFile({
+      filename: `notebooklm-answers-${Date.now()}.${format}`,
+      content: extractedData.mergedText,
+      format,
+    });
+    if (!res.success && res.error) {
+      alert(res.error);
+    }
   };
 
   // Filtered jobs list
@@ -949,13 +968,26 @@ export default function NotebookDashboard() {
                   </div>
 
                   {extractedData.count > 0 ? (
-                    <button
-                      type="button"
-                      onClick={handleDownloadExtracted}
-                      className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-600/30"
-                    >
-                      <span>{t.notebookLM.downloadAnswersTxt}</span>
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadExtracted("txt")}
+                        className="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30 text-xs"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>{t.notebookLM.downloadAnswersTxt} (.txt)</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadExtracted("md")}
+                        className="py-2 px-3 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-lg transition-all flex items-center justify-center gap-1 shadow-md shadow-teal-600/30 text-xs"
+                        title="Download Markdown (.md)"
+                      >
+                        <span>.md</span>
+                      </button>
+                    </div>
                   ) : (
                     <p className="text-amber-300 italic text-[11px]">
                       {t.notebookLM.noResponsesFound}
@@ -1010,17 +1042,46 @@ export default function NotebookDashboard() {
                 <span>{t.notebookLM.activeOutputTitle}</span>
               </h2>
               {selectedJob?.responseContent && (
-                <button
-                  type="button"
-                  onClick={() => handleCopyResponse(selectedJob.responseContent || "")}
-                  className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${
-                    isDark
-                      ? "bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200"
-                      : "bg-slate-100 border-slate-300 hover:bg-slate-200 text-slate-800"
-                  }`}
-                >
-                  {copiedResponse ? t.common.copied : t.notebookLM.copyResponse}
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleCopyResponse(selectedJob.responseContent || "")}
+                    className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${
+                      isDark
+                        ? "bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200"
+                        : "bg-slate-100 border-slate-300 hover:bg-slate-200 text-slate-800"
+                    }`}
+                  >
+                    {copiedResponse ? t.common.copied : t.notebookLM.copyResponse}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadIndividual(selectedJob, "txt")}
+                    className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${
+                      isDark
+                        ? "bg-indigo-900/60 border-indigo-700 hover:bg-indigo-800 text-indigo-200"
+                        : "bg-indigo-50 border-indigo-200 hover:bg-indigo-100 text-indigo-800"
+                    }`}
+                    title={language === "fa" ? "دانلود پاسخ (.txt)" : "Download Answer (.txt)"}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>.txt</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadIndividual(selectedJob, "md")}
+                    className={`text-xs px-2.5 py-1 rounded-md transition flex items-center gap-1 border ${
+                      isDark
+                        ? "bg-teal-900/60 border-teal-700 hover:bg-teal-800 text-teal-200"
+                        : "bg-teal-50 border-teal-200 hover:bg-teal-100 text-teal-800"
+                    }`}
+                    title={language === "fa" ? "دانلود پاسخ (.md)" : "Download Answer (.md)"}
+                  >
+                    <span>.md</span>
+                  </button>
+                </div>
               )}
             </div>
 
@@ -1420,13 +1481,24 @@ export default function NotebookDashboard() {
                             </button>
                           )}
                           {job.status === "completed" && mergeStatus[job.id] === "done" && (
-                            <button
-                              type="button"
-                              onClick={(e) => handleDownloadMerged(job.id, e)}
-                              className="px-2.5 py-1 bg-emerald-800/80 hover:bg-emerald-700 text-white rounded font-medium transition"
-                            >
-                              {t.notebookLM.downloadMerged}
-                            </button>
+                            <div className="inline-flex rounded-md shadow-sm">
+                              <button
+                                type="button"
+                                onClick={(e) => handleDownloadMerged(job.id, e, "txt")}
+                                className="px-2.5 py-1 bg-emerald-800/80 hover:bg-emerald-700 text-white rounded-s font-medium transition text-xs"
+                                title="Download merged .txt"
+                              >
+                                {t.notebookLM.downloadMerged} (.txt)
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => handleDownloadMerged(job.id, e, "md")}
+                                className="px-2 py-1 bg-teal-800/80 hover:bg-teal-700 text-white rounded-e font-medium transition text-xs border-s border-teal-900"
+                                title="Download merged .md"
+                              >
+                                .md
+                              </button>
+                            </div>
                           )}
                         </div>
                       </td>
