@@ -1,1 +1,0 @@
-const cmd = `"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1 --user-data-dir="D:\\automation\\chrome-profile"`;

@@ -11,8 +11,6 @@ package-lock.json
 yarn.lock
 .pnpm-debug.log
 .next*
-chrome-profile*
-auth/
 *.pma
 
 
@@ -73,6 +71,3 @@ Thumbs.db
 # ==========================
 .docker/
 docker-compose.override.yml
-
-
-auth/auth.json
