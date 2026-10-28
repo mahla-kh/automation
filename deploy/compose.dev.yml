@@ -1,0 +1,75 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - ../backend:/var/www/backend:ro
+    depends_on:
+      - app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../backend:/var/www/backend
+      - ../outputs:/var/www/backend/storage/app/outputs
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: pgsql
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-wepass_automation}
+      DB_USERNAME: ${DB_USERNAME:-wepass}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      QUEUE_CONNECTION: database
+      CACHE_STORE: database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker-drive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: php /var/www/backend/artisan queue:work database --queue=drive-ocr --timeout=1500 --tries=1 --sleep=3 --max-time=3600
+    volumes:
+      - ../backend:/var/www/backend
+      - ../outputs:/var/www/backend/storage/app/outputs
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-wepass_automation}
+      DB_USERNAME: ${DB_USERNAME:-wepass}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      QUEUE_CONNECTION: database
+      CACHE_STORE: database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker-deepseek:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: php /var/www/backend/artisan queue:work database --queue=deepseek --timeout=900 --tries=1 --sleep=3 --max-time=3600
+    volumes:
+      - ../backend:/var/www/backend
+      - ../outputs:/var/www/backend/storage/app/outputs
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-wepass_automation}
+      DB_USERNAME: ${DB_USERNAME:-wepass}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      QUEUE_CONNECTION: database
+      CACHE_STORE: database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

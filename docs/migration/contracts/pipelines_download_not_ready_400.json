@@ -1,0 +1,17 @@
+{
+  "name": "pipelines_download_not_ready_400",
+  "route": "/api/pipelines/download",
+  "method": "GET",
+  "request": {
+    "query": {
+      "jobId": "job-1",
+      "fileId": "file-1"
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "OCR output is not ready yet for file: Exam_Chapter_1.pdf"
+    }
+  }
+}

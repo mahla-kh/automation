@@ -1,0 +1,16 @@
+{
+  "name": "pipelines_merge_400_no_files",
+  "route": "/api/pipelines/merge",
+  "method": "GET",
+  "request": {
+    "query": {
+      "jobId": "job-1"
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "No completed files to merge yet"
+    }
+  }
+}

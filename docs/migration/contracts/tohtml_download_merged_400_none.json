@@ -1,0 +1,17 @@
+{
+  "name": "tohtml_download_merged_400_none",
+  "route": "/api/tohtml/download",
+  "method": "GET",
+  "request": {
+    "query": {
+      "jobId": "00000000-0000-0000-0000-000000000002",
+      "merged": "true"
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "No completed section output files available to merge"
+    }
+  }
+}

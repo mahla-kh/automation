@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { parseCutSections, ParsedSection } from "@/server/lib/cutParser";
-import { splitByLines } from "@/server/lib/splitByLines";
+import Link from "next/link";
+import { parseCutSections, ParsedSection } from "@/app/lib/cutParser";
+import { splitByLines } from "@/app/lib/splitByLines";
 import { useLanguage } from "@/app/context/LanguageContext";
 import LanguageSelector from "@/app/components/LanguageSelector";
+import { AuthGuard } from "@/app/components/AuthGuard";
+import { UserNav } from "@/app/components/UserNav";
 
 export type SectionStatus = "pending" | "processing" | "completed" | "failed";
 
@@ -702,16 +705,16 @@ export default function ToHtmlDashboard() {
   // Dynamic Theme Styles
   const styles = useMemo(() => {
     return {
-      bgMain: isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900",
-      bgHeader: isDark ? "bg-slate-900/80 border-slate-800" : "bg-white/80 border-slate-200 shadow-sm",
-      bgCard: isDark ? "bg-slate-900 border-slate-800 shadow-xl" : "bg-white border-slate-200 shadow-md",
-      bgSubCard: isDark ? "bg-slate-950 border-slate-800" : "bg-slate-100 border-slate-200",
+      bgMain: isDark ? "bg-[#1A2634] text-[#F5F5F5]" : "bg-[#F5F5F5] text-[#364F6B]",
+      bgHeader: isDark ? "bg-[#243447]/90 border-[#364F6B]" : "bg-white/90 border-[#364F6B]/15 shadow-sm",
+      bgCard: isDark ? "bg-[#243447] border-[#364F6B] shadow-xl" : "bg-white border-[#364F6B]/15 shadow-md",
+      bgSubCard: isDark ? "bg-[#1A2634] border-[#364F6B]" : "bg-[#F5F5F5] border-[#364F6B]/20",
       bgInput: isDark
-        ? "bg-slate-950 border-slate-800 text-slate-100 placeholder-slate-600 focus:border-indigo-500"
-        : "bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-indigo-500",
-      textTitle: isDark ? "text-white" : "text-slate-900",
-      textMuted: isDark ? "text-slate-400" : "text-slate-500",
-      borderLine: isDark ? "border-slate-800" : "border-slate-200",
+        ? "bg-[#1A2634] border-[#364F6B] text-[#F5F5F5] placeholder-slate-400 focus:border-[#FC5185] focus:ring-1 focus:ring-[#FC5185]"
+        : "bg-white border-[#364F6B]/30 text-[#364F6B] placeholder-slate-400 focus:border-[#FC5185] focus:ring-1 focus:ring-[#FC5185]",
+      textTitle: isDark ? "text-[#F5F5F5]" : "text-[#364F6B]",
+      textMuted: isDark ? "text-[#F5F5F5]/70" : "text-[#364F6B]/75",
+      borderLine: isDark ? "border-[#364F6B]" : "border-[#364F6B]/20",
     };
   }, [isDark]);
 
@@ -1007,12 +1010,13 @@ export default function ToHtmlDashboard() {
   };
 
   return (
-    <div dir={dir} className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
+    <AuthGuard>
+      <div dir={dir} className={`min-h-screen font-sans antialiased pb-16 transition-colors duration-200 ${styles.bgMain}`}>
       {/* Top Navigation Bar */}
       <header className={`border-b backdrop-blur sticky top-0 z-40 px-6 py-4 ${styles.bgHeader}`}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 shrink-0">
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-[#FC5185] to-[#3FC1C9] flex items-center justify-center font-bold text-white shadow-lg shadow-[#FC5185]/20 shrink-0">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -1027,16 +1031,39 @@ export default function ToHtmlDashboard() {
 
           {/* Job Selection, Refresh, Language & Theme Toggle */}
           <div className="flex flex-wrap items-center gap-3">
+            {/* Back to Workspace Link */}
+            <Link
+              href="/"
+              className={`px-3 py-2 rounded-lg border font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm ${
+                isDark ? "bg-[#1A2634] border-[#364F6B] text-[#F5F5F5] hover:bg-[#243447]" : "bg-white border-[#364F6B]/20 text-[#364F6B] hover:bg-[#F5F5F5]"
+              }`}
+            >
+              <span>{isRtl ? "→" : "←"}</span>
+              <span className="hidden sm:inline">{t.auth.backToDashboard}</span>
+            </Link>
+
+            {/* Pipeline Tool Link */}
+            <Link
+              href="/pipeline"
+              className={`px-3 py-2 rounded-lg border font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm ${
+                isDark ? "bg-[#1A2634] border-[#364F6B] text-[#F5F5F5] hover:bg-[#243447]" : "bg-white border-[#364F6B]/20 text-[#364F6B] hover:bg-[#F5F5F5]"
+              }`}
+            >
+              <span>{t.workflow.pipelineTool}</span>
+            </Link>
+
             {/* Language Selector */}
             <LanguageSelector isDark={isDark} />
+
+            <UserNav />
 
             {/* Theme Toggle Button */}
             <button
               type="button"
               onClick={toggleTheme}
               className={`px-3 py-2 rounded-lg border font-semibold text-xs transition-all flex items-center gap-2 shadow-sm ${isDark
-                ? "bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700"
-                : "bg-white border-slate-300 text-slate-800 hover:bg-slate-100"
+                ? "bg-[#1A2634] border-[#364F6B] text-amber-300 hover:bg-[#243447]"
+                : "bg-white border-[#364F6B]/20 text-[#364F6B] hover:bg-[#F5F5F5]"
                 }`}
               title={t.common.toggleTheme}
             >
@@ -1047,7 +1074,7 @@ export default function ToHtmlDashboard() {
               <select
                 value={currentJobId || ""}
                 onChange={(e) => setCurrentJobId(e.target.value)}
-                className={`text-xs rounded-lg px-3 py-2 border focus:ring-2 focus:ring-indigo-500 focus:outline-none ${isDark ? "bg-slate-900 border-slate-700 text-slate-200" : "bg-white border-slate-300 text-slate-800"
+                className={`text-xs rounded-lg px-3 py-2 border focus:ring-2 focus:ring-[#FC5185] focus:outline-none ${isDark ? "bg-[#1A2634] border-[#364F6B] text-[#F5F5F5]" : "bg-white border-[#364F6B]/30 text-[#364F6B]"
                   }`}
               >
                 {jobsList.map((j) => (
@@ -1062,8 +1089,8 @@ export default function ToHtmlDashboard() {
               onClick={() => currentJobId && fetchJobStatus(currentJobId, true)}
               disabled={isLoading || !currentJobId}
               className={`p-2 rounded-lg border transition-colors disabled:opacity-50 ${isDark
-                ? "bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300"
-                : "bg-white hover:bg-slate-100 border-slate-300 text-slate-700 shadow-sm"
+                ? "bg-[#1A2634] hover:bg-[#243447] border-[#364F6B] text-[#F5F5F5]"
+                : "bg-white hover:bg-[#F5F5F5] border-[#364F6B]/30 text-[#364F6B] shadow-sm"
                 }`}
               title="Refresh Data"
             >
@@ -1085,7 +1112,7 @@ export default function ToHtmlDashboard() {
                 <label className={`text-xs font-semibold uppercase tracking-wider block ${styles.textMuted}`}>
                   1. {t.tohtml.uploadTitle}
                 </label>
-                <div className={`border-2 border-dashed rounded-xl p-4 text-center transition-colors ${isDark ? "border-slate-800 bg-slate-950/60 hover:border-indigo-500/50" : "border-slate-300 bg-slate-50 hover:border-indigo-500/50"}`}>
+                <div className={`border-2 border-dashed rounded-xl p-4 text-center transition-colors ${isDark ? "border-[#364F6B] bg-[#1A2634]/60 hover:border-[#3FC1C9]" : "border-[#364F6B]/20 bg-[#F5F5F5] hover:border-[#3FC1C9]"}`}>
                   <input
                     type="file"
                     id="txtFileInput"
@@ -1097,7 +1124,7 @@ export default function ToHtmlDashboard() {
                     htmlFor="txtFileInput"
                     className="cursor-pointer flex flex-col items-center justify-center gap-2 py-2"
                   >
-                    <svg className="w-8 h-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-8 h-8 text-[#3FC1C9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                     <span className={`text-xs font-semibold ${styles.textTitle}`}>
@@ -1114,7 +1141,7 @@ export default function ToHtmlDashboard() {
                   <div className={`p-3 rounded-lg border text-xs flex flex-wrap items-center justify-between gap-2 ${styles.bgSubCard}`}>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{fileName}</span>
-                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${isDark ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-700"}`} dir="ltr">
+                      <span className={`px-2 py-0.5 rounded font-mono text-[10px] ${isDark ? "bg-[#1A2634] text-[#F5F5F5]/80" : "bg-[#F5F5F5] text-[#364F6B]"}`} dir="ltr">
                         {fileContent.length.toLocaleString()} chars
                       </span>
                     </div>
@@ -1126,7 +1153,7 @@ export default function ToHtmlDashboard() {
                         <button
                           type="button"
                           onClick={() => setActiveTab("preview")}
-                          className="text-indigo-400 hover:text-indigo-300 underline font-semibold text-[11px]"
+                          className="text-[#FC5185] hover:underline font-semibold text-[11px]"
                         >
                           {t.tohtml.tabPreview}
                         </button>
@@ -1155,7 +1182,7 @@ export default function ToHtmlDashboard() {
                   <button
                     type="button"
                     onClick={() => setPrompt(DEFAULT_PROMPT)}
-                    className="text-[11px] text-indigo-400 hover:text-indigo-300 underline"
+                    className="text-[11px] text-[#FC5185] hover:underline"
                   >
                     {t.tohtml.resetPrompt}
                   </button>
@@ -1166,7 +1193,7 @@ export default function ToHtmlDashboard() {
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Enter system prompt for processing each chunk..."
-                  className={`w-full rounded-lg p-3 text-xs font-mono text-left focus:ring-2 focus:ring-indigo-500 focus:outline-none transition ${styles.bgInput}`}
+                  className={`w-full rounded-lg p-3 text-xs font-mono text-left focus:ring-2 focus:ring-[#FC5185] focus:outline-none transition ${styles.bgInput}`}
                   required
                 />
               </div>
@@ -1180,7 +1207,7 @@ export default function ToHtmlDashboard() {
               <button
                 type="submit"
                 disabled={isSubmitting || parsedSections.length === 0 || !prompt.trim()}
-                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto bg-[#FC5185] hover:bg-[#e04373] text-white font-semibold text-xs px-6 py-2.5 rounded-lg shadow-lg shadow-[#FC5185]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
@@ -1257,7 +1284,7 @@ export default function ToHtmlDashboard() {
             <button
               onClick={() => setActiveTab("sections")}
               className={`pb-3 text-xs font-bold transition-all border-b-2 ${activeTab === "sections"
-                ? "border-indigo-500 text-indigo-500"
+                ? "border-[#FC5185] text-[#FC5185]"
                 : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                 }`}
             >
@@ -1267,7 +1294,7 @@ export default function ToHtmlDashboard() {
               <button
                 onClick={() => setActiveTab("preview")}
                 className={`pb-3 text-xs font-bold transition-all border-b-2 ${activeTab === "preview"
-                  ? "border-indigo-500 text-indigo-500"
+                  ? "border-[#FC5185] text-[#FC5185]"
                   : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                   }`}
               >
@@ -1277,7 +1304,7 @@ export default function ToHtmlDashboard() {
             <button
               onClick={() => setActiveTab("logs")}
               className={`pb-3 text-xs font-bold transition-all border-b-2 ${activeTab === "logs"
-                ? "border-indigo-500 text-indigo-500"
+                ? "border-[#FC5185] text-[#FC5185]"
                 : `border-transparent ${styles.textMuted} hover:${styles.textTitle}`
                 }`}
             >
@@ -1326,7 +1353,7 @@ export default function ToHtmlDashboard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search sections by content or marker..."
-                className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-72 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${styles.bgInput}`}
+                className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-72 focus:outline-none focus:ring-1 focus:ring-[#FC5185] ${styles.bgInput}`}
               />
 
               <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -1347,7 +1374,7 @@ export default function ToHtmlDashboard() {
             {/* Sections List Table */}
             <div className={`overflow-x-auto rounded-xl border ${styles.borderLine}`}>
               <table className={`w-full text-xs ${isRtl ? "text-right" : "text-left"}`}>
-                <thead className={`uppercase font-semibold border-b ${isDark ? "bg-slate-900 text-slate-400 border-slate-800" : "bg-slate-100 text-slate-600 border-slate-200"}`}>
+                <thead className={`uppercase font-semibold border-b ${isDark ? "bg-[#1A2634] text-[#F5F5F5]/70 border-[#364F6B]" : "bg-[#F5F5F5] text-[#364F6B]/75 border-[#364F6B]/20"}`}>
                   <tr>
                     <th className="p-3">#</th>
                     <th className="p-3">{t.tohtml.thMarker}</th>
@@ -1369,13 +1396,13 @@ export default function ToHtmlDashboard() {
                     filteredSections.map((sec) => (
                       <tr
                         key={sec.id}
-                        className={`transition-colors ${isDark ? "hover:bg-slate-800/40" : "hover:bg-slate-100/80"}`}
+                        className={`transition-colors ${isDark ? "hover:bg-[#1A2634]/50" : "hover:bg-[#F5F5F5]"}`}
                       >
                         <td className="p-3 font-mono text-slate-500">{sec.index + 1}</td>
                         <td className="p-3">
                           <span className={`px-2.5 py-1 rounded-md font-mono font-bold text-[11px] ${sec.marker === "Preamble"
                             ? "bg-amber-950 text-amber-300 border border-amber-800"
-                            : "bg-indigo-950 text-indigo-300 border border-indigo-800"
+                            : "bg-[#FC5185]/15 text-[#FC5185] border border-[#FC5185]/30"
                             }`}>
                             {sec.label || sec.marker}
                           </span>
@@ -1428,7 +1455,7 @@ export default function ToHtmlDashboard() {
                                   outputFilename: sec.outputFilename,
                                 })
                               }
-                              className={`p-1.5 rounded hover:bg-slate-700/50 text-slate-300 text-xs font-semibold`}
+                              className={`p-1.5 rounded hover:bg-[#364F6B]/30 text-[#3FC1C9] text-xs font-semibold`}
                               title="Inspect Section Content"
                             >
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1500,7 +1527,7 @@ export default function ToHtmlDashboard() {
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className={`px-2.5 py-0.5 rounded font-mono font-bold text-xs ${sec.isPreamble
                           ? "bg-amber-950 text-amber-300 border border-amber-800"
-                          : "bg-indigo-950 text-indigo-300 border border-indigo-800"
+                          : "bg-[#FC5185]/15 text-[#FC5185] border border-[#FC5185]/30"
                           }`}>
                           {sec.marker}
                         </span>
@@ -1514,7 +1541,7 @@ export default function ToHtmlDashboard() {
                           {effectiveChunks.map((c, cIdx) => (
                             <span
                               key={cIdx}
-                              className={`px-2 py-0.5 rounded text-[10px] font-mono border ${isDark ? "bg-slate-900 border-slate-700 text-slate-300" : "bg-slate-200 border-slate-300 text-slate-700"}`}
+                              className={`px-2 py-0.5 rounded text-[10px] font-mono border ${isDark ? "bg-[#1A2634] border-[#364F6B] text-[#F5F5F5]/80" : "bg-[#F5F5F5] border-[#364F6B]/20 text-[#364F6B]"}`}
                             >
                               Chunk {cIdx + 1}: {c ? c.split(/\r?\n/).length : 0} lines
                             </span>
@@ -1522,7 +1549,7 @@ export default function ToHtmlDashboard() {
                         </div>
                       )}
 
-                      <pre className={`text-xs font-mono p-3 rounded-lg max-h-40 overflow-y-auto whitespace-pre-wrap ${isDark ? "bg-slate-950 text-slate-300" : "bg-slate-100 text-slate-800"}`}>
+                      <pre className={`text-xs font-mono p-3 rounded-lg max-h-40 overflow-y-auto whitespace-pre-wrap ${isDark ? "bg-[#1A2634] text-[#F5F5F5]" : "bg-[#F5F5F5] text-[#364F6B]"}`}>
                         {sec.content.slice(0, 300)}{sec.content.length > 300 ? "..." : ""}
                       </pre>
                     </div>
@@ -1538,7 +1565,7 @@ export default function ToHtmlDashboard() {
                           isInput: true,
                         })
                       }
-                      className={`w-full py-1.5 rounded-lg border text-xs font-semibold transition ${isDark ? "border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200" : "border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-800"}`}
+                      className={`w-full py-1.5 rounded-lg border text-xs font-semibold transition ${isDark ? "border-[#364F6B] bg-[#1A2634] hover:bg-[#243447] text-[#F5F5F5]" : "border-[#364F6B]/20 bg-white hover:bg-[#F5F5F5] text-[#364F6B]"}`}
                     >
                       View Full Section
                     </button>
@@ -1558,7 +1585,7 @@ export default function ToHtmlDashboard() {
                 value={logSearchQuery}
                 onChange={(e) => setLogSearchQuery(e.target.value)}
                 placeholder="Search log messages..."
-                className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${styles.bgInput}`}
+                className={`rounded-lg px-3 py-1.5 text-xs w-full sm:w-64 focus:outline-none focus:ring-1 focus:ring-[#FC5185] ${styles.bgInput}`}
               />
 
               <select
@@ -1573,7 +1600,7 @@ export default function ToHtmlDashboard() {
               </select>
             </div>
 
-            <div className={`p-4 rounded-xl border font-mono text-xs max-h-[500px] overflow-y-auto space-y-1 ${isDark ? "bg-slate-950 border-slate-800" : "bg-slate-900 border-slate-800 text-slate-200"}`}>
+            <div className={`p-4 rounded-xl border font-mono text-xs max-h-[500px] overflow-y-auto space-y-1 ${isDark ? "bg-[#1A2634] border-[#364F6B]" : "bg-[#243447] border-[#364F6B] text-[#F5F5F5]"}`}>
               {filteredLogs.length === 0 ? (
                 <p className="text-slate-500 italic">No logs recorded.</p>
               ) : (
@@ -1584,7 +1611,7 @@ export default function ToHtmlDashboard() {
                       [{log.level}]
                     </span>
                     {log.marker && (
-                      <span className="text-indigo-400 shrink-0">[{log.marker}]</span>
+                      <span className="text-[#3FC1C9] shrink-0">[{log.marker}]</span>
                     )}
                     <span className="text-slate-300">{log.message}</span>
                   </div>
@@ -1601,7 +1628,7 @@ export default function ToHtmlDashboard() {
           <div className={`w-full max-w-4xl max-h-[85vh] rounded-2xl border flex flex-col shadow-2xl ${styles.bgCard}`}>
             <div className={`p-4 border-b flex items-center justify-between ${styles.borderLine}`}>
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono font-bold text-xs">
+                <span className="px-2.5 py-1 rounded bg-[#FC5185]/15 text-[#FC5185] border border-[#FC5185]/30 font-mono font-bold text-xs">
                   {inspectedSection.label || inspectedSection.marker}
                 </span>
                 <span className={`text-xs ${styles.textMuted}`}>
@@ -1618,7 +1645,7 @@ export default function ToHtmlDashboard() {
               </button>
             </div>
             <div className="p-4 overflow-y-auto flex-1">
-              <pre className={`p-4 rounded-xl font-mono text-xs whitespace-pre-wrap select-text leading-relaxed ${isDark ? "bg-slate-950 text-slate-200" : "bg-slate-100 text-slate-800"}`}>
+              <pre className={`p-4 rounded-xl font-mono text-xs whitespace-pre-wrap select-text leading-relaxed ${isDark ? "bg-[#1A2634] text-[#F5F5F5]" : "bg-[#F5F5F5] text-[#364F6B]"}`}>
                 {inspectedSection.content}
               </pre>
             </div>
@@ -1626,7 +1653,7 @@ export default function ToHtmlDashboard() {
               <button
                 type="button"
                 onClick={() => setInspectedSection(null)}
-                className={`px-4 py-2 rounded-lg border text-xs font-semibold ${isDark ? "border-slate-700 hover:bg-slate-800 text-slate-300" : "border-slate-300 hover:bg-slate-100 text-slate-700"}`}
+                className={`px-4 py-2 rounded-lg border text-xs font-semibold ${isDark ? "border-[#364F6B] hover:bg-[#1A2634] text-[#F5F5F5]" : "border-[#364F6B]/30 hover:bg-[#F5F5F5] text-[#364F6B]"}`}
               >
                 Close
               </button>
@@ -1635,5 +1662,6 @@ export default function ToHtmlDashboard() {
         </div>
       )}
     </div>
+    </AuthGuard>
   );
 }

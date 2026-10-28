@@ -1,0 +1,30 @@
+{
+  "name": "tohtml_start_success",
+  "route": "/api/tohtml/start",
+  "method": "POST",
+  "request": {
+    "body": {
+      "fileName": "Cardiology_Test.txt",
+      "prompt": "You are an expert HTML booklet designer...",
+      "maxLinesPerChunk": 600,
+      "sections": [
+        {
+          "marker": "CUT 1",
+          "markerNumber": 1,
+          "content": "Question 1 content...",
+          "charCount": 50
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "jobId": "00000000-0000-0000-0000-000000000002",
+      "totalChunks": 1,
+      "totalSections": 1,
+      "fileName": "Cardiology_Test.txt"
+    }
+  }
+}

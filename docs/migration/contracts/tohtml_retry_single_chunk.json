@@ -1,0 +1,19 @@
+{
+  "name": "tohtml_retry_single_chunk",
+  "route": "/api/tohtml/retry",
+  "method": "POST",
+  "request": {
+    "body": {
+      "jobId": "00000000-0000-0000-0000-000000000002",
+      "sectionIndex": 0
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "jobId": "00000000-0000-0000-0000-000000000002",
+      "sectionIndex": 0
+    }
+  }
+}

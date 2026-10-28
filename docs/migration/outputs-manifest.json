@@ -1,0 +1,2108 @@
+{
+  "generatedAt": "2026-10-25T17:39:58.046Z",
+  "totalFolders": 107,
+  "totalFiles": 420,
+  "totalBytes": 8623883,
+  "files": [
+    {
+      "path": "0e27ef05-1b79-40cf-8a06-9209598d1cc8/notebook_0e27ef05-1b79-40cf-8a06-9209598d1cc8_1-1.txt.txt",
+      "size": 63351,
+      "sha256": "570d2acd01b3418ba1061b1a320097830aa36a5d144865bdf2c63a5395f786b6"
+    },
+    {
+      "path": "0e27ef05-1b79-40cf-8a06-9209598d1cc8/notebook_0e27ef05-1b79-40cf-8a06-9209598d1cc8_2-2.txt.txt",
+      "size": 63351,
+      "sha256": "570d2acd01b3418ba1061b1a320097830aa36a5d144865bdf2c63a5395f786b6"
+    },
+    {
+      "path": "0e27ef05-1b79-40cf-8a06-9209598d1cc8/notebook_0e27ef05-1b79-40cf-8a06-9209598d1cc8_3-3.txt.txt",
+      "size": 63351,
+      "sha256": "570d2acd01b3418ba1061b1a320097830aa36a5d144865bdf2c63a5395f786b6"
+    },
+    {
+      "path": "1_240630_083957/01_raw.md.txt",
+      "size": 4954,
+      "sha256": "2fa78745826e3082870473b85a145f6766fe1091c7d8579d6bac498be3491b1a"
+    },
+    {
+      "path": "1_240630_083957/03_questions.json.json",
+      "size": 7380,
+      "sha256": "11d30abf5759629b624ec7401c944a752e1168d757b5892199be2255045831f5"
+    },
+    {
+      "path": "1909db77-c7bc-4fef-ad36-b216b4f5ae93/notebook_1909db77-c7bc-4fef-ad36-b216b4f5ae93_21-40.txt.txt",
+      "size": 55033,
+      "sha256": "cd1e19946fff5a5043e4d9e6ad535ef11cc149333d4cbda11d8a3eb6f82efffe"
+    },
+    {
+      "path": "1909db77-c7bc-4fef-ad36-b216b4f5ae93/notebook_1909db77-c7bc-4fef-ad36-b216b4f5ae93_41-60.txt.txt",
+      "size": 61169,
+      "sha256": "015b7d37b812d5e824b545509d1c1e0a6fc601ace52650c4b671bfa4747dcef7"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_10-10.txt.txt",
+      "size": 10409,
+      "sha256": "44d3b2e8631f412f807626fe9f2d4e5d3a1ed87b0cebfb437e07947d794e351c"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_11-11.txt.txt",
+      "size": 9199,
+      "sha256": "ca44ee1c9256ef016476d447567031b07b74470a4148ed0247316f0a7fb81390"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_12-12.txt.txt",
+      "size": 9279,
+      "sha256": "308093fb0b2bcdfffe0f0f753efe49c1f314405d089cf318fc44b6265a3db1a2"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_2-2.txt.txt",
+      "size": 14595,
+      "sha256": "87399a601425731b8acbda6d7d505974c525a744fd58b9de77c438ae89d4d017"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_22-22.txt.txt",
+      "size": 11271,
+      "sha256": "8a83880ef673646f1fe59211322243c82261e54152383fca8c88461a3244bee5"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_23-23.txt.txt",
+      "size": 9666,
+      "sha256": "12a111886d75efebb9a9e2f7761c1b66d5db395555f8ed2563438d322064561f"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_3-3.txt.txt",
+      "size": 8695,
+      "sha256": "60241e78c26693f79ef39758cac02ebf50bcfcfc3df0a9451992e4b4ea86beaa"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_4-4.txt.txt",
+      "size": 9861,
+      "sha256": "c374e1504589dab4f459bba2ff3740bb15e56aac7753e8c8a93309a7c1d16051"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_5-5.txt.txt",
+      "size": 10748,
+      "sha256": "8e72e03b4133f0921d7e4257ff2883b49dba025f0dfab5f7d2035c3058ca136d"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_6-6.txt.txt",
+      "size": 11369,
+      "sha256": "8ca780ff339551f9fcb779c63caffba2e39480cf07258f6f0f80a0d3367c9ed4"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_7-7.txt.txt",
+      "size": 13616,
+      "sha256": "9ad244b465e098ea85ee39d321124d711da4e9638ab8fe187ed1a283fb7be45a"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_8-8.txt.txt",
+      "size": 7044,
+      "sha256": "1503e4e8d0b87a98f679820c509cdfa02ffa8b427a4a27078a0fb4b90af19df4"
+    },
+    {
+      "path": "334fbfff-e636-44f0-b1e4-f340c42f1b28/notebook_334fbfff-e636-44f0-b1e4-f340c42f1b28_9-9.txt.txt",
+      "size": 7098,
+      "sha256": "3e68baa9bca35e8a67dd7d8e6f7b8e64926656611f06069111c9d3178779cf91"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0000-000001-000001.txt",
+      "size": 11038,
+      "sha256": "d48b3497cc37c9988a8f464c78821a1e876e846f2c9605d98e0d959f0819e2a3"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0001-000001-000001.txt",
+      "size": 12336,
+      "sha256": "cc8d31b6e611eccab55a04e092c1b57971331324c45b799397bc939ae79809b2"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0002-000001-000001.txt",
+      "size": 13359,
+      "sha256": "807168d155a7b17a4074bc9113cd99ebf0628a945bf757eddf6eda50c5bd56a7"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0003-000001-000001.txt",
+      "size": 12441,
+      "sha256": "61ccc8d4d233cc4f16274b0c49f832b11a2eebe75896d70106608eef8c31e8d8"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0004-000001-000001.txt",
+      "size": 13164,
+      "sha256": "96c1830467111af073df3b0d7d651726b61f1f665e8024b24097ac78e6b98d5a"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0005-000001-000001.txt",
+      "size": 11940,
+      "sha256": "929e4539867645f26b96e2158458d634b6bb8488f40a95701de7d96cb9f6bec0"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0006-000001-000001.txt",
+      "size": 13602,
+      "sha256": "a9994f7555c04d0497ab7fd927b8a922a37ae63dcf115481cba6d99b865c68a3"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0007-000001-000001.txt",
+      "size": 13310,
+      "sha256": "8d48e1fbeb9527bf18d39ecae6158d6fb0d1fea996cfb290de4a39a6a6660516"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0008-000001-000001.txt",
+      "size": 13787,
+      "sha256": "378c3b05f888b63add40bf911468fa382c952f301bcdae56d085ac2948e7d4d0"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0009-000001-000001.txt",
+      "size": 12999,
+      "sha256": "3ba9e8197ffe4efe06a60ff528cf612953335fa717ef69c7efe0b3d2675cae76"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0010-000001-000001.txt",
+      "size": 10741,
+      "sha256": "6338187f014c72e7835d671a270023f456bcb96bea947922c8553fd30ee6b113"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0011-000001-000001.txt",
+      "size": 10895,
+      "sha256": "edacf10d64328b075671e46308b6984634645bbd569fbc890076d2e0f2803281"
+    },
+    {
+      "path": "460c972b-f00b-47e6-89f0-92ad0d3fed33/0012-000001-000001.txt",
+      "size": 14565,
+      "sha256": "0baf16dff1c5379ba1a061cc021eab23d62e539a330470868ae32d739fc4b1ee"
+    },
+    {
+      "path": "4a79aac8-4d0c-4312-a532-ca8035215dc4/0004-000081-000100.txt",
+      "size": 34095,
+      "sha256": "2da3397bf8e75c8fa829e61f374bfeee633588f1d3d475bd2551fc61f1cb9f4d"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_11-12.txt.txt",
+      "size": 6839,
+      "sha256": "96cbfdec271d7c17bcff1d13ce8d7dd8b4626c5334d509fb89fff3486ccd54d1"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_13-14.txt.txt",
+      "size": 11177,
+      "sha256": "d5f711eed764b510337a178f09eda49ae95f74db16be5555d158e888438d1e25"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_15-16.txt.txt",
+      "size": 10535,
+      "sha256": "5ac22ec52d3817a3e31a6e4677e9d7379f3d83c3c5102e292985a20b1da24ca8"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_17-18.txt.txt",
+      "size": 2516,
+      "sha256": "a59c03666aaf990ce4875c1c386bef7db44edb3347401cacda6cc43306a47188"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_19-20.txt.txt",
+      "size": 2017,
+      "sha256": "b2b1b3585090da7ee1444a7fb8ee812b0c5d3b91407ad640df9e9cc83dc465b2"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_21-22.txt.txt",
+      "size": 2200,
+      "sha256": "d2db08001ea092765fbcfdd5532b5736e71669a555aaa0ce8cd4f8050bff2067"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_23-24.txt.txt",
+      "size": 2505,
+      "sha256": "9d32ed80506930ff5ee83d7ccb37d924cad1e4aa21059b404b8d9e624ac66131"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_25-26.txt.txt",
+      "size": 2260,
+      "sha256": "64efbe7bd1be39926863c4257f3bd4b6d72b8ab58202b285fb8e3881cce20f64"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_27-28.txt.txt",
+      "size": 2314,
+      "sha256": "dc9b779b871a7a96918c5059ea1dd6edf16d66e3a260bbf52b5052abcc033ff5"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_29-30.txt.txt",
+      "size": 2541,
+      "sha256": "556cc709d05d96147c3cf9cdca981aaf76387c2c08fbf4dcad80e7c1eb60b937"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_3-4.txt.txt",
+      "size": 52564,
+      "sha256": "05fe30438d08ef16f42e04bff0626a612e80ba8217615772cb5138fbf9e42220"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_31-32.txt.txt",
+      "size": 8557,
+      "sha256": "673ca3986fe41bfa8174504247ccea246fc839af7c54fd54995e9b1e6729637f"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_33-34.txt.txt",
+      "size": 2744,
+      "sha256": "36820c84742756891d321be7ac29dd11196f4a2e9285b3d9abe6c6f6fbd4576d"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_39-40.txt.txt",
+      "size": 19268,
+      "sha256": "8f96b6d061cf7f6ed034022cf4c4952f15d82d7139245f0c3d5d8da6cd1210f6"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_5-6.txt.txt",
+      "size": 2840,
+      "sha256": "30a78f31fcec89c95ea7e0790b8cea7fcb005415253ce7b6bdcfcbb49b528cd1"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_7-8.txt.txt",
+      "size": 1957,
+      "sha256": "106123bfb0a2a2539350c6865009f99ca6cce6a8fa25810c50261c5fb77d173c"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_77-78.txt.txt",
+      "size": 19268,
+      "sha256": "8f96b6d061cf7f6ed034022cf4c4952f15d82d7139245f0c3d5d8da6cd1210f6"
+    },
+    {
+      "path": "527cca76-661f-403e-b98f-876654616d25/notebook_527cca76-661f-403e-b98f-876654616d25_9-10.txt.txt",
+      "size": 1989,
+      "sha256": "e30472011b39b701bd6c2856a7d7fcc3251dd75ed147f57744c0211af2c8a45d"
+    },
+    {
+      "path": "53bf78b4-f7d5-4056-aca8-7bc6e28d2981/notebook_53bf78b4-f7d5-4056-aca8-7bc6e28d2981_1-5.txt.txt",
+      "size": 6129,
+      "sha256": "08c14dbcb6cdcdf8d46e134a71e3e8ab01ad654286bf92ee55c26455373f1592"
+    },
+    {
+      "path": "53bf78b4-f7d5-4056-aca8-7bc6e28d2981/notebook_53bf78b4-f7d5-4056-aca8-7bc6e28d2981_6-10.txt.txt",
+      "size": 4429,
+      "sha256": "116d1cc461db37caab37416eccec74cd661ae4aa0964ddb3b5dd596e8003530c"
+    },
+    {
+      "path": "5c497229-76be-41fd-acf3-58eacf11e6d5/0000-000001-000020.txt",
+      "size": 38554,
+      "sha256": "0becf3157e3a04bf0d22525f6d4771188c7dc9a7ff4e2416cbe36573044acb02"
+    },
+    {
+      "path": "5c497229-76be-41fd-acf3-58eacf11e6d5/0002-000041-000060.txt",
+      "size": 33319,
+      "sha256": "2c753002153dc03b97d265bf4cefde93215aaa2fd6f9e6ff4910b6cb55524a9e"
+    },
+    {
+      "path": "5c497229-76be-41fd-acf3-58eacf11e6d5/0005-000101-000120.txt",
+      "size": 32467,
+      "sha256": "98f4c0f8bb0c18ac54f3ece2306f57697d4d4cd3fd2c94b921b807e6199316ba"
+    },
+    {
+      "path": "5c497229-76be-41fd-acf3-58eacf11e6d5/0006-000121-000140.txt",
+      "size": 27221,
+      "sha256": "feeb146ba634a5f349417195d0d7f57db06c9c99982355456f79b6fc115cfe48"
+    },
+    {
+      "path": "5c497229-76be-41fd-acf3-58eacf11e6d5/0007-000141-000145.txt",
+      "size": 8733,
+      "sha256": "91468b5d7404f317d532434e87d82b40602eba21140e59ce9b84fa5bb6d755f0"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_1-5.txt.txt",
+      "size": 4646,
+      "sha256": "439d261814a60ea0686c38781efdc6fa30aa5a033a619e4cffddeb101b72191a"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_11-15.txt.txt",
+      "size": 4598,
+      "sha256": "ab5228f547993940cc651ca492992f69a224b0c9a710bdb78ddf8197ff022268"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_16-20.txt.txt",
+      "size": 4988,
+      "sha256": "754467462fcf9ec040f8ec16f901487477b9db0b2c79f27d4a0b793a72dbabf8"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_21-25.txt.txt",
+      "size": 5404,
+      "sha256": "e600279dca09fd0e8efaa8f1de601708c336a11f5c9ebc3b4b280fd338669ebd"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_26-30.txt.txt",
+      "size": 5210,
+      "sha256": "e33331960021e1bc203f011856e22354e6f6eb163950fe44e3bba0594775f9ab"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_31-35.txt.txt",
+      "size": 4537,
+      "sha256": "1b6a3b77992b0d17120a4d32c8b3824c8dbd4a58fb077b07ad1ff791925aa9ad"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_36-40.txt.txt",
+      "size": 4498,
+      "sha256": "7a97dc4ea97073cc6600487b0fdafbda832920c47f6324cfff20da9de5950acd"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_41-45.txt.txt",
+      "size": 4460,
+      "sha256": "a16b3fa82a89db2ffd10957bb03423061a220352772ff2159e87c315548f31f0"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_46-50.txt.txt",
+      "size": 5878,
+      "sha256": "ac783469731e156bd7300f335b44c15d2a790681108f4fe48836e8e8e419ebfd"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_51-55.txt.txt",
+      "size": 4693,
+      "sha256": "2809dddab4496817a036a508835f73c977c53179224389b2b7b502d11e86b847"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_56-60.txt.txt",
+      "size": 5668,
+      "sha256": "953cbececd8f6b061bb2e4136a18501c1e0b528e738515cbe253714ec1042df2"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_6-10.txt.txt",
+      "size": 4581,
+      "sha256": "d0f477ce0725a68de880ce3c95d1129df35bba1017d8dd82526b1c3b869ced6d"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_61-65.txt.txt",
+      "size": 4799,
+      "sha256": "1a0dfd223057b20782b122ac472fee7e8697415c2a477a2510e8efd9ece6147d"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_66-70.txt.txt",
+      "size": 5368,
+      "sha256": "316dc2934e11dee141873a6ebce9b9ed350b01464f4d05687fedccf1b8cddb89"
+    },
+    {
+      "path": "6cd79cd5-c3f8-4187-907c-4c46fe181287/notebook_6cd79cd5-c3f8-4187-907c-4c46fe181287_71-75.txt.txt",
+      "size": 5064,
+      "sha256": "f2b17938e7c0798b5ce4c0c06cc62ab0699b29b4a22bed8328327ec796f1ab18"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_1-5.txt.txt",
+      "size": 5370,
+      "sha256": "24d42507367689bcbc6c8ae215e420e9d5c0bf1711445a8bebe195d2e1187b22"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_11-15.txt.txt",
+      "size": 4969,
+      "sha256": "b66593687e1620b691d30c6c261a554baf30169a4af8ec0acceeec14889251b4"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_16-20.txt.txt",
+      "size": 5049,
+      "sha256": "2ff4db77d4953400d011871e745778b4176b82179d0b7729de287c2aa7f4a907"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_21-25.txt.txt",
+      "size": 5869,
+      "sha256": "3773fa80bee8a4d8b27d5ab8671b32596b083a5bb6bd1346982a6bbbf454636d"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_26-30.txt.txt",
+      "size": 5989,
+      "sha256": "7f1c3df4aa54ef5cb8028a48ad200ec76be9cea4ecc377decfc5bbced482ac80"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_31-35.txt.txt",
+      "size": 5405,
+      "sha256": "f44de1814c6547f3c1c36b7f18a35236f410c8e61dd76bd26a3f2531163833be"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_36-40.txt.txt",
+      "size": 5019,
+      "sha256": "1fd09729c8f14070a6a37e04a7351006b4ef5b74c5c1fac569548d354657c1ef"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_41-45.txt.txt",
+      "size": 6595,
+      "sha256": "a16908e06ab4c6ddc0c84e08dd31b6ae83f42dc79af66ca89e65ef3e5ae5966e"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_46-50.txt.txt",
+      "size": 5406,
+      "sha256": "7f489cd3778772fdbfd235d2a7b5cb6a39be259f97a1e59e072b84ae85e5a4f0"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_51-55.txt.txt",
+      "size": 5589,
+      "sha256": "00eb5b8982be67a9c796f1f41d6920c9325df4df3142c3840320248a591854b2"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_56-60.txt.txt",
+      "size": 5110,
+      "sha256": "df5c3dae91151941d0414be8b3047ec9af7614c5694e42237893052ab2f07ba7"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_6-10.txt.txt",
+      "size": 5592,
+      "sha256": "32e71a289678a4cda9cd2920ed891380c24095b77bc3c1e1da39ae3f7fc8875a"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_61-65.txt.txt",
+      "size": 5715,
+      "sha256": "b7744b1f40d16174296b8969ef44b38f1abaf4234a236aee380e60a9eb16a5fa"
+    },
+    {
+      "path": "72302155-7dcb-4acf-9637-98d759ae1be4/notebook_72302155-7dcb-4acf-9637-98d759ae1be4_66-70.txt.txt",
+      "size": 6017,
+      "sha256": "7e0aa19b7401814e7d44ada8f0a5a7c08c7f581e32f4d0250f861120cf362bed"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0000-000001-000001.txt",
+      "size": 8818,
+      "sha256": "c81ea5e14b0d4100c623e9e7dd1be50335c0498dfddb6b741ce242f8e06ec64e"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0001-000001-000001.txt",
+      "size": 7219,
+      "sha256": "38df66a398d5c8b1577a8f86e82a3ced0d7ceaf9853810634025c5eabe6ff4d5"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0002-000001-000001.txt",
+      "size": 9904,
+      "sha256": "a16c7d3cf0ae1d8af1c9f0f2e747ef4a1b337d136cb391ed56a25434e286d464"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0003-000001-000001.txt",
+      "size": 11356,
+      "sha256": "a9c55af29cf77e257556eeed9f0636fc2ae1437b7b85eac009da509cb252f254"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0004-000001-000001.txt",
+      "size": 10079,
+      "sha256": "c3cd64264eecac96f60fecd10cd0da2f8cb106d1de5cde0b0f25486713151111"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0005-000001-000001.txt",
+      "size": 8140,
+      "sha256": "b5efd1231c1c9386f7f8aeda1e72c92248831e2ce2b6ea94e41ff5c3ea1011fc"
+    },
+    {
+      "path": "8841a468-d95d-4fa6-9cb3-51fa72f744cc/0006-000001-000001.txt",
+      "size": 9166,
+      "sha256": "1caa0151366664f047b3dbe8c2c447f198aea72b928bac564f6b76f85471b63f"
+    },
+    {
+      "path": "8c337bb9-8282-42e2-adc3-6f6a0b76d356/notebook_8c337bb9-8282-42e2-adc3-6f6a0b76d356_46-60.txt.txt",
+      "size": 32512,
+      "sha256": "b01014e3ac2379cf448048026fbcae885afecebf997857c0ff1b45aa71fa0dfd"
+    },
+    {
+      "path": "98488627-a5cd-423d-8c6b-514ba8adc193/notebook_98488627-a5cd-423d-8c6b-514ba8adc193_1-5.txt.txt",
+      "size": 6001,
+      "sha256": "1a2ea79703f08d1d3bf1c18eb75c721eaef702646b879b8cf8e56a9a9cfd581d"
+    },
+    {
+      "path": "98488627-a5cd-423d-8c6b-514ba8adc193/notebook_98488627-a5cd-423d-8c6b-514ba8adc193_11-15.txt.txt",
+      "size": 5266,
+      "sha256": "077900a0f6b7c764bc6bb45ce72b087960227e2dc9ab787ec84a07d4dff7dccc"
+    },
+    {
+      "path": "98488627-a5cd-423d-8c6b-514ba8adc193/notebook_98488627-a5cd-423d-8c6b-514ba8adc193_16-20.txt.txt",
+      "size": 5858,
+      "sha256": "e7eca960d47cc0ad0359f8ac6af2b3136798e1fee55db20a53d3ff2c94c90718"
+    },
+    {
+      "path": "98488627-a5cd-423d-8c6b-514ba8adc193/notebook_98488627-a5cd-423d-8c6b-514ba8adc193_21-25.txt.txt",
+      "size": 5858,
+      "sha256": "e7eca960d47cc0ad0359f8ac6af2b3136798e1fee55db20a53d3ff2c94c90718"
+    },
+    {
+      "path": "98488627-a5cd-423d-8c6b-514ba8adc193/notebook_98488627-a5cd-423d-8c6b-514ba8adc193_6-10.txt.txt",
+      "size": 4862,
+      "sha256": "bd6ce43ece7cb331d59d14cbed2b50167025e26e34a130a1c0380ce16bce8369"
+    },
+    {
+      "path": "9f00093f-a905-4e53-9b2b-f46245717e0b/notebook_9f00093f-a905-4e53-9b2b-f46245717e0b_1-20.txt.txt",
+      "size": 33577,
+      "sha256": "53eda2cad8a33ad683700b725a6d316617d9558a8c21f974749d8b94cb7c43e5"
+    },
+    {
+      "path": "9f00093f-a905-4e53-9b2b-f46245717e0b/notebook_9f00093f-a905-4e53-9b2b-f46245717e0b_21-40.txt.txt",
+      "size": 33577,
+      "sha256": "53eda2cad8a33ad683700b725a6d316617d9558a8c21f974749d8b94cb7c43e5"
+    },
+    {
+      "path": "9f00093f-a905-4e53-9b2b-f46245717e0b/notebook_9f00093f-a905-4e53-9b2b-f46245717e0b_41-60.txt.txt",
+      "size": 33577,
+      "sha256": "53eda2cad8a33ad683700b725a6d316617d9558a8c21f974749d8b94cb7c43e5"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0000-000001-000001.txt",
+      "size": 10015,
+      "sha256": "647203111eecdd8c3db19e4facba789f75060eed16baa491b8e434e65c20b626"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0001-000001-000001.txt",
+      "size": 9919,
+      "sha256": "9c9db8575ad713e0e5a94bdbb3593e1174670a4606bd23b4dcfc1e82d3a794cc"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0002-000001-000001.txt",
+      "size": 10881,
+      "sha256": "d0ede7b49fc8582b44639ba9d5ee66981cbae824c32fdd84f3eda68ab0fad849"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0003-000001-000001.txt",
+      "size": 12588,
+      "sha256": "2e8efbc8eecf18a4f8ffc496a6caa21195d1dbb53ec3633cf3a322b76876a9d6"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0004-000001-000001.txt",
+      "size": 11475,
+      "sha256": "e411c1ee7ac1d7fcea0b995e8a238f07f7211e80655dbccdc3286c4a0faee5e9"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0005-000001-000001.txt",
+      "size": 11094,
+      "sha256": "54e63e1ba843abc266fb9d0fdd2667f55925aa3f0f132a01b21da0c5907fa9a1"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0006-000001-000001.txt",
+      "size": 10048,
+      "sha256": "c53508523a2c29e15862590128e9e17e21c0375827492b8d38d279bb2804258a"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0007-000001-000001.txt",
+      "size": 10158,
+      "sha256": "aae2157f5d20159840a9b3b445c8811b307f492cd61a0fa86e3655603f5a3ecf"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0008-000001-000001.txt",
+      "size": 9018,
+      "sha256": "e1e7e8cba7759dc397aa7b419c47cb57db4df54a9cb03d2e81e17b5b5d0b3f4b"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0009-000001-000001.txt",
+      "size": 13562,
+      "sha256": "b67b4b8ab34a53df99e392af026c0e87f50efed4fa46cf9894268443b4b97485"
+    },
+    {
+      "path": "a560499e-5a95-4c60-ac6c-51c46aff69ab/0010-000001-000001.txt",
+      "size": 10130,
+      "sha256": "7514a0127bf9bb66eb5c975873912f899aa631e79999a206838c49ceab181418"
+    },
+    {
+      "path": "a9d2821c-6191-43ed-8253-e5dd933ddd2b/notebook_a9d2821c-6191-43ed-8253-e5dd933ddd2b_1-5.txt.txt",
+      "size": 5130,
+      "sha256": "af5fec300acf627af7e362d210b4123e2666bce5d8a781e009ece04efce412f7"
+    },
+    {
+      "path": "a9d2821c-6191-43ed-8253-e5dd933ddd2b/notebook_a9d2821c-6191-43ed-8253-e5dd933ddd2b_11-15.txt.txt",
+      "size": 4429,
+      "sha256": "07c56e09f13c4357128ed0826d6f714abd7175f0f7a299072623b9c181ae1bac"
+    },
+    {
+      "path": "a9d2821c-6191-43ed-8253-e5dd933ddd2b/notebook_a9d2821c-6191-43ed-8253-e5dd933ddd2b_16-20.txt.txt",
+      "size": 5861,
+      "sha256": "4195c148ac22c7d2bbbd74a76425221881126e81bd137c8d2053e91b45c0cb95"
+    },
+    {
+      "path": "a9d2821c-6191-43ed-8253-e5dd933ddd2b/notebook_a9d2821c-6191-43ed-8253-e5dd933ddd2b_21-25.txt.txt",
+      "size": 5861,
+      "sha256": "4195c148ac22c7d2bbbd74a76425221881126e81bd137c8d2053e91b45c0cb95"
+    },
+    {
+      "path": "a9d2821c-6191-43ed-8253-e5dd933ddd2b/notebook_a9d2821c-6191-43ed-8253-e5dd933ddd2b_6-10.txt.txt",
+      "size": 6133,
+      "sha256": "1d4b2b374bd09da71929daba77d4dd2ea6ff585055671929c641b214f50acb29"
+    },
+    {
+      "path": "Anatomy-Thorax/0000-000001-000050.txt",
+      "size": 15,
+      "sha256": "53b2aeab6bf245041d4db2bc681b52dedbdcf9358635c330a108415ff5403a8b"
+    },
+    {
+      "path": "Anatomy-Thorax/0001-000051-000100.txt",
+      "size": 17,
+      "sha256": "a3623922c679e440eb56ed4d700fc8edcf5ccbe8de48afefada57ebf86dca7ac"
+    },
+    {
+      "path": "Anatomy-Thorax/0003-000150-000199.txt",
+      "size": 18,
+      "sha256": "be52fde156c5f8296595c4ca690bd488d177bd95e5ce484fcfbe177610bdc5b5"
+    },
+    {
+      "path": "Anatomy-Thorax/merged.txt",
+      "size": 138,
+      "sha256": "1416f121ae8cfcfd4b44b7c7b3ef96cc13783af6cb84913bf0e9ad0c209724f7"
+    },
+    {
+      "path": "Atomic Habits_Part 0/Atomic Habits_Part 0.txt",
+      "size": 17453,
+      "sha256": "a1ab8c94f98eb034bca0a8bb5f4d0e5985d6acf1326b7629a87d76a3f2d3bc70"
+    },
+    {
+      "path": "Atomic Habits_Part 1/Atomic Habits_Part 1.txt",
+      "size": 25553,
+      "sha256": "245f9f6dd75135ef1219d8ea32f2107c67391c81b4cea774b1b74b486a9ad5f9"
+    },
+    {
+      "path": "Atomic Habits_Part 2/Atomic Habits_Part 2.txt",
+      "size": 20576,
+      "sha256": "c01c4fad8b4569162052612f8de010f0d12fb8d5fa4611fe25935bee8db580ea"
+    },
+    {
+      "path": "Atomic Habits_Part 3/Atomic Habits_Part 3.txt",
+      "size": 20085,
+      "sha256": "baf05ca26b7942d4176f104d9a097838c97313e06932cd5f3e06730c3566ab81"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0000-000001-000001.txt",
+      "size": 11907,
+      "sha256": "0f8d97b52a0c9d30ae1b4b1cae2fafaf51be629698a52b91da4b56353bb813fa"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0001-000001-000001.txt",
+      "size": 12014,
+      "sha256": "47919f4785c6fb6aeaa1486105dafc1fb08b9ebf8924995ccfe9573842e5f087"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0002-000001-000001.txt",
+      "size": 11235,
+      "sha256": "47773b7069805077d965a2813f4a584be388f6992492e0b71aed766c4ef0de89"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0003-000001-000001.txt",
+      "size": 8718,
+      "sha256": "b792b4aa386219d3319022da885d24284d82868e7c0dee015f21165097071b08"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0004-000001-000001.txt",
+      "size": 11928,
+      "sha256": "92535e63d86f035dd276962d426abd7074e9685883b65083680e2b7e901ec18d"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0005-000001-000001.txt",
+      "size": 11721,
+      "sha256": "d97ece70be629ddccf6b60a862b537bbf8ba99f429925d61ecf41ff7488b69e4"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0006-000001-000001.txt",
+      "size": 10570,
+      "sha256": "7555e774409ca6e692cd680f6e99fae1342997337382c5b2289709c5cf264f84"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0007-000001-000001.txt",
+      "size": 10395,
+      "sha256": "404c833760e1530926b58d656e321c03311b79517d88979314a5fdff878347cf"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0008-000001-000001.txt",
+      "size": 10672,
+      "sha256": "23871b379207556e5c0fbd5d72fffbfd7ed5ce7d59875eb91b8062fd6383febe"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0009-000001-000001.txt",
+      "size": 10185,
+      "sha256": "616bd707075ed7d8806636e713b781a124d0805090da2e28a0ff54885be3af5d"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0010-000001-000001.txt",
+      "size": 6389,
+      "sha256": "12b7f92811da52850905669a8b7587a310bdf49c9457c8260c137fa151173b29"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0011-000001-000001.txt",
+      "size": 12718,
+      "sha256": "4a37baaf0e0627e722f0732a4c04816f847e6dc7e5d9971787922c67a226e0b9"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0012-000001-000001.txt",
+      "size": 11770,
+      "sha256": "9acd849f305f4fcd4ea2d0e1d2d8c0f62788c024ccc2734b422642649fbbc687"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0013-000001-000001.txt",
+      "size": 12342,
+      "sha256": "d0ed6e15b8d954ffc3314fc9e574d919a1dbf81b221b06526b42830943957fa5"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0014-000001-000001.txt",
+      "size": 14137,
+      "sha256": "54d79441178b241c34e19593684cbfa965748a332f67ff9af7ff43adea4049ec"
+    },
+    {
+      "path": "eef2b9dc-b6fc-485e-944d-03c74fcff238/0015-000001-000001.txt",
+      "size": 10497,
+      "sha256": "55a1b141d28138f07e25ad231c3fb574e45c98bd28f9818486d88688d1a52879"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0000-000001-000020.txt",
+      "size": 1375,
+      "sha256": "d08fa90679842beee785f159e93f1bc70ecc5bf204f93d4461df9fa6a136a433"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0001-000021-000040.txt",
+      "size": 711,
+      "sha256": "498fdd819c0b9ef2d7b9c3badca99e1e8c0f4753d363aaad24f68edc641f3a17"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0002-000041-000060.txt",
+      "size": 671,
+      "sha256": "e9af998a7074426a26c9cac0e8d46995fcb75c40b1dd8eea07501be7c5234044"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0003-000061-000080.txt",
+      "size": 793,
+      "sha256": "6b09d654f94122dc585848ec0d4c3223779be1831b9c05acd1a050c13eabac7c"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0004-000081-000100.txt",
+      "size": 856,
+      "sha256": "ac30a29c026286651416ae15b43967559a74a65fb00a7702c0c7b9919d1dd368"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0005-000101-000120.txt",
+      "size": 865,
+      "sha256": "b4d67dca3a721c8c3148aa56b577ca334b4559887485bbb895ad7bb1375eac68"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0006-000121-000140.txt",
+      "size": 809,
+      "sha256": "8067356559a14ff3bbb3203d268044ed2d243fdc32a416fa01db6077b2a7c435"
+    },
+    {
+      "path": "fa087793-ac24-4777-a196-b265d810f2f0/0007-000141-000160.txt",
+      "size": 1415,
+      "sha256": "ba6bb1f2ea1c75ab1e75fd2bbd0eff7c495298ff7e6bab8e263a1f6cb0e5d9aa"
+    },
+    {
+      "path": "pathology-kolie-Bahman99-(1)_241025_110116/result.txt",
+      "size": 4510,
+      "sha256": "bef1661dbd5093b74c80cb2c9aa9b6acc09eace98bb0eb32894094183dd27fdf"
+    },
+    {
+      "path": "Phisio(1)_240630_153553/01_raw.md.txt",
+      "size": 141410,
+      "sha256": "4d4722fd71701f503984eefbac3bb0a25a3ad900bcb4db6ff97fc1888b2aa512"
+    },
+    {
+      "path": "Phisio(1)_240630_153553/03_questions.json.json",
+      "size": 166982,
+      "sha256": "c513b23e5dbdc4c77a5c6c0454ee87d640161d24801c8f19602eb358ac37c266"
+    },
+    {
+      "path": "Phisio(1)_240630_153553999/01_raw.md.txt",
+      "size": 141410,
+      "sha256": "4d4722fd71701f503984eefbac3bb0a25a3ad900bcb4db6ff97fc1888b2aa512"
+    },
+    {
+      "path": "Phisio(1)_240630_153553999/03_questions.json.json",
+      "size": 33859,
+      "sha256": "df9e3f55c992b2fa7505f615c6f9978e407424c5f00b0264b209fc126d59f9af"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0001-CUT-1-chunk-1.txt",
+      "size": 25435,
+      "sha256": "71197f3ee0a89f5527e6f6466102c69f223bea671ab336f9a0c373572d969643"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0002-CUT-1-chunk-1.txt",
+      "size": 26413,
+      "sha256": "0eb7b39fd4d6d3fcddca69fafa50422caa2e400e0538b3a0aac46ac317d5bc13"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0003-CUT-1-chunk-1.txt",
+      "size": 26320,
+      "sha256": "23843a199e14ea71cc810c6c0b95dd1527c385334e5902f74705aabd58b36351"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0004-CUT-2-chunk-1.txt",
+      "size": 28020,
+      "sha256": "1a1928b0209b768d4e8b1abaa961eb50ea84776b8ddcd8151dba652a12349d68"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0005-CUT-3-chunk-1.txt",
+      "size": 26991,
+      "sha256": "d4647e878711356bb36726c7036a40a4f11abc80e5eeebc2c34d649e6cd3d835"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0006-CUT-4-chunk-1.txt",
+      "size": 27545,
+      "sha256": "caf17fe1784299ea990ea3bafa26bca410ee7ba500909f9943c3b86a1c3d2a4f"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0007-CUT-5-chunk-1.txt",
+      "size": 26327,
+      "sha256": "a61ed1d1a518d9482cb85013521b3c415bc2196d7cf87712bcae18707f15b097"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0008-CUT-6-chunk-1.txt",
+      "size": 26203,
+      "sha256": "81c3dd3c3bdf93ebfb13a12d6425510267c038c4b92e449a7301b7c55c6d4c6e"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0009-CUT-7-chunk-1.txt",
+      "size": 28150,
+      "sha256": "7eeb0996226df3c88d646895c260afa1cb025052af2616321f022e06c13d5616"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0010-CUT-8-chunk-1.txt",
+      "size": 27688,
+      "sha256": "b8873ac94b353ec8332ab6a70a1b561040396b22bd6e26f9c0ad631077c4f842"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0011-CUT-9-chunk-1.txt",
+      "size": 26131,
+      "sha256": "a0526990e21dbba3543ad45cd4962b5bbbd8eade50f4650d285ea89b66ad0e58"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-2/0012-CUT-10-chunk-1.txt",
+      "size": 26395,
+      "sha256": "14ce42fe7409f20accafbc31bea7456ac1515777d7d7794ad999c7e892a46ef8"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-3/0001-CUT-1-chunk-1.txt",
+      "size": 40148,
+      "sha256": "2d8712ad7ddcafef952b5a12f24a72bf7396ff26ae7fa8b02bc5f85b32b62a2c"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه-3/0002-CUT-1-chunk-1.txt",
+      "size": 36489,
+      "sha256": "613f882d81ee118ed96580bea2817428846cdc39e2a20fb08979cdfbe1d291ec"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه/0001-CUT-1.txt",
+      "size": 25818,
+      "sha256": "192cb7f70cac76b51e6130ba6f8caa5acff34b46d785a776e36f439008467319"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه/0002-CUT-1.txt",
+      "size": 26752,
+      "sha256": "01679def29cb4b2c80873f181663f51af31f4d8b2a4572f88581913fcfe41f28"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه/0003-CUT-1.txt",
+      "size": 27705,
+      "sha256": "3cb4ed925f94c5ae620e8884130c70cdb9679af6e330dcd08b73f3d96b7f8043"
+    },
+    {
+      "path": "tohtml-2ریه-مرج-جزوه/0004-CUT-2.txt",
+      "size": 27997,
+      "sha256": "09d926d218df2248a0716a2b9a9ffcd75d23178a3744811f1bc95ec56403e371"
+    },
+    {
+      "path": "tohtml-خلاصه-کلیه-1/0002-CUT-2-chunk-1.txt",
+      "size": 47119,
+      "sha256": "94cd41b832f2e53e8e1ce2b159826bf74af2af4c14b9971067a9ef97ed3aa509"
+    },
+    {
+      "path": "tohtml-خلاصه-کلیه-1/0003-CUT-3-chunk-1.txt",
+      "size": 41906,
+      "sha256": "2efa8e2ec754ede5e73fda78054c4025be7f9374091330c19c06b8137e82a924"
+    },
+    {
+      "path": "tohtml-خلاصه-کلیه-1/0004-CUT-4-chunk-1.txt",
+      "size": 37912,
+      "sha256": "c53c4a7bf734b26c6c2ee53642589777d9fbea81b08b0270432430e1d8a44b8e"
+    },
+    {
+      "path": "tohtml-خلاصه-کلیه-1/0005-CUT-5-chunk-1.txt",
+      "size": 32427,
+      "sha256": "0d122c3b7fb43e53ad22323b50e4b01e15c56d96bdb41faf20018c956f3163d9"
+    },
+    {
+      "path": "tohtml-خلاصه-کلیه-1/0006-CUT-6-chunk-1.txt",
+      "size": 47461,
+      "sha256": "8b6277d6d025cb1dfa9ffdce8c486b185b5a592f98dfb92c758a5369dd156d3c"
+    },
+    {
+      "path": "اپید جراحی/استاد جراحی.txt",
+      "size": 75744,
+      "sha256": "cb46f19d6c11ccecce7a2b6925495d1b85667dd57f53b88325f6a4e71c0dbb7f"
+    },
+    {
+      "path": "اپیدمیولوژی مهر ۹۸_240523_182855/01_raw.md.txt",
+      "size": 37635,
+      "sha256": "88b43351d1075e24322450794c038e2c4a0b810401b5e0100ff0dfc8bedb4c8b"
+    },
+    {
+      "path": "اپیدمیولوژی مهر ۹۸_240523_182855/03_questions.json.json",
+      "size": 10667,
+      "sha256": "890c105f1b473d0154ab369364729b4c8e804c2dc2c07fd2925b2c2947793201"
+    },
+    {
+      "path": "اپیدمیولوژی، بهمن 97_240523_181247/01_raw.md.txt",
+      "size": 14322,
+      "sha256": "243948fb77d86a8712b8ad1749fa5139fd063f61276417d30748c22abff7feac"
+    },
+    {
+      "path": "اپیدمیولوژی، بهمن 97_240523_181247/03_questions.json.json",
+      "size": 16937,
+      "sha256": "7e14aac4d9159183f3f2211ba6874e892863ae30790fcd33dcbf977ebf81be22"
+    },
+    {
+      "path": "اپیدمیولوژی، مهر 97_240523_094308/01_raw.md.txt",
+      "size": 16547,
+      "sha256": "f4138fb32140379fae30ab99263e0e9dd9c219c2cb1ba7ef1ab38b3b99533e0c"
+    },
+    {
+      "path": "اپیدمیولوژی، مهر 97_240523_094308/03_questions.json.json",
+      "size": 19993,
+      "sha256": "f27de4c3fb7dca6a612ccc8c6444ce7da8160fff6681c0a6af5f6c8a3f0cb7c4"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_1_از_7/part 1.txt",
+      "size": 70877,
+      "sha256": "8c69e5afed80f25c1abdf9df36398ef06b8af28708be5a08340383e3e1cbfc50"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_2_از_7/part 2.txt",
+      "size": 71759,
+      "sha256": "645bb7adfcf1bce934c75bb4dbedcaddbd57b27cd2f0c12cfcc99c51001f9747"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_3_از_7/part 3.txt",
+      "size": 55483,
+      "sha256": "2f1a0d2f22852b058d1f0a1911813db33883e128c10ab99ea9a474493f920215"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_4_از_7/part 4.txt",
+      "size": 75472,
+      "sha256": "3e8ada6bd30aae1e7fb2b754dc235bc6bc1f26209d144b020065fdc588343365"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_5_از_7/part 5.txt",
+      "size": 61517,
+      "sha256": "afc100e42cd7bee4abbfcc17fc6e63a3ac0ecdbe8e6efb383562da04a547f4f6"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_6_از_7/part 6.txt",
+      "size": 69708,
+      "sha256": "977b94fce247539e375f9cd95aadc13f73773b4b48537d021cc675053a2aa832"
+    },
+    {
+      "path": "اپیدمیولوژی، موسوی_بخش_7_از_7/part 7.txt",
+      "size": 40632,
+      "sha256": "d9a2b1c82c32e82ea89a18df50b4d6fc750ba695bd9c269d345d73126bffe1a3"
+    },
+    {
+      "path": "بهمن-402/result.txt",
+      "size": 29784,
+      "sha256": "5b79d5d4333d8af18c19ef9f2e08cf95e660a43b4ca47a394d55a67342edc94b"
+    },
+    {
+      "path": "بهمن-92/result.txt",
+      "size": 32054,
+      "sha256": "6b825d8e0216f05762b156d8507a6c95a6231093bae4004d39d1ed54dffd5b97"
+    },
+    {
+      "path": "بهمن-93/result.txt",
+      "size": 34972,
+      "sha256": "3634d1a85e4f3c2a1dec579db18436fad86cf32b8a29d15ca76c1c2487f5efad"
+    },
+    {
+      "path": "بهمن-96/result.txt",
+      "size": 32706,
+      "sha256": "0ad752c0e0b4bc4c9cdcb4de3da3b632f45a12b90bd37e033798103c23f8eec8"
+    },
+    {
+      "path": "بهمن-97_صفحات_منتخب/result.txt",
+      "size": 4862,
+      "sha256": "bb1bd5d4508f9220437d0825dc4a3ed075c91e55197198bd6c0a41bb738dc1e3"
+    },
+    {
+      "path": "بهمن-97/result.txt",
+      "size": 50256,
+      "sha256": "1e0542fc9f4d4b46fedbccbd905f88b816db35ceadcd793da64a314c9bb307ec"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0000-000001-000020.txt",
+      "size": 36418,
+      "sha256": "976cc8ad32176b6d541264203b04ff29b28e50d58f47cc37f3ede3d6a809b32e"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0001-000021-000040.txt",
+      "size": 37258,
+      "sha256": "191d4ad27e78c9931ffd428a9acd26c5c48ff7a7cffe0c73e9910fcb6a321775"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0005-000101-000120.txt",
+      "size": 31034,
+      "sha256": "7f332da79fafaddfa656e7236be14d3832c7211b5e252f6725bbc5ca214e2a3c"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0006-000121-000140.txt",
+      "size": 30810,
+      "sha256": "e1bad9f473a3e4456e4603440503a22a1c1e1e783055c7f913f127c56ff6a11e"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0008-000161-000180.txt",
+      "size": 30607,
+      "sha256": "b159d9bb4866e00a761a0b74e559b1e88502f904034233b08224273cd3208c0c"
+    },
+    {
+      "path": "پاتو-عمومی-PM10/0010-000201-000220.txt",
+      "size": 32829,
+      "sha256": "e21773bbafbdbf744cef571611d1f5ec2fb7c1b398b7695b506876799580b91f"
+    },
+    {
+      "path": "پاتولوژی-عمومی-2/0001-000021-000040.txt",
+      "size": 32572,
+      "sha256": "85bb1b7fc9024743ff53344038a60d8fd20f748804246d0bd1b6f9bb46e47705"
+    },
+    {
+      "path": "پاتولوژی-عمومی/0001-000021-000040.txt",
+      "size": 33165,
+      "sha256": "60d6e456a866f86658b14242a9b7fa43be049dc7931c16ceb00bba8044e5f63e"
+    },
+    {
+      "path": "پاتولوژی-کلیه،-بهمن-97_241024_133554/result.txt",
+      "size": 7475,
+      "sha256": "7713b55421cf18296f33919125d7a2d3d84e0d8415037aa4276c268091198582"
+    },
+    {
+      "path": "پاتولوژی-کلیه،-مهر-92_241024_133148/result.txt",
+      "size": 8541,
+      "sha256": "dbeac61f572b850a991c7c7d61ad67b4ad7792ccf78ed859a7bdfba81305f972"
+    },
+    {
+      "path": "پاتولوژی-کلیه،-مهر-93_241024_132932/result.txt",
+      "size": 8251,
+      "sha256": "3502f96ed5403ad7405bb140a1728b42ee115eeb01e433ab4c7f1955802100b0"
+    },
+    {
+      "path": "پاتولوژی-کلیه،-مهر-96_241024_132546/result.txt",
+      "size": 9014,
+      "sha256": "3e0d8adc82338b937dac62049369c7d10d9d65efd76332d042e334cbf77cdf01"
+    },
+    {
+      "path": "پاتولوژی-کلیه،-مهر97_241024_132056/result.txt",
+      "size": 7933,
+      "sha256": "70913e9a6726a427500e27019c1ef4620f5ac32b7070e2246363d225bf676cc2"
+    },
+    {
+      "path": "پایان ترم فیزیولوژی 2_240630_151916/01_raw.md.txt",
+      "size": 10055,
+      "sha256": "8a3917eb95d4f5009ebe3f6be31a8abf6057a988cbb33d5149526560cb4f6e9a"
+    },
+    {
+      "path": "پایان ترم فیزیولوژی 2_240630_151916/03_questions.json.json",
+      "size": 12255,
+      "sha256": "53c9b5055ceb916eb0be17f861832a65d37ffdde44faa707e997aca0280b4e82"
+    },
+    {
+      "path": "پایانترم-اعصاب-حقیر/01_raw.md.txt",
+      "size": 8603,
+      "sha256": "c1c4b51629ad22be66daa867c26a2f0f8925f6921095bcc3b5736a034a43fef7"
+    },
+    {
+      "path": "تغذیه، بهمن 98_240116_172213.json",
+      "size": 18080,
+      "sha256": "ea461360caafcd506d7a0a6bd3097e9fbb68dc1509ac77cc6fe546d83fcc5b71"
+    },
+    {
+      "path": "تغذیه، مهر 98_240115_233442-asdfasdfasdf.json",
+      "size": 17102,
+      "sha256": "3a433f8a63e9899eec6e5317ed87568c4fc62f559cef700200dc5412abef2843"
+    },
+    {
+      "path": "تغذیه، مهر 98_240115_233442.json",
+      "size": 17096,
+      "sha256": "14f4b408f998969ca395c25847dc7b0f4a2fd87b5bc127ac8471902519a510d5"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_1-5.txt.txt",
+      "size": 6284,
+      "sha256": "c6d24184a827276b34621217e0445a5129d80bfd2bd4c550ddfbef7a55a9ba79"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_101-105.txt.txt",
+      "size": 5316,
+      "sha256": "20a2042c0fef61c6657fd289d3eee8b35fefd731496f760a013834672f99f30e"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_106-110.txt.txt",
+      "size": 6347,
+      "sha256": "67efdfe86ce0d124aeb2315499925b597e1394ac81456adb203a230b69b37166"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_11-15.txt.txt",
+      "size": 5872,
+      "sha256": "7db9ee7196fd580acc1cbce36a0751037b2066ebf15c33df3732747bee0ffd54"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_121-125.txt.txt",
+      "size": 5934,
+      "sha256": "79e2a610ed84dfa985601f7678cae26fcd04e1d88f74812bcb7e41138e1261f7"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_126-130.txt.txt",
+      "size": 6747,
+      "sha256": "d76243bfa1c1ec0d97accf4c356cf00dd5f7b0dc9811fbf819cb9f968e132467"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_131-135.txt.txt",
+      "size": 6090,
+      "sha256": "3de7c4620064ef8da94b34c363c90d08b17594a6cf03724b4d8242551d847171"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_136-140.txt.txt",
+      "size": 6321,
+      "sha256": "be63ba1e5652f4b159e64e8376d4292c968040335e994a681ad33b3518c93a67"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_141-145.txt.txt",
+      "size": 5912,
+      "sha256": "ee418b584fb5e19bf6b09f726c949a8c023c22f67281826d11427284e65f9662"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_16-20.txt.txt",
+      "size": 5794,
+      "sha256": "91f6bc967b74bd82a6323efd822adceac6efebbfd490fad4a216234962e2078f"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_21-25.txt.txt",
+      "size": 5162,
+      "sha256": "a6db7fa8088fd63fa9205d25db80a61214129d5ff798f9f00c124e88707e6170"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_26-30.txt.txt",
+      "size": 5872,
+      "sha256": "34e2ab41f2443ad9410ee86e8935eb32160e59943444105658748a00d2e08bf4"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_31-35.txt.txt",
+      "size": 6013,
+      "sha256": "49576d5761fb085e3160f558f1e2d256c0f20db7294468b3db543bdf642477b1"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_36-40.txt.txt",
+      "size": 6123,
+      "sha256": "f8a6c920da092759b7e121605ffc5e9b586d85f54753f5c02d508a57345d039d"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_41-45.txt.txt",
+      "size": 6548,
+      "sha256": "f3f1ca94c84c69921b71bc04e37d1d01f6eaabffeb9b9116f31cfaf483c2b7b8"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_46-50.txt.txt",
+      "size": 5863,
+      "sha256": "9cbc101b57008fc542cf40dff64ce7bea7d90283150d4bad417a1ab1249b5d15"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_51-55.txt.txt",
+      "size": 5933,
+      "sha256": "01e4a06dab12d48b84dedaf7934eb30c314a1445c22c75021af7d2c2b38c677d"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_56-60.txt.txt",
+      "size": 4816,
+      "sha256": "6eeb84b33e6e0ee7f559bb9008b9844c1f2769ad07e8819cc1aab1048bf17982"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_6-10.txt.txt",
+      "size": 5331,
+      "sha256": "73a0474e0b5f3ebbb671730f9829c1e400b4a97cc21c025070c66dad2feefef2"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_61-65.txt.txt",
+      "size": 6076,
+      "sha256": "46942071e86172a0e823ae9f6f4bd8903a597862268ea51ec2e2f7fb3f2c1248"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_66-70.txt.txt",
+      "size": 6681,
+      "sha256": "82fdaeb473109ef5121d756b2b8045dfe65b01c2633c1ca11eb36b7787cfc7e5"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_71-75.txt.txt",
+      "size": 5068,
+      "sha256": "92ae4d439aae03c852e9865407db46860af230cb62a9c6b8a882c24fb6c9c75b"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_76-80.txt.txt",
+      "size": 4771,
+      "sha256": "7fb237776b3798f4ec0b36050ea026cc29df420f462d6a501651d2c637fba242"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_81-85.txt.txt",
+      "size": 5007,
+      "sha256": "9130424dd235e1774d8e8aae2082106d7fe0e1ae66df6477183015b3ece881f1"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_86-90.txt.txt",
+      "size": 5429,
+      "sha256": "72d0010e55fc51e57c38f57ab2177aab3922e5c67c2b0e99cc8a9930c20a6df5"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_91-95.txt.txt",
+      "size": 5543,
+      "sha256": "4a54cba0e4853cb5d4d54ddf374138b9ce209838ae087620de3558d039a43662"
+    },
+    {
+      "path": "جزوه فیزیو نورو/notebook_84718290-db1c-4b78-ba51-01d039d745d3_96-100.txt.txt",
+      "size": 6713,
+      "sha256": "129bd12304ec89b5bf325762b486bfc7ac7c5d20ee2bf5ffb8279d7bb9f9e57c"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0000-000001-000001.txt",
+      "size": 19119,
+      "sha256": "f78151d5ae7d66d20db7741b18b1cc7d4abceaef704262051d34c53047123b20"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0001-000001-000001.txt",
+      "size": 13575,
+      "sha256": "78cc47129979620cbb442dcebc278337813461e2799841e418115d271f48794c"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0002-000001-000001.txt",
+      "size": 13121,
+      "sha256": "1e7f48f4fc0ef6768bc7c836523f9bd9355a74293c7c8e36c39c778578b54869"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0003-000001-000001.txt",
+      "size": 10201,
+      "sha256": "a45eb3a543fac6e4ae1a316506bcc8dace8bc595ce21c78008af820a88ed2616"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0004-000001-000001.txt",
+      "size": 15611,
+      "sha256": "168b8af853926e82a7c4a78c77880c62b38d12647add7b5fbb46bf8af55ce06a"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0005-000001-000001.txt",
+      "size": 13961,
+      "sha256": "a238c05b92d3ef3cb97ca7a54c2ec65f86ed4f0d689e4c91fab7b00cf1cba3c0"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0006-000001-000001.txt",
+      "size": 9611,
+      "sha256": "f17c06a86c69198543b0469b0e08f64fce85ac139aa7b56879bccee31a42f454"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0007-000001-000001.txt",
+      "size": 15343,
+      "sha256": "6559a4976343d0a39019decb15b29ae869db33f4fe0c81be9060e5e360008e84"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0008-000001-000001.txt",
+      "size": 13676,
+      "sha256": "f5f6236cdcea16f54935d000b4f5e527f6e8844d93669ca23cb40101f6ca0c92"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0009-000001-000001.txt",
+      "size": 12441,
+      "sha256": "ed9c6bed71af5303c27c27c5f336ea06ce0e1af772868352b6f04eae43c37335"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0010-000001-000001.txt",
+      "size": 10841,
+      "sha256": "439d24f2b20b925aed5ed480c4da12b03374bad82704ff51d4d94b2a4cf1bbfd"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0011-000001-000001.txt",
+      "size": 11156,
+      "sha256": "ac0c6fb4cfbce4504b169f91e525b589e7d54f067a5a1866d76375d4675fc60b"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0012-000001-000001.txt",
+      "size": 10198,
+      "sha256": "d6360a9e18fe420cce7d8eadd98c4ed3cab619f58bbc3f5c4252c4dd3128063c"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0013-000001-000001.txt",
+      "size": 10246,
+      "sha256": "6e03821840479f8a4c400d545e914e5fb321129d20047b7ab8ba0f44646c3651"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/0014-000001-000001.txt",
+      "size": 12313,
+      "sha256": "fd8f359185e71cd87e09bce0c68062dfbcfbf901a066e31ced805609f22d12fd"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-3/merged.txt",
+      "size": 192029,
+      "sha256": "b0be94648992c9ce1086cc40117e5edbc108ba3b84c2ff4dbc023208a443f761"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0000-000001-000001.txt",
+      "size": 18490,
+      "sha256": "c73a07d90e7bebcb6422f12a363f438447a3e7690b806cf6754f4a509ef0088c"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0001-000001-000001.txt",
+      "size": 11578,
+      "sha256": "77d18b47af81adc09388e09fa2e239e29a9475cc71e4b23fafa7d6b0d4bada5e"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0002-000001-000001.txt",
+      "size": 10969,
+      "sha256": "f2349359544cef30f8c937ba2dadea16ca7cce2d108e93ed42891e60c5c0f12f"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0003-000001-000001.txt",
+      "size": 13366,
+      "sha256": "38cbcd4f159d52b31e5cacc2c3b7844d572dbb0317b9d5801db9e3b45605ce08"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0004-000001-000001.txt",
+      "size": 11481,
+      "sha256": "0abf5b60299d38b50fd69d9c88fd372e51e73c33722e0e73b4d368f29b9e4a21"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0005-000001-000001.txt",
+      "size": 9839,
+      "sha256": "fca366ca0d7bb3fd5fa15fab89ef33196af83ecfbcb8ead2b735adbb6229ad96"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0006-000001-000001.txt",
+      "size": 11787,
+      "sha256": "2a65ecb1856f5fbbb71aa549368b4996658c9b9fffeefb674ca885cb8c1a2b72"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0007-000001-000001.txt",
+      "size": 8772,
+      "sha256": "d6d7d6bf3abd15eee60cd2983ff85cc4b62e49e3ddfaa227405514578d52e896"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0008-000001-000001.txt",
+      "size": 6756,
+      "sha256": "84519bf97b64b1d54aee5d778cd03314da8b9b1b8802dde6a6e8039f78c9971f"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0009-000001-000001.txt",
+      "size": 19290,
+      "sha256": "4c51fac8ddd042d9332fd05b943dfb52096ebeefc93a9506200451f22602f577"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0010-000001-000001.txt",
+      "size": 9802,
+      "sha256": "3cf20304471ae27e62b80078d92944d439210988b175cd02eae8a2809a4c9e15"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0011-000001-000001.txt",
+      "size": 10728,
+      "sha256": "8fa9b7e2fd34fb55a8c04b1cc0e6157f9e34d2fe423b7f7fd2d15642c73e8aea"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0012-000001-000001.txt",
+      "size": 10846,
+      "sha256": "f1e5ac5c07a21ac2664357ea51ff78076ade476cbf611df1e3b7dbd4dcd238ef"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0013-000001-000001.txt",
+      "size": 11340,
+      "sha256": "5893fca98de169e50e4a8e25273d06a93e74e9fd1dd3b30db1b57f7c2c98b13f"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0014-000001-000001.txt",
+      "size": 9488,
+      "sha256": "33bb4c9c15a1d91824fe45f330580becc6937e1002e5621d49240ed9d04f186f"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0015-000001-000001.txt",
+      "size": 12400,
+      "sha256": "dc45566a58fc6f55a49fd294548d597543757602a1fd995c0a76ec47609008de"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0016-000001-000001.txt",
+      "size": 10700,
+      "sha256": "12de595dcf9ab813dec1a1bfe83df4761dd3472028f751c18d480a2ea9d32775"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0017-000001-000001.txt",
+      "size": 31628,
+      "sha256": "4929fa5e77b706c48ce03d09c1f8e856247696777039b54fc659a6f845d622ac"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0018-000001-000001.txt",
+      "size": 9563,
+      "sha256": "50f50c6c6dce1d6739532cb412c1e606cf79a34604a84b08db2b0ee6fe644367"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0019-000001-000001.txt",
+      "size": 9348,
+      "sha256": "9a4a833883679de230c65e04c60c6a8de7fc8d0e1a99fc81fc7a33fb9da6eec2"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0020-000001-000001.txt",
+      "size": 12960,
+      "sha256": "e804f46eb44dc67b335055dc7a8c5cbeca2ea3d370e7fd9a6774044ef57a17b3"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0021-000001-000001.txt",
+      "size": 9729,
+      "sha256": "caf2f3cd8c998ffd81d80c54708f87b54a15be3c30179c1ddb9902d37fb74653"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0022-000001-000001.txt",
+      "size": 13382,
+      "sha256": "b52792806e0e5c0fb3d99d5ba4dd85e3a8552445735358c88ff1b02d966b1909"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0023-000001-000001.txt",
+      "size": 12330,
+      "sha256": "e900a6734b38b2c0ce139e58490712afc673ae07a9336e8c9f2217fb985f1cdb"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0024-000001-000001.txt",
+      "size": 12312,
+      "sha256": "a2cf29fac49bfc8608a55cb648f4ac09ca011a4588ddf18e386de4361fedfe06"
+    },
+    {
+      "path": "جزوه-پاتو-عمومی-4-2/0025-000001-000001.txt",
+      "size": 12190,
+      "sha256": "efc2da0118d6fdba5c3e391192df3172a39fe8908d94dde6bd8b04e077cd0ee5"
+    },
+    {
+      "path": "حقیر 60 تای اول/notebook_90c0757f-81e5-48c7-8ea6-02a3c861fc34_1-20.txt.txt",
+      "size": 34865,
+      "sha256": "b160efe42b7626bb592ce30f146c244a323bdd7d87e1a75d81ae204f43af828d"
+    },
+    {
+      "path": "حقیر 60 تای اول/notebook_90c0757f-81e5-48c7-8ea6-02a3c861fc34_21-40.txt.txt",
+      "size": 33140,
+      "sha256": "3ac275263310bdb38eb38803fa2d6c092d1bdca0855b5da272bc5cf7e7c5dde7"
+    },
+    {
+      "path": "حقیر 60 تای اول/notebook_90c0757f-81e5-48c7-8ea6-02a3c861fc34_41-60.txt.txt",
+      "size": 31822,
+      "sha256": "447b738dd911035e4547236e22100a1bf107f958ba2f98326f0a71674d4e5d7b"
+    },
+    {
+      "path": "حقیر بهمن ۹۷/01_raw.md.txt",
+      "size": 10631,
+      "sha256": "0c17efa4ed5e9b46df1603fa8ab720e55de14879aac99d923abaefaf852ae240"
+    },
+    {
+      "path": "خرداد-1401/result.txt",
+      "size": 41613,
+      "sha256": "8ebaf133e191f802154c567389a0beab80299368c455b21936086a0ade2466d9"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0000-000001-000001.txt",
+      "size": 18909,
+      "sha256": "f5bc111b433fe6cf3e3214268753c22cc2ea41b29eb102164b6fa08476b14362"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0001-000001-000001.txt",
+      "size": 11187,
+      "sha256": "0a266fe4637bae5d2769f21e6a8abbe0659116ca15b86cd338b4038c5b7ce45f"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0002-000001-000001.txt",
+      "size": 11603,
+      "sha256": "acf65e2f69c99aed8631e45bfeca004e162cb5af5dfa974e000e330004499006"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0003-000001-000001.txt",
+      "size": 15544,
+      "sha256": "062e54771fdbcdb3ce177c790a94370c260160fa8bed0459c945a3092b10ea4b"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0004-000001-000001.txt",
+      "size": 14421,
+      "sha256": "fd82913f51ca863f9432b91db2f75bcff5820114b9f29d8d9f78629936d4e944"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0005-000001-000001.txt",
+      "size": 13033,
+      "sha256": "972d6975ae12db5a769474957ffb5d6ba33b2bdd6e17dd9bcfd5efd60c6fd8b0"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0006-000001-000001.txt",
+      "size": 7931,
+      "sha256": "b21582ec813e9363b98da7bcee54673ccd0f36a38725a580a3a28e37d84157dc"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0007-000001-000001.txt",
+      "size": 11223,
+      "sha256": "030169a5f7949626710a1c24dfeba6e6c08c39031823f8737dd1de10a08ef4e3"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0008-000001-000001.txt",
+      "size": 14089,
+      "sha256": "4e52a61c6600e23f8a8618288a626c4615e1374510de4b53aa9de0962b9ca6cb"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/0009-000001-000001.txt",
+      "size": 14674,
+      "sha256": "aa563482c12e1b3958ab1cbaeab65c19742a618fd95a6e3c15568442ede81986"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-1/merged-1.txt",
+      "size": 267651,
+      "sha256": "9a608e4b1a231988ea40ce807144a32e3c06f425c3fe1828b6046e37950f2777"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0000-000001-000001.txt",
+      "size": 20008,
+      "sha256": "c0565d15d0fa6c0f50ba67dd168467dc309b16f3b66c67e5b62b08221050e6db"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0001-000001-000001.txt",
+      "size": 16063,
+      "sha256": "8c9090a4d185f7bc6421a035bc82ac0116e73abf47cbb59de597828300345dfb"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0002-000001-000001.txt",
+      "size": 13694,
+      "sha256": "702071c80586253c27b27148b6d39c90639dc521313cc27f0da48b413f15e656"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0003-000001-000001.txt",
+      "size": 14553,
+      "sha256": "bd29fddbdafe6b8beff0cbee7391619696f51318b7a508353ab75e74e5924056"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0004-000001-000001.txt",
+      "size": 14215,
+      "sha256": "3d636410032bc089d0100f365e485ec9ab75d4adf085eeb6e47766200fc6345a"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0005-000001-000001.txt",
+      "size": 13017,
+      "sha256": "6341f124b5e381b1eae2f56238f7dc3bd25fd4a2a3d06a5194353ea9c52ece03"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0006-000001-000001.txt",
+      "size": 15763,
+      "sha256": "714529ebac546b80612848afa337d6dfff5bb177911e3e1ae60291429a38a419"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0007-000001-000001.txt",
+      "size": 16046,
+      "sha256": "865210f235dec8bd7b7806aacf320ba3ab282677c94c905a4c7c88edcd0ec750"
+    },
+    {
+      "path": "خلاصه-پاتو-عمومی-بخش-2/0008-000001-000001.txt",
+      "size": 11264,
+      "sha256": "375153d593dce5a5693611078df91db77620c701034a67423f378e5399be69ba"
+    },
+    {
+      "path": "زبان تخصصی 2 مهر 98/01_raw.md.txt",
+      "size": 22059,
+      "sha256": "74ff3a6842094abb2281332b63f02440d2a3cf86829572fabaef89ac15b558e0"
+    },
+    {
+      "path": "زبان تخصصی 2 مهر 98/02_clean.md.txt",
+      "size": 21945,
+      "sha256": "6ea54649c9a44062ddb5d524b0f978a86b5e03a9dfe7455c88eb23ec63703ad7"
+    },
+    {
+      "path": "زبان تخصصی 2، پاسدار، بهمن 1400/01_raw.md.txt",
+      "size": 7335,
+      "sha256": "cc02c99ba3b044375abb32b636444dce6fbcb054a20e5e41920009dab779daae"
+    },
+    {
+      "path": "زبان تخصصی 2، پاسدار، بهمن 1400/02_clean.md.txt",
+      "size": 6706,
+      "sha256": "9547322f824a5886d1f5c580bdf431699c5380bef06b6dce3328d7f1bc482194"
+    },
+    {
+      "path": "زبان تخصصی 2، پاسدار، بهمن 1400/03_questions.json.json",
+      "size": 9188,
+      "sha256": "a37489ec375fb2e0df73c3337abe86e6825e5cee11feffba12b808fbfbacedd1"
+    },
+    {
+      "path": "زبان تخصصی 2، مهر 98/01_raw.md.txt",
+      "size": 22048,
+      "sha256": "9ef3532fed2ec0e934163d8b1299c18fd5c437962868071f838ba5903226d07f"
+    },
+    {
+      "path": "زبان تخصصی 2، مهر 98/02_clean.md.txt",
+      "size": 21975,
+      "sha256": "c3b3f946e6016fee1ad88f053e3d9c688073898fb141f5c80fe28eece84607b3"
+    },
+    {
+      "path": "زبان تخصصی 2، مهر 98/03_questions.json.json",
+      "size": 24751,
+      "sha256": "b4e4d2f3a8986c2a390e628a25cf37230593c4cfa01ca804d7403d101f378457"
+    },
+    {
+      "path": "سوالات پایان ترم قارچ شناسی مهر 99/01_raw.md.txt",
+      "size": 2611,
+      "sha256": "a02a4bfd6548b278ee005e1303b685baf7fc68a4bd682280e437cdb5867ca2bc"
+    },
+    {
+      "path": "سوالات پایان ترم قارچ شناسی مهر 99/03_questions.json.json",
+      "size": 3857,
+      "sha256": "1063b648e50967b7435a23704ce133c4a2e499062ee9666308dff00150181715"
+    },
+    {
+      "path": "سوالات-پاتولوژی-کلیه-(1)_241025_112249/result.txt",
+      "size": 37583,
+      "sha256": "1e3fa2622098f4f1ce3627b30096521bcc5582deb04472a6361055ba6562b36c"
+    },
+    {
+      "path": "فایل_اصلاح_شده_سوالات_اپیدمیولوژی_گروه_۱۱_1/01_raw.md.txt",
+      "size": 41759,
+      "sha256": "e78b5c08a133f7705aec1a76df5d4cf73f346faa690ddac8c93054737efe1da4"
+    },
+    {
+      "path": "فایل_اصلاح_شده_سوالات_اپیدمیولوژی_گروه_۱۱_1/03_questions.json.json",
+      "size": 29749,
+      "sha256": "61cc13b52637d6ee5519e41ddcd1f117b327cf53147471268a9d8ca15b0bf3d1"
+    },
+    {
+      "path": "فیزیولوژی_اعصاب،_پایان_ترم_بهمن_97_240630_083207/01_raw.md.txt",
+      "size": 16550,
+      "sha256": "4422ba5cb3a47cc0bb03f505ed9ceaf0170767c58e4f2cd328b37505130e4587"
+    },
+    {
+      "path": "فیزیولوژی_اعصاب،_پایان_ترم_بهمن_97_240630_083207/03_questions.json.json",
+      "size": 15135,
+      "sha256": "8d8f088c72c57b01735c152276cc139333b173eab2179ba960b761967e110538"
+    },
+    {
+      "path": "قارچ شناسی، بهمن 97/01_raw.md.txt",
+      "size": 16630,
+      "sha256": "7debcd369bdf3d8d916dfa62435f59e02d99b6ed8b708b679de8682e01a607a4"
+    },
+    {
+      "path": "قارچ شناسی، بهمن 97/03_questions.json.json",
+      "size": 14786,
+      "sha256": "11b8da941a4ff027e1fcff9e175fc0fe22e3ba0b9d2692b9a9015dc553c491f9"
+    },
+    {
+      "path": "قارچ شناسی، مهر 97/01_raw.md.txt",
+      "size": 12144,
+      "sha256": "6d53879145851c444dbb1082e92750f1d6636ebfc0fa517d5c31735a567eaa19"
+    },
+    {
+      "path": "قارچ شناسی، مهر 97/03_questions.json.json",
+      "size": 14010,
+      "sha256": "1fdb630e14c515e8ad8761fea866330c704e6024be750a5e577a0cb9b31d7baf"
+    },
+    {
+      "path": "قارچ_بخش_1_از_4/01_raw.md.txt",
+      "size": 127735,
+      "sha256": "2eaa0fa17a50cf9c0ce96f68ecef128b01620d9aa3d93761a8c94aa6cc5f7c21"
+    },
+    {
+      "path": "قارچ_بخش_3_از_4/01_raw.md.txt",
+      "size": 101928,
+      "sha256": "9619ffefeae7141c3e3f1468f98b2e86fe20e22aea785f1810bee5e521e7fc14"
+    },
+    {
+      "path": "قارچ_بخش_3_از_4/03_questions.txt",
+      "size": 75360,
+      "sha256": "13b312bb08f5237873532cd8bda0828f78680137964fdca151333b8f0abd8f74"
+    },
+    {
+      "path": "قارچ_بخش_4_از_4/01_raw.md.txt",
+      "size": 99204,
+      "sha256": "780076da08ddabdbbbee37d233f486c5bd4a2a8aceba979b8c2cf43c919b7b43"
+    },
+    {
+      "path": "قارچ_بخش_4_از_4/03_questions.txt",
+      "size": 74155,
+      "sha256": "2880b1da7a66d7e3972ab40d63fbf5baadc31cd67241cfca3257ecba5019be19"
+    },
+    {
+      "path": "قارچ_صفحات_منتخب/01_raw.md.txt",
+      "size": 49716,
+      "sha256": "cde6c7e7d069b8901c7399e70e15b18b92a73174bd40e0d02c0519d8f2271dc6"
+    },
+    {
+      "path": "قارچ‌شناسی پزشکی نظری (1)_بخش_1_از_5/part 1.txt",
+      "size": 29791,
+      "sha256": "6524621062ea11f8a99dd08653dba26ba57383ad666d0598e6d23c42e1598dba"
+    },
+    {
+      "path": "قارچ‌شناسی پزشکی نظری (1)_بخش_2_از_5/part 2.txt",
+      "size": 46865,
+      "sha256": "a4d7f3d10effae22e2f28c1a78d67cd4a9f1e2dabfe3ea2c712553c8ca454972"
+    },
+    {
+      "path": "قارچ‌شناسی پزشکی نظری (1)_بخش_3_از_5/part 3.txt",
+      "size": 62814,
+      "sha256": "4aad5c853fcad4d3769ad33a250dd770c7470d7e6794f06566b1eaaec0df2786"
+    },
+    {
+      "path": "قارچ‌شناسی پزشکی نظری (1)_بخش_4_از_5/part 4.txt",
+      "size": 66901,
+      "sha256": "7e6b31ff2ea19d148669e2ef22eb7d1fc6cab6bc7648015dbec5418ee8156b83"
+    },
+    {
+      "path": "قارچ‌شناسی پزشکی نظری (1)_بخش_5_از_5/part 5.txt",
+      "size": 67669,
+      "sha256": "384d69054062e31d5473397cb6d49f78f042aa81cd5db2b28c8193e51c2dc884"
+    },
+    {
+      "path": "کلیات پاتو/notebook_4decd435-07a9-4df7-aa20-3df1004e3b2c_1-15.txt.txt",
+      "size": 2848,
+      "sha256": "d1b8f125c52d64ad6f05afbe8f95a2396769e88c503def5b29d24b96e99eb65a"
+    },
+    {
+      "path": "کلیات پاتو/notebook_4decd435-07a9-4df7-aa20-3df1004e3b2c_16-30.txt.txt",
+      "size": 25505,
+      "sha256": "c0c76cca495ffe700acff16679f522b4d1ca14e84c464bc5520d49ebd48bedb0"
+    },
+    {
+      "path": "کلیات پاتو/notebook_4decd435-07a9-4df7-aa20-3df1004e3b2c_31-45.txt.txt",
+      "size": 21441,
+      "sha256": "7489fff62febab289028065a678c4d4545d8ae1d39eb81e67ec04bc868917bd1"
+    },
+    {
+      "path": "کلیات پاتو/notebook_4decd435-07a9-4df7-aa20-3df1004e3b2c_46-60.txt.txt",
+      "size": 23095,
+      "sha256": "cf499c9ddd238205b445845aa53f47796a9991158f4fa602ca77ce1b823c3acb"
+    },
+    {
+      "path": "کلیات پاتو/notebook_4decd435-07a9-4df7-aa20-3df1004e3b2c_61-74.txt.txt",
+      "size": 21585,
+      "sha256": "4196a737c65e543a3be31abdb627ff2744e92280c0db1b22ada9699b8be3cfdb"
+    },
+    {
+      "path": "کلیات پاتولوژی مهر ۹۹ (1)_231108_215853.txt",
+      "size": 6144,
+      "sha256": "b7eb967d4a7baf2fbb1839ab4599197d8473b87e342b819acd98c11e3c85fdb3"
+    },
+    {
+      "path": "کلیات پاتوو/notebook_7a64828f-ff44-4fbf-9cb6-06569dc87bbe_16-30.txt.txt",
+      "size": 13944,
+      "sha256": "438d4cf03b6f0099c35e018002b19fc86dbf028a6589b9a2f0ab7cc1781c9d71"
+    },
+    {
+      "path": "کلیات پاتوو/notebook_7a64828f-ff44-4fbf-9cb6-06569dc87bbe_31-45.txt.txt",
+      "size": 27239,
+      "sha256": "912a8915c1bf12265feb073cb8263538e86bfea6207e4079976a7d795feb787c"
+    },
+    {
+      "path": "کلیات پاتوو/notebook_7a64828f-ff44-4fbf-9cb6-06569dc87bbe_46-60.txt.txt",
+      "size": 24761,
+      "sha256": "474cafa41439299beb25aeff4a240d1768dd820fe2b1efece1cb1708680f82ec"
+    },
+    {
+      "path": "کلیات پاتوو/notebook_7a64828f-ff44-4fbf-9cb6-06569dc87bbe_76-90.txt.txt",
+      "size": 25920,
+      "sha256": "4f28b15e4f3a4e404c4d681b52a0246ba4d915d0349ba7f729fc00f79d70134b"
+    },
+    {
+      "path": "کلیات پاتوو/notebook_7a64828f-ff44-4fbf-9cb6-06569dc87bbe_91-100.txt.txt",
+      "size": 1857,
+      "sha256": "d4ece2bc7e07ff6fb46c79279ef3cbca12e9190534c9c9e318030a56b52caaed"
+    },
+    {
+      "path": "کلیات پاتوو/کلیات پاتوو.txt",
+      "size": 5076,
+      "sha256": "7b4378e0c69ebc0fc1b263a64c03c5fef328fe7028b5b10ccb575999745f48f9"
+    },
+    {
+      "path": "کلیات پاتووتت/notebook_8ecde6d5-f466-49fc-983f-7e93bff1edcf_1-15.txt.txt",
+      "size": 21543,
+      "sha256": "09b2d2a905219e9cdd0709e932029853652ad9908756128d0ff3b7b6586e3942"
+    },
+    {
+      "path": "کلیات پاتووتت/notebook_8ecde6d5-f466-49fc-983f-7e93bff1edcf_16-30.txt.txt",
+      "size": 21543,
+      "sha256": "09b2d2a905219e9cdd0709e932029853652ad9908756128d0ff3b7b6586e3942"
+    },
+    {
+      "path": "کلیات پاتووتت/notebook_8ecde6d5-f466-49fc-983f-7e93bff1edcf_46-60.txt.txt",
+      "size": 24940,
+      "sha256": "49ba33e7738424cccd4d2eda2527fe8b8df1a2ec77d388f2b3c30c99d7cc1114"
+    },
+    {
+      "path": "کلیات پاتووتت/notebook_8ecde6d5-f466-49fc-983f-7e93bff1edcf_91-100.txt.txt",
+      "size": 24338,
+      "sha256": "e8aa9bf9a07558c3428a111c176a5c6d784cde6bf0fa12a8ad9f308b32fc348b"
+    },
+    {
+      "path": "کلیات پاتووم/notebook_849234bc-84e4-47a5-b8a4-76f7ce4899f0_1-15.txt.txt",
+      "size": 7580,
+      "sha256": "ce13f9082fae8833ef9c7c2c08217633506248989b265e5333e70637a72f12be"
+    },
+    {
+      "path": "کلیات پاتووم/notebook_849234bc-84e4-47a5-b8a4-76f7ce4899f0_16-30.txt.txt",
+      "size": 28101,
+      "sha256": "d0beddf10308e4297bbe8e56685d10ef84158375ea4bb70b3622774eb1454be0"
+    },
+    {
+      "path": "کلیات پاتووم/notebook_849234bc-84e4-47a5-b8a4-76f7ce4899f0_31-45.txt.txt",
+      "size": 25391,
+      "sha256": "76790f16dbfda8ebb1838e96d5135616f770801eed698d3bc90031f6fab5fdfe"
+    },
+    {
+      "path": "کلیات پاتووم/notebook_849234bc-84e4-47a5-b8a4-76f7ce4899f0_46-60.txt.txt",
+      "size": 21402,
+      "sha256": "6148540b816994c0b9631ea93591bab26f7104ef1cbdf55d06f27b72732cb737"
+    },
+    {
+      "path": "کلیات پاتووم/notebook_849234bc-84e4-47a5-b8a4-76f7ce4899f0_61-74.txt.txt",
+      "size": 22835,
+      "sha256": "4a72be202188c8c1be2eb6300b9fc08e239653c5d0db93d00e2793e1ac2dee77"
+    },
+    {
+      "path": "کلیات_پاتولوژی،_اکبری،_بهمن_97_231106_184051.txt",
+      "size": 5001,
+      "sha256": "296d46195a49d34cadcf53cc27b1ee6157c0320d7a599b7e76413dac85169e81"
+    },
+    {
+      "path": "کلیات_پاتولوژی،_اکبری،_بهمن_98_231106_184226.txt",
+      "size": 8495,
+      "sha256": "d3736751d3cf6e6b34a8c87d58312194466a7489e0f85d3d3ccc15917ede3dcd"
+    },
+    {
+      "path": "کلیات_پاتولوژی،_اکبری،_مهر_98_231106_184021.txt",
+      "size": 30752,
+      "sha256": "8b6958a7479c4deb620c078c89c74e2ab60b5543906fafb0b9edfba11f0ce15f"
+    },
+    {
+      "path": "مبانی-ریه/0004-000081-000100.txt",
+      "size": 41473,
+      "sha256": "2d2a4b9669b4ed4fee9dcafc658a910d55db68ea63afa153ccbc415fe5c37672"
+    },
+    {
+      "path": "مبانی-ریه/0007-000141-000160.txt",
+      "size": 37422,
+      "sha256": "901516bdfd602c046b26da753adeba6e88e65ceb137448a9407925bb7bb41273"
+    },
+    {
+      "path": "مبانی-ریه/0008-000161-000180.txt",
+      "size": 41603,
+      "sha256": "4ce03d7baeab09140b528cd8999838fb52d4694ff2237970dba9fe9bb02ccf98"
+    },
+    {
+      "path": "مبانی-غدد-3/0001-000001-000001.txt",
+      "size": 22619,
+      "sha256": "2fcaf0d43344f6966e1dccd07f9a1e8a165085f74802b781c997ba215ee3427c"
+    },
+    {
+      "path": "مبانی-غدد-3/0002-000001-000001.txt",
+      "size": 25015,
+      "sha256": "13e80af24e5df324979f15aa977d977478bae817e41c8edff39806ee732c9cd0"
+    },
+    {
+      "path": "مبانی-غدد-3/0003-000001-000001.txt",
+      "size": 29467,
+      "sha256": "d89e9caff1b86028d63e4c7533e8bedfb82dd38d852c0a5203f03d96f84dc365"
+    },
+    {
+      "path": "مبانی-غدد-3/0004-000001-000001.txt",
+      "size": 25401,
+      "sha256": "cd6512fde3c5cf1e0af2d0a5f35d8b890afef7c0d6609ac0d5f88ab8b009d5be"
+    },
+    {
+      "path": "مبانی-غدد-3/0005-000001-000001.txt",
+      "size": 33622,
+      "sha256": "65933ec45960c4dac63d16e414404eb48f70d4d52ff7b578f06e0fd4929eef4f"
+    },
+    {
+      "path": "مبانی-غدد-3/0006-000001-000001.txt",
+      "size": 28283,
+      "sha256": "26aa2c36ca9c175b5042d35e3ea48dedd066ef6fd0eb91ffe75056385ddde865"
+    },
+    {
+      "path": "مبانی-غدد/0002-000041-000060.txt",
+      "size": 39352,
+      "sha256": "9b7fcdaadc156ef0a6b7fe9be2c3f468047b119903ae26bf12a2d2d50aceb4ed"
+    },
+    {
+      "path": "مبانی-غدد/0003-000061-000080.txt",
+      "size": 36293,
+      "sha256": "394b26eee828706f1994dc49f203faa1a90987f50658b4523dda66fd98572dc7"
+    },
+    {
+      "path": "مبانی-غدد/0004-000081-000100.txt",
+      "size": 34889,
+      "sha256": "7c2c31a18955f45aaf73d122c42d39aecbb626823c117cdc707ff7443a483ea6"
+    },
+    {
+      "path": "مهر 98 (2).json",
+      "size": 13708,
+      "sha256": "bd7f1a5fa2ca09169d9266007bd327ee0c19f8c011011a9e41d06ccb28b7b3da"
+    },
+    {
+      "path": "مهر-402/result.txt",
+      "size": 34574,
+      "sha256": "40776b3759133cf524552083afeb587bea9b784441b51ddff90ad2670ae9860e"
+    },
+    {
+      "path": "مهر-95/result.txt",
+      "size": 34363,
+      "sha256": "03d2a796289a9dc53d7a705d10b946c6b8a49b507a79025d170fbab1d7e0c1f0"
+    },
+    {
+      "path": "مهر-96/result.txt",
+      "size": 28855,
+      "sha256": "d92a026e50b684b980b91d44f7dc4f48e68213a99104deaa9f8f5e8a8f4e8a94"
+    },
+    {
+      "path": "مهر-97_صفحات_منتخب/result.txt",
+      "size": 2151,
+      "sha256": "92aae213bf1eb2fae9f27b6059a4af2b3dcd4b3e7201461f501676aaf055f4de"
+    },
+    {
+      "path": "مهر-97/result.txt",
+      "size": 56423,
+      "sha256": "3023fcede5232927cbf371f2849f597483d25c32e484fe3c9eb61231b795b918"
+    },
+    {
+      "path": "میان_ترم_اپیدمیولوژی_استاد_جراحی_240702_172658/01_raw.md.txt",
+      "size": 3218,
+      "sha256": "eed1fa3fa6b13781546341ece000dca670044e7900bb199e68acfe8716926562"
+    },
+    {
+      "path": "میان_ترم_اپیدمیولوژی_استاد_جراحی_240702_172658/03_questions.json.json",
+      "size": 4098,
+      "sha256": "b283c6dcb30de1b778b4f9168ca140e9a06a133928e7252df9657733a601f79d"
+    },
+    {
+      "path": "نمونه  سوال/01_raw.md.txt",
+      "size": 7034,
+      "sha256": "9a4b6b273940fa5efbbf0c442973861a852028f4cd8d3daefa11f1ac73c652ec"
+    },
+    {
+      "path": "نمونه حقیر پارت 2/notebook_c7eaa383-85dc-43d6-9a33-e3c22328c11f_1-20.txt.txt",
+      "size": 37595,
+      "sha256": "418bda73937c5049cac49ab5f70fd27795855ebfa68ecf08d1db45b1a286bfb3"
+    },
+    {
+      "path": "نمونه حقیر پارت 2/notebook_c7eaa383-85dc-43d6-9a33-e3c22328c11f_21-40.txt.txt",
+      "size": 35058,
+      "sha256": "33282592446481b5231fcb5d2613e1bed391778765186bdc0fe0200cc36313b4"
+    },
+    {
+      "path": "نمونه حقیر پارت 2/notebook_c7eaa383-85dc-43d6-9a33-e3c22328c11f_41-60.txt.txt",
+      "size": 33586,
+      "sha256": "9d171f6348ec00bb06691101a12cf729885d5fc5940181e93bab716cd5f94251"
+    },
+    {
+      "path": "نمونه حقیر پارت 2/notebook_c7eaa383-85dc-43d6-9a33-e3c22328c11f_61-64.txt.txt",
+      "size": 16998,
+      "sha256": "13642055283a6ec4cb88c810ac781e2df6e753b1c695e55fa7f40bd2cc6f01ad"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_101-120.txt.txt",
+      "size": 34195,
+      "sha256": "c4bb06356b47f79eeb00a532b3f98bdd9ab7a3706fd51a4144be3c2788b58139"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_121-140.txt.txt",
+      "size": 25538,
+      "sha256": "656d394042cee79a71880e122a6e0713789d0372023ec94578d30c5d71478e94"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_141-160.txt.txt",
+      "size": 25473,
+      "sha256": "d9c0ad2fe3e6a9d5df8e1e85a10ebe8aa5d5689972b1e4b76199a0c0059bf2bb"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_161-180.txt.txt",
+      "size": 28912,
+      "sha256": "862268bf29b0cebc5a385f480e50a3aebef0adc1b8966319e69d663276e3955d"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_21-40.txt.txt",
+      "size": 36310,
+      "sha256": "db3c263a271bb5f83fe213bac48558bf322ab390fdceff3cab89460ca9b2fa42"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_41-60.txt.txt",
+      "size": 36109,
+      "sha256": "9961b8c685a00e8ea227d3040bf6453ade51d19f35d8669ad9a3cf0a91425fb9"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_61-80.txt.txt",
+      "size": 39460,
+      "sha256": "12520d1c348c115fa56fe4c6e7f312dd878c1c04da1cf4f32fe41f6d2dcf3ad8"
+    },
+    {
+      "path": "نمونه های شافعی تا 180/notebook_bb4138a4-7291-4fe0-9306-bd0e7f53d240_81-100.txt.txt",
+      "size": 25996,
+      "sha256": "f0d297708520e0795bc071f87244cb8b3836e712f0f4746965ef02ca0fb4a49e"
+    },
+    {
+      "path": "نمونه_سوال_پایان‌ترم_فیزیولوژی_اعصاب_مهر_98_240630_154135/01_raw.md.txt",
+      "size": 7020,
+      "sha256": "b45751a15cd9005a684ba921d99487c533af223e1251918ecbb46414c807fe87"
+    },
+    {
+      "path": "نمونه_سوال_پایان‌ترم_فیزیولوژی_اعصاب_مهر_98_240630_154135/03_questions.json.json",
+      "size": 8574,
+      "sha256": "76cc7af0c3099c7aa896287d04a7cbeeb950b5919c79a0ff896c3c478bf2aa0b"
+    },
+    {
+      "path": "نمونه_سوال_قارچ‌شناسی_دکتر_فتی_مهر_98/01_raw.md.txt",
+      "size": 12770,
+      "sha256": "b6aaee64a20e6e24fcf7b5d3066a6703533a4e146810e9514f9ddd34e653e6c7"
+    },
+    {
+      "path": "نمونه_سوال_قارچ‌شناسی_دکتر_فتی_مهر_98/03_questions.json.json",
+      "size": 16392,
+      "sha256": "5c002d5b8a34a94292486e844ab55833ab0c5fd9681c1bbccb2e447d15df9e99"
+    },
+    {
+      "path": "نمونه_سوالات_پایانترم_فیزیولوژی_اعصاب_مهر_۹۹_240630_091439/01_raw.md.txt",
+      "size": 4123,
+      "sha256": "df48611a4750b4f55cc5f2b829b6ff6ce10d42fd3d8082c0f969f397c599e3c9"
+    },
+    {
+      "path": "نمونه_سوالات_پایانترم_فیزیولوژی_اعصاب_مهر_۹۹_240630_091439/03_questions.json.json",
+      "size": 5529,
+      "sha256": "d98033d2729b7a7a5face322a1b6089f7e830de851b952cbcc5503b74319657a"
+    },
+    {
+      "path": "نوروآناتومی، حقیر، بهمن 97/01_raw.md.txt",
+      "size": 10457,
+      "sha256": "7129c977bf3889a362d261370574fef4483a5d2e2a1a07e33d686853aba7d90a"
+    },
+    {
+      "path": "نوروآناتومی، حقیر، مهر 97/01_raw.md.txt",
+      "size": 46593,
+      "sha256": "3fdf1ae78f3f8aac5d1ec67091c8e2b611ff2505329c6baa25e3f38994b0152b"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_1-20.txt.txt",
+      "size": 30244,
+      "sha256": "483fba7c4af3471663aa445462c5cdb4aa872e796f3b32b95802315fa7b55566"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_101-120.txt.txt",
+      "size": 16454,
+      "sha256": "386296df713d5df2aec0afe53b1b07e1b5d40e40e440ab3c761bc8bb6eecd5a0"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_161-180.txt.txt",
+      "size": 26270,
+      "sha256": "67d294d6143f7b8b381f3656656fd4538c8a26ae631b92e000c2531b2e2f0363"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_181-200.txt.txt",
+      "size": 26846,
+      "sha256": "6b77c9830f0886e1916fecd3ba3ae05b89cce6ba70250f3c31f88380f79fb8a8"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_201-220.txt.txt",
+      "size": 29087,
+      "sha256": "ee228a65fb4ea792a94e4aa637096c91f1b15f413a20d626bcdbc7724cc1bc04"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_21-40.txt.txt",
+      "size": 23008,
+      "sha256": "94820ce18f9e3effd1d0948096aa62032cdc06c1234d5685b1c79dc6d59ea199"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_221-240.txt",
+      "size": 23158,
+      "sha256": "04837528f4bf9b82f07b7052d1f31937fd6232697ba2d9a7f5a7f559e1949e15"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_41-60.txt.txt",
+      "size": 24861,
+      "sha256": "3867c2afa6cc6843fcac64d40afdf58ae6b1b90217cf19ef6c8e67282d061442"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_61-80.txt.txt",
+      "size": 25705,
+      "sha256": "da4f620dceb6a6ad794e06c3c2f5c463a616ccb56af0e36c2019275efdac1688"
+    },
+    {
+      "path": "نوروفیزیو پاسخ تشریحی شافعی از 181 تا 413/notebook_9b8bf81c-9ff0-4e36-8aa9-3d3736000344_81-100.txt.txt",
+      "size": 14890,
+      "sha256": "297dd17a28d440530b9fba01679ba5f36a3859c19dafa39678470b351051265d"
+    },
+    {
+      "path": "ویروس_شناسی،_یوسفی_درخشان_عامل_مشکات،_مهر_99/01_raw.md.txt",
+      "size": 10615,
+      "sha256": "d14cdf266c0bf95988ba1b46c182575bd63bfe7c2626e27f9bfff128447de8ed"
+    },
+    {
+      "path": "ویروس_شناسی،_یوسفی_درخشان_عامل_مشکات،_مهر_99/03_questions.json.json",
+      "size": 12950,
+      "sha256": "1285e4df9072d941067f54eba2697f18528476d749333af56e41f59c403730bf"
+    }
+  ]
+}

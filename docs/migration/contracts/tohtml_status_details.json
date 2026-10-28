@@ -1,0 +1,57 @@
+{
+  "name": "tohtml_status_details",
+  "route": "/api/tohtml/status",
+  "method": "GET",
+  "request": {
+    "query": {
+      "id": "00000000-0000-0000-0000-000000000002"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "fileName": "Cardiology_Test.txt",
+      "folderName": "tohtml-Cardiology_Test",
+      "prompt": "You are an expert HTML booklet designer...",
+      "status": "processing",
+      "createdAt": "2026-10-25T12:00:00.000Z",
+      "sections": [
+        {
+          "id": "sec-1",
+          "index": 0,
+          "sectionIndex": 0,
+          "marker": "CUT 1",
+          "markerNumber": 1,
+          "chunkIndex": 0,
+          "chunkNumber": 1,
+          "totalChunks": 1,
+          "label": "CUT 1 — Chunk 1/1",
+          "content": "Question 1 content...",
+          "charCount": 22,
+          "lineCount": 1,
+          "status": "completed",
+          "outputFilename": "0001-CUT-1-chunk-1.txt",
+          "durationMs": 4500,
+          "completedAt": "2026-10-25T12:00:05.000Z"
+        }
+      ],
+      "logs": [
+        {
+          "id": "log-1",
+          "timestamp": "2026-10-25T12:00:00.000Z",
+          "level": "INFO",
+          "message": "Job created with 1 section(s) split into 1 chunk(s) from \"Cardiology_Test.txt\"."
+        }
+      ],
+      "summary": {
+        "total": 1,
+        "completed": 1,
+        "processing": 0,
+        "failed": 0,
+        "pending": 0,
+        "avgDurationMs": 4500
+      }
+    }
+  }
+}

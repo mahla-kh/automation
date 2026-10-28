@@ -1,0 +1,61 @@
+{
+  "name": "pipelines_status_details",
+  "route": "/api/pipelines/status",
+  "method": "GET",
+  "request": {
+    "query": {
+      "id": "00000000-0000-0000-0000-000000000001"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "status": "processing",
+      "createdAt": "2026-10-25T12:00:00.000Z",
+      "files": [
+        {
+          "fileId": "file-1",
+          "fileName": "Exam_Chapter_1.pdf",
+          "download": {
+            "status": "success",
+            "startedAt": "2026-10-25T12:00:01.000Z",
+            "completedAt": "2026-10-25T12:00:03.000Z",
+            "durationMs": 2000
+          },
+          "upload": {
+            "status": "in_progress",
+            "startedAt": "2026-10-25T12:00:15.000Z"
+          },
+          "ocr": {
+            "status": "success",
+            "startedAt": "2026-10-25T12:00:03.000Z",
+            "completedAt": "2026-10-25T12:00:15.000Z",
+            "durationMs": 12000
+          },
+          "overallStatus": "in_progress",
+          "startedAt": "2026-10-25T12:00:01.000Z"
+        }
+      ],
+      "logs": [
+        {
+          "id": "log-1",
+          "timestamp": "2026-10-25T12:00:00.000Z",
+          "level": "INFO",
+          "message": "Job initialized with 1 file(s).",
+          "stage": "pipeline"
+        }
+      ],
+      "summary": {
+        "total": 1,
+        "completed": 0,
+        "processing": 1,
+        "failed": 0,
+        "pending": 0,
+        "ocrSuccessRate": 100,
+        "ocrErrorRate": 0,
+        "avgOcrDurationMs": 12000
+      }
+    }
+  }
+}

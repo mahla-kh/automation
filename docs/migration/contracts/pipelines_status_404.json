@@ -1,0 +1,16 @@
+{
+  "name": "pipelines_status_404",
+  "route": "/api/pipelines/status",
+  "method": "GET",
+  "request": {
+    "query": {
+      "id": "non-existent-id"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Job not found"
+    }
+  }
+}

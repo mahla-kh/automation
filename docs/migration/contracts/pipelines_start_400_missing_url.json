@@ -1,0 +1,14 @@
+{
+  "name": "pipelines_start_400_missing_url",
+  "route": "/api/pipelines/start",
+  "method": "POST",
+  "request": {
+    "body": {}
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "error": "Folder URL is required"
+    }
+  }
+}
